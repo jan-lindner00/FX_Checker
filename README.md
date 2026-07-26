@@ -153,4 +153,4 @@ For this project I didn't use too many AI tools. I used it help me with writing 
 
 ## Acknowledgments
 
-This challenge was part of a hackathon hosted by Frontend Mentor. I want to thank the participants of the competition as their solutins inspired me to add Auth and a Databse to my project, as it was storing data in Local Storage in the beginning.
+This challenge was part of a hackathon hosted by Frontend Mentor. I want to thank the participants of the competition as their solutions inspired me to add Auth and a Databse to my project, as it was storing data in Local Storage in the beginning.
