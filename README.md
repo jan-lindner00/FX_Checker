@@ -70,7 +70,7 @@ Your users should be able to:
 - See hover and focus states for all interactive elements on the page
 - Navigate the entire app using only their keyboard
 
-### What I added
+#### What I added
 
 - Favorites and Logs are stored in a database
 - Authentification: Create an account or continue as guest
@@ -119,9 +119,6 @@ export async function GET(request: Request) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
  
-    if(safeNext === "/auth/link-account-success"){
-      await supabase.auth.signOut({scope: "global"})
-    }
     if (!error) {
       if (isLocal) {
         return NextResponse.redirect(`${url.origin}${safeNext}`)
@@ -147,12 +144,6 @@ In the future I want to improve the accessibility of my projects. Especially sin
 - [NextJS Docs](https://nextjs.org/docs/app/api-reference/file-conventions/proxy) - This article helped me understand the purpose of proxys more and I feel like I started to grasp how they work after reading this.
 
 ### AI Collaboration
-
-Describe how you used AI tools (if any) during this project. This helps demonstrate your ability to work effectively with AI assistants.
-
-- What tools did you use (e.g., ChatGPT, Claude, GitHub Copilot)?
-- How did you use them (e.g., debugging, generating boilerplate, brainstorming solutions)?
-- What worked well? What didn't?
 
 For this project I didn't use too many AI tools. I used it help me with writing databse functions and triggers as well as helping me with the proxy. I used Claude Sonnet 5. The vast majority of my code I wrote myself. Also I found searching the web for the right article was sometimes more helpful than asking AI.
 
