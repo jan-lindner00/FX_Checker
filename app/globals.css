@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme {
+  --color-neutral-*: initial;
+  --color-neutral-900: #0a0a0a;
+  --color-neutral-700: #171719;
+  --color-neutral-600: #202022;
+  --color-neutral-500: #2e2e2e;
+  --color-neutral-400: #3d3d3d;
+  --color-neutral-300: #454547;
+  --color-neutral-200: #9d9d9d;
+  --color-neutral-100: #c6c6c6;
+  --color-neutral-0: #fff;
+  --color-lime-500: #cef739;
+  --color-lime-800: #283300;
+  --color-green-500: #42eb05;
+  --color-red-500: #ff4141;
+
+  --shadow-menu: 0 20px 60px rgba(10, 10, 10, 0.5);
+
+  --breakpoint-*: initial;
+  --breakpoint-xs: 25rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-2xl: 90rem;
+}
+
+@layer reset, components;
+
+@layer reset{
+  *, *::after, *::before{
+    box-sizing: border-box;
+  }
+  h1, h2,h3,h4,h5,h6,p{
+    margin: 0;
+  }
+  input, button{
+    font: inherit;
+  }
+  button, a{
+    cursor: pointer;
+  }
+  :focus{
+    outline: none;
+    box-shadow: 0 0 0 2px #202022, 0 0 0 4px #cef739;
+  }
+  ::backdrop{
+    background: #0a0a0a;
+    opacity: 0.9;
+  }
+}
+
+@layer components{
+  .amount-container:has(input:focus) input[type="number"],
+  .currency-search input,
+  .currency-select input{
+    box-shadow: none;
+  }
+  .amount-container:has(input:focus) p,
+  .currency-search:has(input:focus),
+  .currency-select:has(input:focus){
+    border: 2px solid #cef739;
+  }
+  div.scroller[data-animated="true"]{
+    overflow: hidden;
+    mask: linear-gradient(
+          90deg,
+          transparent,
+          white 7%,
+          white 93%,
+          transparent
+    ); 
+  }
+  @media (min-width: 768px) {
+    div.scroller[data-animated="true"]{
+      mask: linear-gradient(
+            90deg,
+            transparent,
+            white 5%,
+            white 95%,
+            transparent
+      ); 
+    }
+  }
+  @media (min-width: 1280px) {
+    div.scroller[data-animated="true"]{
+      mask: linear-gradient(
+            90deg,
+            transparent,
+            white 2%,
+            white 98%,
+            transparent
+      ); 
+    }
+  }
+  div.scroller[data-animated="true"] .scroller-inner{
+    animation: scroll 480s forwards linear infinite;
+  }
+
+  @keyframes scroll {
+    to{
+      transform: translateX(-50%);
+    }
+  }
+}
+
+
+
