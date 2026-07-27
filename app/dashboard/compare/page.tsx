@@ -19,11 +19,6 @@ export default function Compare(){
     useEffect(()=>{
         const getRates = async() => {
             try{
-                const res = await fetch(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`, 
-                { next: {revalidate: 1800}})
-                if(!res.ok){
-                throw new Error("Failed to fetch compare rates: " + res.statusText)
-                }
                 const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`)
                 if(!data){
                     throw new Error("Data has unexpected format")
