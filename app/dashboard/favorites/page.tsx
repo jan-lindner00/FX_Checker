@@ -1,15 +1,14 @@
 "use client"
 import { useCallback } from "react"
 import FavoriteItem from "@/app/components/Favorites/FavoriteItem"
-import { createClient } from "@/app/lib/supabase/client"
+import supabaseClient from "@/app/lib/supabase/client"
 import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription"
 
 export default function Favorites(){
     const favorites = useSubscribeFavorites()
 
     const removeFavorite = useCallback(async (base: string, quote: string)=>{
-        const supabase = createClient()
-        const {error} = await supabase
+        const {error} = await supabaseClient
             .from("favorites")
             .delete()
             .eq("base", base)

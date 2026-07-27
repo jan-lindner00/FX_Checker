@@ -7,10 +7,10 @@ export default async function Carousel(){
     let carouselData: CarouselData[] = []
     try{
         const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-        const data: Rate[] | null = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
+        const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
 
-        if(!data || data.length < 1){
-            throw new Error("Data has unexpected format")
+        if(error || !data){
+            throw new Error(error)
         }
 
         const dataLatest = data.filter((d: Rate) => d.date === data[data.length-1].date)

@@ -1,24 +1,23 @@
 import { Temporal } from "@js-temporal/polyfill";
-import type { Favorite, LogEntry } from "@/app/types/types";
-import { createClient } from "@/app/lib/supabase/client";
-import { SetStateAction, Dispatch } from "react";
+import type { LogEntry } from "@/app/types/types";
+import supabasClient from "@/app/lib/supabase/client";
 import type { Rate } from "@/app/types/types";
+import supabaseClient from "@/app/lib/supabase/client";
 
-export async function fetchRates(url: string){
+export async function fetchRates(url: string): Promise<{data?: Rate[], error?: string}>{
     const res = await fetch(url, {next: {revalidate: 1800}})
     if(!res.ok){
-        return null 
+        return {error: "Error: Failed to fetch data from Frankfurter API"} 
     }
     const data: Rate[] = await res.json()
     if(!data){
-        return null
+        return {error: "Error: Frankfurter API returned no data"}
     }
-    return data
+    return {data: data}
 }
 
 export async function fetchFavorites() {
-    const supabase = createClient()
-    const {data, error} = await supabase
+    const {data, error} = await supabaseClient
         .from("favorites")
         .select(`
             base,
@@ -31,8 +30,7 @@ export async function fetchFavorites() {
 }
 
 export async function fetchLogEntries() {
-    const supabase = createClient()
-    const {data, error} = await supabase
+    const {data, error} = await supabaseClient
         .from("log_entries")
         .select()
     if(error){
@@ -42,16 +40,15 @@ export async function fetchLogEntries() {
 } 
 
 export async function handleFavChange(base: string, abbreviation: string, isFavorite: boolean){
-    const supabase = createClient()
     if(!isFavorite){
-        await supabase
+        await supabaseClient
             .from("favorites")
             .insert({
                 base: base,
                 quote: abbreviation
             })
     }else{
-        await supabase
+        await supabaseClient
             .from("favorites")
             .delete()
             .eq("base", base)

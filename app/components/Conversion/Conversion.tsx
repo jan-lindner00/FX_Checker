@@ -10,7 +10,7 @@ import { Rate } from "@/app/types/types";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilled from "@/public/images/icon-star-filled.svg"
 import type { Favorite } from "@/app/types/types";
-import { createClient } from "@/app/lib/supabase/client";
+import supabaseClient from "@/app/lib/supabase/client";
 import { Temporal } from "@js-temporal/polyfill";
 
 function Conversion({favorites}: {favorites: Favorite[]}){
@@ -37,14 +37,9 @@ function Conversion({favorites}: {favorites: Favorite[]}){
 
     async function handleAmountChange(recieving=true){
         try{
-            const data: Rate[] | null = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`)
-            if(!data){
-                if(recieving){
-                    setReceiveAmount("")
-                }else{
-                    setBaseAmount("")
-                }
-                return setRate(0)
+            const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`)
+            if(error || !data){
+                throw new Error(error)
             }
             setRate(data[0].rate)
             if(recieving){
@@ -69,6 +64,12 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             }else{
                 console.error("An unexpected error occured during fetching rates from API")
             }
+            if(recieving){
+                setReceiveAmount("")
+            }else{
+                setBaseAmount("")
+            }
+            setRate(0)
         }
     }
 
@@ -104,7 +105,6 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     }
 
     async function handleLogEntry(): Promise<void>{
-        const supabase = createClient()
         if(debouncedBaseAmount === "" || debouncedReceiveAmount === "" || 
         parseFloat(debouncedBaseAmount) <= 0 || parseFloat(debouncedReceiveAmount) <= 0){
             return
@@ -116,7 +116,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             base_amount: debouncedBaseAmount,
             receive_amount: debouncedReceiveAmount
         }
-        const {error} = await supabase
+        const {error} = await supabaseClient
             .from("log_entries")
             .insert(newLogEntry)
         if(error){

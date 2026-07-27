@@ -3,28 +3,27 @@ import Image from "next/image";
 import LogItem from "@/app/components/Log/LogItem";
 import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
-import { createClient } from "@/app/lib/supabase/client";
+import supabaseClient from "@/app/lib/supabase/client";
 import { downloadCSV } from "@/app/lib/utils";
 import { useSubscribeLog } from "@/app/lib/hooks/useSubscription";
 
 export default function Log(){
-    const supabase = createClient()
     const logEntries = useSubscribeLog()
     const [isPending, setIsPending] = useState<boolean>(false)
 
     const deleteEntry = useCallback(async(id: string) =>{
-        const {error} = await supabase
+        const {error} = await supabaseClient
             .from("log_entries")
             .delete()
             .eq("id", id)
         if(error){
             console.error("Error deleting log entry: ", error.message)
         }
-    }, [supabase])
+    }, [])
 
     async function deleteAllLogEntries(){
-        const {data} = await supabase.auth.getUser()
-        const {error} = await supabase
+        const {data} = await supabaseClient.auth.getUser()
+        const {error} = await supabaseClient
             .from("log_entries")
             .delete()
             .eq("user_id", data?.user?.id)

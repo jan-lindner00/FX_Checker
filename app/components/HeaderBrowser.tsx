@@ -2,7 +2,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect, useId, useRef } from "react"
-import { createClient } from "@/app/lib/supabase/client"
+import supabaseClient from "@/app/lib/supabase/client"
 import Logo from "@/public/images/logo.svg"
 import IconUser from "@/public/images/icon-user.svg"
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
@@ -34,13 +34,12 @@ export default function HeaderBrowser(){
 
     useEffect(()=>{
         async function fetchUserData(){
-            const supabase = createClient()
-            const {data} = await supabase.auth.getUser()
+            const {data} = await supabaseClient.auth.getUser()
             if(!data?.user || data?.user?.is_anonymous){
                 return
             }
 
-            const {error, data: profileData} = await supabase
+            const {error, data: profileData} = await supabaseClient
             .from("user_profiles")
             .select()
             .eq("id", data.user?.id)

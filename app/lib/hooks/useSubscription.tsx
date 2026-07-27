@@ -1,14 +1,13 @@
 "use client"
 import {useState, useEffect, useMemo, useContext, createContext} from "react"
-import { createClient } from "@/app/lib/supabase/client"
 import { fetchFavorites, fetchLogEntries } from "@/app/lib/utils"
 import { Favorite, LogEntry } from "@/app/types/types"
 import {v4 as uuid} from "uuid"
+import supabaseClient from "@/app/lib/supabase/client"
 
 const FavoritesContext = createContext<Favorite[]>([])
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
-  const supabase = useMemo(() => createClient(), [])
   const [favorites, setFavorites] = useState<Favorite[]>([])
 
   useEffect(() => {
@@ -22,7 +21,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
     getFavorites()
 
-    const favChannel = supabase
+    const favChannel = supabaseClient
       .channel(`favorite-changes-${uuid()}`)
       .on(
         "postgres_changes",
@@ -33,9 +32,9 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       cancelled = true
-      supabase.removeChannel(favChannel)
+      supabaseClient.removeChannel(favChannel)
     }
-  }, [supabase])
+  }, [])
 
   return (
     <FavoritesContext.Provider value={favorites}>
@@ -51,7 +50,6 @@ export function useSubscribeFavorites() {
 const LogContext = createContext<LogEntry[]>([])
 
 export function LogProvider({ children }: { children: React.ReactNode }) {
-  const supabase = useMemo(() => createClient(), [])
   const [logEntries, setLogEntries] = useState<LogEntry[]>([])
 
   useEffect(() => {
@@ -65,7 +63,7 @@ export function LogProvider({ children }: { children: React.ReactNode }) {
 
     getLogEntries()
 
-    const logChannel = supabase
+    const logChannel = supabaseClient
       .channel(`log-changes-${uuid()}`)
       .on(
         "postgres_changes",
@@ -76,9 +74,9 @@ export function LogProvider({ children }: { children: React.ReactNode }) {
 
     return () => {
       cancelled = true
-      supabase.removeChannel(logChannel)
+      supabaseClient.removeChannel(logChannel)
     }
-  }, [supabase])
+  }, [])
 
   return (
     <LogContext.Provider value={logEntries}>
