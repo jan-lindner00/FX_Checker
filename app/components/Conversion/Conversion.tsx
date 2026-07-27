@@ -141,7 +141,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                         {formatCurrency(baseAmount)}
                                     </p>
                                     <input 
-                                        className="absolute top-[-1px] left-[-1px] w-[0.1px] h-[0.1px] opactity-0"
+                                        className="absolute top-[-1px] left-[-1px] w-[0.1px] h-[0.1px] opacity-0"
                                         type="number" 
                                         max={10000000} 
                                         min={0} 
@@ -192,7 +192,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                         {isPending ? ". . ." : formatCurrency(receiveAmount)}
                                     </p>
                                     <input 
-                                        className="absolute top-[-1px] left-[-1px] w-[0.1px] h-[0.1px] opactity-0 focus:outline-none"
+                                        className="absolute top-[-1px] left-[-1px] w-[0.1px] h-[0.1px] opacity-0 focus:outline-none"
                                         type="number" 
                                         max={10000000} 
                                         min={0} 
