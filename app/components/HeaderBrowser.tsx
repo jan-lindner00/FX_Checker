@@ -18,7 +18,7 @@ export default function HeaderBrowser(){
     const modalRef = useRef<HTMLDialogElement | null>(null)
     const menuRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
-    const freshLoad = useRef<boolean>(null)
+    const freshLoad = useRef<boolean>(true)
 
     useEffect(()=>{
         if(freshLoad.current === true){

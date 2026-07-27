@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from "react"
 import FavoriteItem from "@/app/components/Favorites/FavoriteItem"
 import { createClient } from "@/app/lib/supabase/client"
 import { fetchFavorites } from "@/app/lib/utils"
-import {v4 as uuid} from "uuid"
 
 export default function Favorites(){
     const supabase = createClient()
@@ -64,7 +63,7 @@ export default function Favorites(){
             </div>
             <div className="grid grid-col-1 gap-3 h-max">
                 {favorites.map((data) => (
-                    <FavoriteItem key={uuid()} removeFavorite={removeFavorite} {...data} />
+                    <FavoriteItem key={data.base + data.quote} removeFavorite={removeFavorite} {...data} />
                 ))}
             </div>
         </section>

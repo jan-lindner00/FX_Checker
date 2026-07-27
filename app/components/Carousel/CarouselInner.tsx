@@ -2,7 +2,6 @@
 import {useEffect, useMemo, useRef, memo} from "react"
 import type { CarouselData } from "@/app/types/types"
 import CarouselItem from "@/app/components/Carousel/CarouselItem"
-import {v4 as uuid} from "uuid"
 
 function CarouselInner({ratesData}:{ratesData: Readonly<CarouselData[]>}){
     const data = useMemo(() => ratesData, [ratesData])
@@ -72,7 +71,7 @@ function CarouselInner({ratesData}:{ratesData: Readonly<CarouselData[]>}){
     return (
         <div className="scroller-inner w-max flex" aria-live="polite">
           {data.map((item) => {
-            return <CarouselItem key={uuid()} {...item} />
+            return <CarouselItem key={item.base + item.quote} {...item} />
           })}  
         </div>
     )

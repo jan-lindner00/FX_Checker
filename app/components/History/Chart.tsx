@@ -1,7 +1,6 @@
 import type { ChartData, CustomTickProps } from "@/app/types/types";
 import { Tooltip, XAxis, YAxis, ReferenceLine, AreaChart, Area} from "recharts";
 import { Temporal } from "@js-temporal/polyfill";
-import {v4 as uuid} from "uuid"
 import {useMemo, memo} from "react"
 import useWindowSize from "@/app/lib/hooks/useWindowSize";
 
@@ -116,7 +115,7 @@ function Chart({chartData, base, quote, timeline}:
               <XAxis 
                 style={{color: "#9d9d9d", fontSize: ".625rem", letterSpacing: ".5px"}}
                 tickMargin={16}
-                tick={<CustomXTick key={uuid()} data={chartDataFormatted}/>}
+                tick={<CustomXTick data={chartDataFormatted}/>}
                 ticks={xTicks}
                 dataKey="time"
                 axisLine={false}
@@ -126,7 +125,7 @@ function Chart({chartData, base, quote, timeline}:
                 tickMargin={10}
                 type="number"
                 tickCount={2}
-                tick={<CustomYTick key={uuid()} data={chartDataFormatted}/>}
+                tick={<CustomYTick data={chartDataFormatted}/>}
                 axisLine={false}
                 tickLine={false}
                 domain={!allValuesTheSame ? [getMedianRate().min, getMedianRate().max] : [parseFloat((getMedianRate().min * 0.99).toFixed(5)), parseFloat((getMedianRate().max * 1.01).toFixed(5))]}

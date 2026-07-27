@@ -5,7 +5,6 @@ import useDebounce from "@/app/lib/hooks/useDebounce";
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
 import CurrencyItem from "@/app/components/Conversion/CurrencyItem";
 import IconSearch from "@/public/images/icon-search.svg"
-import {v4 as uuid} from "uuid"
 
 function CurrencyDropdown({startTransition, search="base", selected}:
     {startTransition: React.TransitionStartFunction, search: string, selected: string}
@@ -142,7 +141,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                             {popular.map((currency)=>{
                                 return (
                                     <CurrencyItem 
-                                        key={uuid()}
+                                        key={currency.abbreviation}
                                         search={search}
                                         selected={currency.abbreviation === selectedCurrency.abbreviation}
                                         startTransition={startTransition}
@@ -164,7 +163,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                             {others.map((currency)=>{
                                 return (
                                     <CurrencyItem 
-                                        key={uuid()} 
+                                        key={currency.abbreviation} 
                                         search={search} 
                                         selected={currency.abbreviation === selectedCurrency.abbreviation} 
                                         startTransition={startTransition}
