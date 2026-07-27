@@ -50,14 +50,14 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                 if(isNaN(parseFloat(debouncedBaseAmount))){
                     return setReceiveAmount("")
                 }
-                const amount = (parseFloat(baseAmount) * data[0].rate).toFixed(2)
+                const amount = (parseFloat(debouncedBaseAmount) * data[0].rate).toFixed(2)
                 dontUpdateSend.current = true
                 return setReceiveAmount(amount)
             }
-            if(debouncedReceiveAmount === ""){
+            if(isNaN(parseFloat(debouncedReceiveAmount))){
                 return setBaseAmount("")
             }
-            const amount = rate > 0 ? (parseFloat(receiveAmount) / data[0].rate).toFixed(2) : ""
+            const amount = rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
             dontUpdateReceive.current = true
             setBaseAmount(amount)
         }catch(error){
