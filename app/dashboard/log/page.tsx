@@ -30,9 +30,11 @@ export default function Log(){
     }, [supabase])
 
     async function deleteAllLogEntries(){
+        const {data} = await supabase.auth.getUser()
         const {error} = await supabase
             .from("log_entries")
             .delete()
+            .eq("user_id", data?.user?.id)
         if(error){
             console.error("Error deleting all log entries: ", error.message)
         }
