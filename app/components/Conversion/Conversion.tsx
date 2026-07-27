@@ -196,7 +196,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                         <button className={clsx(`flex items-center gap-[.625rem] px-3 py-2 rounded-[.5rem] uppercase`, 
                             isFavorite && `text-neutral-900 bg-lime-500`,
                             !isFavorite && `text-neutral-200 bg-neutral-600 border border-neutral-300`)}
-                            aria-label="Add this conversion to favorites"
+                            aria-label="Add this pair to favorites"
                             onClick={() => handleFavChange(base, quote, isFavorite)}
                         >
                             <Image src={isFavorite ? StarFilled : StarEmpty} alt={isFavorite ? "Star filled" : "Star empty"} />
@@ -204,7 +204,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                         </button>
                         <button className="flex items-center gap-[.625rem] px-3 py-2 rounded-[.5rem] text-neutral-200 bg-neutral-700
                          border border-neutral-300 hover:border-lime-500 hover:bg-lime-800 hover:text-neutral-0 uppercase"
-                            aria-label="Add this conversion to favorites"
+                            aria-label="Log this conversion"
                             onClick={handleLogEntry}
                         >
                             Log Conversion
