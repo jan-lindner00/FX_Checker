@@ -6,11 +6,21 @@ import clsx from "clsx";
 import { useEffect, useState, memo } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 import { fetchRates } from "@/app/lib/utils";
+import { usePathname, useRouter } from "next/navigation";
 
 function FavoriteItem({base, quote, removeFavorite}:
     {base: Favorite["base"], quote: Favorite["quote"], removeFavorite: (base: string, quote: string) => void }
 ){
+    const pathname = usePathname()
+    const {replace} = useRouter()
     const [favData, setFavData] = useState<CarouselData | null>(null)
+
+    function compareFavorites(){
+        const searchParams = new URLSearchParams()
+        searchParams.set("base", base)
+        searchParams.set("quote", quote)
+        replace(`${pathname}?${searchParams.toString()}`)
+    }
 
     async function fetchFavData(){
         try{
@@ -49,7 +59,14 @@ function FavoriteItem({base, quote, removeFavorite}:
 
     return (
         <div
-            tabIndex={0} 
+            onClick={compareFavorites}
+            tabIndex={0}
+            onKeyDown={(e)=>{
+                if(e.key === "Enter"){
+                    compareFavorites()
+                }
+            }}
+            aria-label={`Compare ${base} and ${quote}`}
             className="flex justify-between gap-3 p-3 md:px-4 bg-neutral-600 border border-neutral-500 rounded-[.625rem]">
             <div className="flex items-center gap-[.625rem] md:gap-5">
                 <div className="leading-[1.2] w-fit flex items-center gap-2 text-[.875rem] text-neutral-0 tracking-[1px] uppercase">
@@ -71,7 +88,10 @@ function FavoriteItem({base, quote, removeFavorite}:
                 </div>
                 <button 
                     className="h-8 w-8 flex items-center justify-center rounded-[.5rem] border bg-neutral-600 border-lime-500"
-                    onClick={() => removeFavorite(base, quote)}
+                    onClick={(e) =>{ 
+                        e.stopPropagation()
+                        removeFavorite(base, quote)
+                    }}
                     aria-label={`Remove conversion of ${base} to ${quote} from favorites`}>
                         <Image src={StarFilledLime} alt="Star filled"/>
                 </button>
