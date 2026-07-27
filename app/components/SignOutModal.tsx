@@ -49,6 +49,7 @@ export default function SignOutModal({setModalOpen, modalRef}:
                 <hr className="flex-grow border border-neutral-600" />
                 <form 
                     action="/auth/logout"
+                    method="post"
                 >
                     <div className="flex justify-end gap-4 text-medium">
                         <button
