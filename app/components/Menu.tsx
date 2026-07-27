@@ -15,18 +15,18 @@ function Menu({favorites, logEntries}:
     return(
         <section className="w-full h-full mt-[2.5rem] md:mt-[calc(2.66rem)] text-neutral-0 text-[1rem] leading-[1.2] tracking-[1px]">
             <div className="border-b border-neutral-600 h-8 w-full hidden md:block">
-                <NavLink href={`/dashboard/${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`} isActive={pathname === "/"}>
+                <NavLink href={`/dashboard/${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`} isActive={pathname === "/dashboard"}>
                     history
                 </NavLink>
-                <NavLink href={`/dashboard/compare${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`} isActive={pathname === "/compare"}>
+                <NavLink href={`/dashboard/compare${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`} isActive={pathname === "/dashboard/compare"}>
                     compare
                 </NavLink>
                 <NavLink href={`/dashboard/favorites${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
-                 isActive={pathname === "/favorites"} number={favorites.length}>
+                 isActive={pathname === "/dashboard/favorites"} number={favorites.length}>
                     Favorites
                 </NavLink>
                 <NavLink href={`/dashboard/log${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
-                 isActive={pathname === "/log"} number={logEntries.length}>
+                 isActive={pathname === "/dashboard/log"} number={logEntries.length}>
                     Log
                 </NavLink>
             </div>
