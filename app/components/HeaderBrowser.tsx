@@ -16,6 +16,21 @@ export default function HeaderBrowser(){
     const [userData, setUserData] = useState<UserData | null>(null)
     const [modalOpen, setModalOpen] = useState<boolean>(false)
     const modalRef = useRef<HTMLDialogElement | null>(null)
+    const menuRef = useRef<HTMLDivElement>(null)
+    const buttonRef = useRef<HTMLButtonElement>(null)
+    const freshLoad = useRef<boolean>(null)
+
+    useEffect(()=>{
+        if(freshLoad.current === true){
+            freshLoad.current = false
+            return
+        }
+        if(toggle){
+            menuRef.current?.focus()
+        }else{
+            buttonRef.current?.focus()
+        }
+    }, [toggle])
 
     useEffect(()=>{
         async function fetchUserData(){
@@ -47,6 +62,7 @@ export default function HeaderBrowser(){
             <div className="flex items-center gap-4">
                 <p className="hidden md:block text-[.625rem] md:text-[.875rem] leading-[1.2] tracking-[.5px] md:tracking-[1px]">55 CURRENCIES · EOD · ECB DATA</p>
                 <button 
+                    ref={buttonRef}
                     aria-controls={id}
                     aria-expanded={toggle}
                     aria-label="Open user settings"
@@ -59,9 +75,16 @@ export default function HeaderBrowser(){
             </div>
             {toggle && (
             <div 
+                tabIndex={0}
+                ref={menuRef}
                 className="fixed top-[3.375rem] md:top-[4.25rem] right-0 w-[17.5rem] rounded-[.75rem]
                 bg-neutral-700 border border-neutral-600 p-2 z-1000"
                 id={id}
+                onKeyDown={(e)=>{
+                    if(e.key === "Escape"){
+                        setToggle(false)
+                    }
+                }}
             >
                 <div className="flex items-center gap-2 pb-3 border-b border-neutral-500">
                     {userData?.avatar_url ? (
