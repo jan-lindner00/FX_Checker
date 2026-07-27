@@ -1,28 +1,23 @@
 import type { Rate, CarouselData } from "@/app/types/types"
 import { Temporal } from "@js-temporal/polyfill"
 import CarouselInner from "@/app/components/Carousel/CarouselInner"
+import { fetchRates } from "@/app/lib/utils"
 
 export default async function Carousel(){
     let carouselData: CarouselData[] = []
     try{
-    
-        const dateOld = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-        
-        const res= await fetch(`https://api.frankfurter.dev/v2/rates?from=${dateOld}`, {next: {revalidate: 1800}}) 
-        if(!res.ok){
-            throw new Error("Failed to fetch yesterdays rates: " + res.statusText)
-        }
-        const data: Rate[] = await res.json()
+        const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
+        const data: Rate[] | null = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
 
         if(!data || data.length < 1){
             throw new Error("Data has unexpected format")
         }
 
-        const dataNew = data.filter((d: Rate) => d.date === data[data.length-1].date)
-        const dataOld = data.filter((d: Rate) => d.date === data[0].date)
+        const dataLatest = data.filter((d: Rate) => d.date === data[data.length-1].date)
+        const dataStart = data.filter((d: Rate) => d.date === data[0].date)
 
-        carouselData = dataNew.map((dataObj: Rate) => {
-            const data = dataOld.find((i:Rate) => i.quote === dataObj.quote)
+        carouselData = dataLatest.map((dataObj: Rate) => {
+            const data = dataStart.find((i:Rate) => i.quote === dataObj.quote)
             if(data){
                 return ({
                     ...dataObj,

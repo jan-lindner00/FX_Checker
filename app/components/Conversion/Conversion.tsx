@@ -3,7 +3,7 @@ import { useState, useEffect, useRef, useTransition, memo} from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange } from "@/app/lib/utils";
+import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates } from "@/app/lib/utils";
 import CurrencyDropdown from "@/app/components/Conversion/CurrencyDropdown";
 import useDebounce from "@/app/lib/hooks/useDebounce";
 import { Rate } from "@/app/types/types";
@@ -37,13 +37,14 @@ function Conversion({favorites}: {favorites: Favorite[]}){
 
     async function handleAmountChange(recieving=true){
         try{
-            const res = await fetch(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`, {next: {revalidate: 1800}})
-            if(!res.ok){
-                throw new Error("Error fetching rates data from API: " + res.statusText)
-            }
-            const data: Rate[] = await res.json()
+            const data: Rate[] | null = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`)
             if(!data){
-                setRate(0)
+                if(recieving){
+                    setReceiveAmount("")
+                }else{
+                    setBaseAmount("")
+                }
+                return setRate(0)
             }
             setRate(data[0].rate)
             if(recieving){

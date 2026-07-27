@@ -1,10 +1,11 @@
 import Image from "next/image";
 import StarFilledLime from "@/public/images/icon-star-filled-lime.svg"
 import ArrowRight from "@/public/images/icon-arrow-right.svg"
-import { CarouselData, Favorite } from "@/app/types/types"
+import { CarouselData, Favorite, Rate } from "@/app/types/types"
 import clsx from "clsx";
 import { useEffect, useState, memo } from "react";
 import { Temporal } from "@js-temporal/polyfill";
+import { fetchRates } from "@/app/lib/utils";
 
 function FavoriteItem({base, quote, removeFavorite}:
     {base: Favorite["base"], quote: Favorite["quote"], removeFavorite: (base: string, quote: string) => void }
@@ -13,13 +14,8 @@ function FavoriteItem({base, quote, removeFavorite}:
 
     async function fetchFavData(){
         try{
-            const dateOld = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-            const res = await fetch(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateOld}`, 
-                {next: {revalidate: 1800}})
-            if(!res.ok){
-                throw new Error("Failed to fetch rates: " + res.statusText)
-            }
-            const data = await res.json()
+            const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
+            const data: Rate[] | null = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateStart}`)
             
             if(!data){
                 throw new Error("Data has unexpected format")

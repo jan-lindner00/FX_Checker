@@ -1,7 +1,7 @@
 "use client"
 import type { CurrencyCompare, Favorite, Rate } from "@/app/types/types";
 import {useState, useEffect } from "react"
-import { compareCurrencies, currencyAbbreviations, fetchFavorites } from "@/app/lib/utils";
+import { compareCurrencies, currencyAbbreviations, fetchFavorites, fetchRates } from "@/app/lib/utils";
 import CompareItem from "@/app/components/Compare/CompareItem";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/app/lib/supabase/client";
@@ -17,14 +17,17 @@ export default function Compare(){
     const [favorites, setFavorites] = useState<Favorite[]>([])
 
     useEffect(()=>{
-        const fetchRates = async() => {
+        const getRates = async() => {
             try{
                 const res = await fetch(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`, 
                 { next: {revalidate: 1800}})
                 if(!res.ok){
                 throw new Error("Failed to fetch compare rates: " + res.statusText)
                 }
-                const data = await res.json()
+                const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`)
+                if(!data){
+                    throw new Error("Data has unexpected format")
+                }
                 const compareData = filteredCurrencies.map(currency => {
                     const rate = data.find((data: Rate) => data.quote === currency.abbreviation)?.rate || 0
                     return {
@@ -43,7 +46,7 @@ export default function Compare(){
                 }
             }
         }
-        fetchRates()
+        getRates()
     }, [baseUpper, quoteUpper, filteredCurrencies])
 
     useEffect(()=>{

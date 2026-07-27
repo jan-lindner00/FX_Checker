@@ -2,17 +2,28 @@ import { Temporal } from "@js-temporal/polyfill";
 import type { Favorite, LogEntry } from "@/app/types/types";
 import { createClient } from "@/app/lib/supabase/client";
 import { SetStateAction, Dispatch } from "react";
+import type { Rate } from "@/app/types/types";
 
+export async function fetchRates(url: string){
+    const res = await fetch(url, {next: {revalidate: 1800}})
+    if(!res.ok){
+        console.error("Error fetching data from Frankfurter API: " + res.statusText)
+        return null 
+    }
+    const data: Rate[] = await res.json()
+    if(!data){
+        console.error("Error: API didn't return any data")
+        return null
+    }
+    return data
+}
 
 export async function fetchFavorites(setFavorites: Dispatch<SetStateAction<Favorite[]>>) {
     const supabase = createClient()
     try{
         const {data, error} = await supabase
             .from("favorites")
-            .select(`
-                base,
-                quote    
-            `)
+            .select()
         if(error){
             throw error
         }
