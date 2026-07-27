@@ -1,5 +1,5 @@
 import Image from "next/image";
-import {useState, useEffect, useRef, useId, memo} from "react"
+import {useState, useEffect, useRef, useId, memo, KeyboardEvent} from "react"
 import { currencies } from "@/app/lib/utils";
 import useDebounce from "@/app/lib/hooks/useDebounce";
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
@@ -13,6 +13,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
     const [toggle, setToggle] = useState<boolean>(false)
     const [searchBarVal, setSearchBarVal] = useState("")
     const freshLoad = useRef(true)
+    const dontUpdate = useRef<boolean>(false) 
     const dropdown = useRef<HTMLDivElement>(null)
     const button = useRef<HTMLButtonElement>(null)
     const id = useId()
@@ -28,6 +29,10 @@ function CurrencyDropdown({startTransition, search="base", selected}:
 
     useEffect(()=>{
         if(freshLoad.current === true){
+            return
+        }
+        if(dontUpdate.current === true){
+            dontUpdate.current = false
             return
         }
         if(toggle){
@@ -69,6 +74,12 @@ function CurrencyDropdown({startTransition, search="base", selected}:
         return () => { document.body.removeEventListener("click", closeDropdown)}
     }, 
     [])
+
+    function currencyItemOnKeyDown(e: KeyboardEvent){
+        if(e.key === "Tab"){
+            return setToggle(false)
+        }
+    }
  
     return (
         <section className="md:relative">
@@ -107,7 +118,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                     bg-neutral-600 max-h-[458px] md:max-h-[466px] border border-neutral-400 overflow-y-scroll`}
                 onKeyDown={(e)=>{
                     if(e.key === "Escape"){
-                        setToggle(false)
+                        return setToggle(false)
                     }
                 }}
                 >
@@ -125,6 +136,12 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                 value={searchBarVal}
                                 onInput={(e) => setSearchBarVal(e.currentTarget.value)}
                                 placeholder="Search currencies..."
+                                onKeyDown={(e)=>{
+                                    if(e.shiftKey && e.key === "Tab"){
+                                        dontUpdate.current = true
+                                        return setToggle(false)
+                                    }
+                                }}
                             />
                         </label>
                     </form>
@@ -145,6 +162,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                         search={search}
                                         selected={currency.abbreviation === selectedCurrency.abbreviation}
                                         startTransition={startTransition}
+                                        onKeyDown={currencyItemOnKeyDown}
                                         {...currency}
                                     />
                                 )
@@ -167,6 +185,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                         search={search} 
                                         selected={currency.abbreviation === selectedCurrency.abbreviation} 
                                         startTransition={startTransition}
+                                        onKeyDown={currencyItemOnKeyDown}
                                         {...currency}
                                     />
                                 )

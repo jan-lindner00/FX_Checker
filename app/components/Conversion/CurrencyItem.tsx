@@ -1,11 +1,12 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useId, memo } from "react";
+import { useId, memo, KeyboardEventHandler } from "react";
 import Image from "next/image";
 import Checkmark from "@/public/images/icon-check.svg"
 
-function CurrencyItem({selected, search, abbreviation, countryCode, name, startTransition}:
-     {selected: boolean, search:string, abbreviation: string, countryCode: string, name: string, startTransition: React.TransitionStartFunction}
+function CurrencyItem({selected, search, abbreviation, countryCode, name, startTransition, onKeyDown}:
+     {selected: boolean, search:string, abbreviation: string, countryCode: string, name: string, 
+        startTransition: React.TransitionStartFunction, onKeyDown: KeyboardEventHandler<HTMLInputElement>}
 ){
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -35,6 +36,7 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                     data-dropdown={search}
                     className="absolute top-[50%] translate-y-[-50%] left-0 m-0 opacity-0"
                     type="radio" name="currency" aria-labelledby={id} onChange={setSearchParams}
+                    onKeyDown={onKeyDown}
                  />
                 <div  data-dropdown={search} className="flex items-center gap-3">
                     <Image 
