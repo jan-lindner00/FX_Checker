@@ -179,8 +179,6 @@ export function calcSetAmount(amount: string):string{
     return amount   
 }
 
-export const historyTimeValues =["week", "month", "3months", "6months", "year", "5years"]
-
 export function getHistoryFetchURL(timeline: string, base: string, quote: string){
     if(timeline === "month"){
     const dateFrom = Temporal.Now.plainDateISO().subtract({months: 1}).toString()
@@ -192,7 +190,7 @@ export function getHistoryFetchURL(timeline: string, base: string, quote: string
     }
     else if(timeline === "6months"){
         const dateFrom = Temporal.Now.plainDateISO().subtract({months: 6}).toString()
-        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}group=week`
+        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}&group=week`
     }
     else if(timeline === "year"){
         const dateFrom = Temporal.Now.plainDateISO().subtract({years: 1}).toString()
