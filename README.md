@@ -80,6 +80,9 @@ Your users should be able to:
 ### Screenshot
 
 ![](./screenshot-fx-checker.png)
+![](./screenshot-compare.png)
+![](./screenshot-favorites.png)
+![](./screenshot-log.png)
 
 ### Links
 
