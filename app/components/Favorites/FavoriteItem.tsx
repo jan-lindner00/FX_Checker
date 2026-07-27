@@ -1,9 +1,9 @@
 import Image from "next/image";
 import StarFilledLime from "@/public/images/icon-star-filled-lime.svg"
 import ArrowRight from "@/public/images/icon-arrow-right.svg"
-import { CarouselData, Favorite, Rate } from "@/app/types/types"
+import { CarouselData, Favorite } from "@/app/types/types"
 import clsx from "clsx";
-import { useEffect, useState, memo } from "react";
+import { useEffect, useState, memo, useTransition } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 import { fetchRates } from "@/app/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
@@ -13,13 +13,16 @@ function FavoriteItem({base, quote, removeFavorite}:
 ){
     const pathname = usePathname()
     const {replace} = useRouter()
+    const [isPending, startTransition] = useTransition()
     const [favData, setFavData] = useState<CarouselData | null>(null)
 
     function compareFavorites(){
         const searchParams = new URLSearchParams()
         searchParams.set("base", base)
         searchParams.set("quote", quote)
-        replace(`${pathname}?${searchParams.toString()}`)
+        startTransition(()=>{
+            replace(`${pathname}?${searchParams.toString()}`)
+        })
     }
 
     
@@ -49,7 +52,7 @@ function FavoriteItem({base, quote, removeFavorite}:
                 }
             }
         }
-        
+
         fetchFavData()
     }, [])
 
@@ -62,7 +65,9 @@ function FavoriteItem({base, quote, removeFavorite}:
 
     return (
         <div
+            role="button"
             onClick={compareFavorites}
+            aria-pressed={isPending}
             tabIndex={0}
             onKeyDown={(e)=>{
                 if(e.key === "Enter"){
