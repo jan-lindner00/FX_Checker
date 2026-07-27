@@ -14,6 +14,8 @@ function CurrencyDropdown({startTransition, search="base", selected}:
     const [toggle, setToggle] = useState<boolean>(false)
     const [searchBarVal, setSearchBarVal] = useState("")
     const freshLoad = useRef(true)
+    const dropdown = useRef<HTMLDivElement>(null)
+    const button = useRef<HTMLButtonElement>(null)
     const id = useId()
 
     const selectedCurrency = currencies.find(curr => curr.abbreviation === selected.toUpperCase()) || (search === "base" ? (
@@ -24,6 +26,17 @@ function CurrencyDropdown({startTransition, search="base", selected}:
 
     const popular = currenciesArr.filter(cur => cur.isPopular === true)
     const others = currenciesArr.filter(cur => cur.isPopular !== true)
+
+    useEffect(()=>{
+        if(freshLoad.current === true){
+            return
+        }
+        if(toggle){
+            dropdown.current?.focus()
+        }else{
+            button.current?.focus()
+        }
+    }, [toggle])
 
     useEffect(()=>{
         if(freshLoad.current === true){
@@ -61,10 +74,13 @@ function CurrencyDropdown({startTransition, search="base", selected}:
     return (
         <section className="md:relative">
             <button
+                ref={button}
                 data-dropdown={search}
                 className="bg-neutral-500 border text-[.875rem] text-neutral-0 leading-[1.2] tracking-[1px] border-solid border-neutral-400 flex items-center gap-2 p-[.625rem] md:p-3 rounded-[.5rem]"
                 type="button"
-                onClick={() => setToggle(prev => !prev)}
+                onClick={() => {
+                    setToggle(prev => !prev)
+                }}
                 aria-expanded={toggle}
                 aria-controls={id}
             >
@@ -84,6 +100,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
             </button>
             {toggle && (
                 <div
+                ref={dropdown}
                 tabIndex={0}
                 data-dropdown={search}
                 id={id} 
