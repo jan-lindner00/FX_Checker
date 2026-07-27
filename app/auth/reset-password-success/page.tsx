@@ -14,7 +14,8 @@ export default function ResetSuccess(){
                     <p className="text-neutral-0">The link expires in 30 minutes.</p>
                     <Link 
                         href="https://mail.google.com" 
-                        target="_blank" 
+                        target="_blank"
+                        rel="noopener_noreferrer"
                         className="w-full flex justify-center items-center h-14 rounded-full 
                         bg-neutral-600 border border-neutral-500 text-neutral-0"
                     >
