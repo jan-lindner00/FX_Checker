@@ -7,12 +7,10 @@ import type { Rate } from "@/app/types/types";
 export async function fetchRates(url: string){
     const res = await fetch(url, {next: {revalidate: 1800}})
     if(!res.ok){
-        console.error("Error fetching data from Frankfurter API: " + res.statusText)
         return null 
     }
     const data: Rate[] = await res.json()
     if(!data){
-        console.error("Error: API didn't return any data")
         return null
     }
     return data
@@ -25,66 +23,40 @@ export async function fetchFavorites(setFavorites: Dispatch<SetStateAction<Favor
             .from("favorites")
             .select()
         if(error){
-            throw error
+            return setFavorites([])
         }
         setFavorites(data)
-    }catch(error){
-        if(typeof error === "string"){
-            console.error("Failed to fetch favorites: ", error)
-        }else if(error instanceof Error){
-            console.error("Failed to fetch favorites: ", error.message)
-        }else{
-            console.error("An unknow error occured during fetching favorites")
-        }
     }
-    }
+}
 
 export async function fetchLogEntries(setLogEntries: Dispatch<SetStateAction<LogEntry[]>>) {
     const supabase = createClient()
-    try{
-        const {data, error} = await supabase
-            .from("log_entries")
-            .select()
-        if(error){
-            throw error
-        }
-        setLogEntries(data)
-    }catch(error){
-        if(typeof error === "string"){
-            console.error("Failed to fetch log entries: ", error)
-        }else if(error instanceof Error){
-            console.error("Failed to fetch log entries: ", error.message)
-        }else{
-            console.error("An unknow error occured during fetching log entries")
-        }
+    const {data, error} = await supabase
+        .from("log_entries")
+        .select()
+    if(error){
+        return setLogEntries([])
     }
+    setLogEntries(data)
 } 
 
 export async function handleFavChange(base: string, abbreviation: string, isFavorite: boolean){
-        const supabase = createClient()
-        if(!isFavorite){
-            const {error} = await supabase
+    const supabase = createClient()
+    if(!isFavorite){
+        await supabase
             .from("favorites")
             .insert({
                 base: base,
                 quote: abbreviation
             })
-            if(error){
-                console.log("Error inserting favorite: ", error.message)
-            }
-        }else{
-            const {error} = await supabase
-                .from("favorites")
-                .delete()
-                .eq("base", base)
-                .eq("quote", abbreviation)
-            
-             if(error){
-                console.log("Error deleting favorite: ", error.message)
-            }
-        }
-        
+    }else{
+        await supabase
+            .from("favorites")
+            .delete()
+            .eq("base", base)
+            .eq("quote", abbreviation)
     }
+}
 
 export const currencies = [
     { countryCode: "AE", abbreviation: "AED", name: "UAE Dirham" },
