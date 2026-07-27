@@ -23,17 +23,17 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     const quote = currencyAbbreviations.includes(params.get("quote")?.toUpperCase() || "") ? (
       params.get("quote")?.toUpperCase()) || "USD" : "USD"
     const dontUpdateSend = useRef(false)
-    const dontUpdateRecieve = useRef(false)
+    const dontUpdateReceive = useRef(false)
     const freshLoad = useRef(true)
 
     const [baseAmount, setBaseAmount] = useState<string>("")
-    const [recieveAmount, setRecieveAmount] = useState<string>("")
+    const [receiveAmount, setReceiveAmount] = useState<string>("")
     const [rate, setRate] = useState<number>(0)
 
     const isFavorite = favorites.find((fav)=> fav.base === base && fav.quote === quote) !== undefined
     
     const debouncedBaseAmount = useDebounce(baseAmount, 400)
-    const debouncedRecieveAmount = useDebounce(recieveAmount, 400)
+    const debouncedReceiveAmount = useDebounce(receiveAmount, 400)
 
     async function handleAmountChange(recieving=true){
         try{
@@ -48,17 +48,17 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             setRate(data[0].rate)
             if(recieving){
                 if(isNaN(parseFloat(debouncedBaseAmount))){
-                    return setRecieveAmount("")
+                    return setReceiveAmount("")
                 }
                 const amount = (parseFloat(baseAmount) * data[0].rate).toFixed(2)
                 dontUpdateSend.current = true
-                return setRecieveAmount(amount)
+                return setReceiveAmount(amount)
             }
-            if(debouncedRecieveAmount === ""){
+            if(debouncedReceiveAmount === ""){
                 return setBaseAmount("")
             }
-            const amount = rate > 0 ? (parseFloat(recieveAmount) / data[0].rate).toFixed(2) : ""
-            dontUpdateRecieve.current = true
+            const amount = rate > 0 ? (parseFloat(receiveAmount) / data[0].rate).toFixed(2) : ""
+            dontUpdateReceive.current = true
             setBaseAmount(amount)
         }catch(error){
             if(typeof error === "string"){
@@ -72,8 +72,8 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     }
 
      useEffect(()=>{
-        if(dontUpdateRecieve.current == true){
-            dontUpdateRecieve.current = false
+        if(dontUpdateReceive.current == true){
+            dontUpdateReceive.current = false
             return
         }
         handleAmountChange()
@@ -90,7 +90,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             return
         }
         handleAmountChange(false)
-    }, [base, debouncedRecieveAmount])
+    }, [base, debouncedReceiveAmount])
 
 
     function switchCurrencies(){
@@ -104,8 +104,8 @@ function Conversion({favorites}: {favorites: Favorite[]}){
 
     async function handleLogEntry(): Promise<void>{
         const supabase = createClient()
-        if(debouncedBaseAmount === "" || debouncedRecieveAmount === "" || 
-        parseFloat(debouncedBaseAmount) <= 0 || parseFloat(debouncedRecieveAmount) <= 0){
+        if(debouncedBaseAmount === "" || debouncedReceiveAmount === "" || 
+        parseFloat(debouncedBaseAmount) <= 0 || parseFloat(debouncedReceiveAmount) <= 0){
             return
         }
         const newLogEntry = {
@@ -113,7 +113,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             base: base,
             quote: quote,
             base_amount: debouncedBaseAmount,
-            recieve_amount: debouncedRecieveAmount
+            receive_amount: debouncedReceiveAmount
         }
         const {error} = await supabase
             .from("log_entries")
@@ -184,12 +184,12 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                             aria-label={`Enter the amount you want to send in ${base}`}>
                             <label className="flex flex-col gap-5 text-[.875rem] leading-[1] tracking-[1px] 
                             text-neutral-100 flex flex-col gap-5 uppercase">
-                                Recieve
+                                Receive
                                 <div className="amount-container relative overflow-hidden mb-[.25rem] cursor-text">
                                     <p className="inline-block text-bold tracking-[-.5px]
                                     text-[2rem] text-lime-500 rounded-[.5rem] 2xl:text-[2.5rem]"
                                     >
-                                        {isPending ? ". . ." : formatCurrency(recieveAmount)}
+                                        {isPending ? ". . ." : formatCurrency(receiveAmount)}
                                     </p>
                                     <input 
                                         className="absolute top-[-1px] left-[-1px] w-[0.1px] h-[0.1px] opactity-0 focus:outline-none"
@@ -197,11 +197,11 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                         max={10000000} 
                                         min={0} 
                                         step={0.01}
-                                        value={recieveAmount}
-                                        onChange={(e) => setRecieveAmount(calcSetAmount(e.target.value))}
+                                        value={receiveAmount}
+                                        onChange={(e) => setReceiveAmount(calcSetAmount(e.target.value))}
                                         onKeyDown={(e)=>{
                                             if(e.key === "Backspace" || e.key === "Delete"){
-                                                setRecieveAmount(prevAmount => {
+                                                setReceiveAmount(prevAmount => {
                                                     const newAmount = prevAmount.length > 1 ? prevAmount[prevAmount.length-1] === "."  ? prevAmount.slice(0, -2) :  prevAmount.slice(0, -1) : ""
                                                     return newAmount
                                                 })

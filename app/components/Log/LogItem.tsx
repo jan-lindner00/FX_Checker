@@ -6,9 +6,9 @@ import { formatCurrency } from "@/app/lib/utils";
 import { Temporal } from "@js-temporal/polyfill";
 import { memo } from "react";
 
-function LogItem({id, created_at, base, quote, base_amount, recieve_amount, deleteEntry }:
+function LogItem({id, created_at, base, quote, base_amount, receive_amount, deleteEntry }:
     {id: LogEntry["id"], created_at: LogEntry["created_at"], base: LogEntry["base"], quote: LogEntry["quote"],
-        base_amount: LogEntry["base_amount"], recieve_amount: LogEntry["recieve_amount"], deleteEntry: (id: string) => void }
+        base_amount: LogEntry["base_amount"], receive_amount: LogEntry["receive_amount"], deleteEntry: (id: string) => void }
 ){
     function calcTimeSince(){
         const timeCreated = Temporal.PlainDateTime.from(created_at)
@@ -50,7 +50,7 @@ function LogItem({id, created_at, base, quote, base_amount, recieve_amount, dele
              <div className="flex items-center gap-[.625rem] md:gap-4">
                 <div className="w-fit text-right flex flex-col gap-[calc(2rem/16)] md:flex-row gap-x-5 tracking-[1px] text-[1rem] leading-[1.2]">
                     <p className="text-neutral-0">{formatCurrency(base_amount)}</p>
-                    <p className="text-lime-500">{formatCurrency(recieve_amount)}</p>
+                    <p className="text-lime-500">{formatCurrency(receive_amount)}</p>
                 </div>
                 <button 
                     className="h-8 w-8 flex items-center justify-center rounded-[.5rem] hover:bg-neutral-500 border bg-neutral-600 border-neutral-500"

@@ -22,7 +22,7 @@ export type LogEntry = {
     base: string,
     quote: string,
     base_amount: string,
-    recieve_amount: string
+    receive_amount: string
 }
 
 export type ChartData = {
