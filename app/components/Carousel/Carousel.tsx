@@ -4,31 +4,49 @@ import CarouselInner from "@/app/components/Carousel/CarouselInner"
 import { fetchRates } from "@/app/lib/utils"
 
 export default async function Carousel(){
-    let carouselData: CarouselData[] = []
+    let carouselData: CarouselData[] | null = []
     try{
         const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
         const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
-
+        
         if(error || !data){
             throw new Error(error)
         }
 
-        const dataLatest = data.filter((d: Rate) => d.date === data[data.length-1].date)
-        const dataStart = data.filter((d: Rate) => d.date === data[0].date)
-
-        carouselData = dataLatest.map((dataObj: Rate) => {
-            const data = dataStart.find((i:Rate) => i.quote === dataObj.quote)
-            if(data){
-                return ({
-                    ...dataObj,
-                    changes: data.rate > 0 ? (dataObj.rate - data.rate)/data.rate * 100 : 0
-                })
-            }else{
-                return ({
-                    ...dataObj,
-                    changes: 0
-                })
+        const mappedRates = new Map<string, Rate[]>()
+        data.forEach(rateObj => {
+            if(!mappedRates.has(rateObj.quote)){
+                mappedRates.set(rateObj.quote, [rateObj])
             }
+            const newEntry = mappedRates.get(rateObj.quote) || []
+            newEntry?.push(rateObj)
+            mappedRates.set(rateObj.quote, newEntry)
+        })
+
+        carouselData = [...mappedRates.keys()].map((key: string) => {
+            const ratesArray = mappedRates.get(key)
+            if(ratesArray && ratesArray.length > 0){
+                const latestRateObj = ratesArray[ratesArray.length-1]
+                const startRateObj = ratesArray[0]
+                if(startRateObj.rate > 0){
+                    return ({
+                        base: latestRateObj.base,
+                        quote: latestRateObj.quote,
+                        date: latestRateObj.date,
+                        rate: latestRateObj.rate,
+                        changes: (latestRateObj.rate - startRateObj.rate)/startRateObj.rate * 100
+                    })
+                }else{
+                    return ({
+                        lbase: latestRateObj.base,
+                        quote: latestRateObj.quote,
+                        date: latestRateObj.date,
+                        rate: latestRateObj.rate,
+                        changes: 0
+                    })
+                }
+            }
+            return null
         })
 
     }catch(error){
