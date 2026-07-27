@@ -32,7 +32,7 @@ function LogItem({id, created_at, base, quote, base_amount, receive_amount, dele
     }
 
     return (
-        <div className="flex justify-between gap-3 md:gap-4 p-3 md:px-4 md:py-5]
+        <div className="flex justify-between gap-3 md:gap-4 p-3 md:px-4 md:py-5
          bg-neutral-600 border border-neutral-500 rounded-[.625rem]">
             <div className="flex flex-col md:grid md:grid-cols-[4rem_1fr] items-start md:items-center gap-1 md:gap-4">
                 <p className="text-[.875rem] tracking-[1px] leading-[1.2] text-neutral-200">
