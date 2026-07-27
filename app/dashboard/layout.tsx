@@ -2,7 +2,8 @@ import Image from "next/image"
 import { Suspense } from "react"
 import Header from "@/app/components/Header"
 import Logo from "@/public/images/logo.svg"
-import MainBrowser from "../components/MainBrowser"
+import MainBrowser from "@/app/components/MainBrowser"
+import { LogProvider, FavoritesProvider } from "@/app/lib/hooks/useSubscription" 
 
 export default function GuestLayout({
   children,
@@ -30,8 +31,12 @@ export default function GuestLayout({
             </div>
           )}
           >
-            <MainBrowser />
-            {children}
+            <FavoritesProvider>
+              <LogProvider>
+                <MainBrowser />
+                {children}
+              </LogProvider>
+            </FavoritesProvider>
           </Suspense>
         </main>
     </>

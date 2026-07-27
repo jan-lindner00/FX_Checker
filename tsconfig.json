@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/components/Conversiontsx"  ],
+, "app/components/Conversiontsx", "app/lib/hooks/useSubscription.tsx"  ],
   "exclude": ["node_modules"]
 }

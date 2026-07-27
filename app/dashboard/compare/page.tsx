@@ -1,10 +1,10 @@
 "use client"
-import type { CurrencyCompare, Favorite, Rate } from "@/app/types/types";
+import type { CurrencyCompare, Rate } from "@/app/types/types";
 import {useState, useEffect } from "react"
-import { compareCurrencies, currencyAbbreviations, fetchFavorites, fetchRates } from "@/app/lib/utils";
+import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/app/lib/utils";
 import CompareItem from "@/app/components/Compare/CompareItem";
 import { useSearchParams } from "next/navigation";
-import { createClient } from "@/app/lib/supabase/client";
+import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription";
 
 export default function Compare(){
     const params =  useSearchParams()
@@ -14,7 +14,7 @@ export default function Compare(){
     const quoteUpper = quote && currencyAbbreviations.includes(quote.toUpperCase()) ? quote.toUpperCase() : "USD"
     const filteredCurrencies = compareCurrencies.filter(cur=> !(cur.abbreviation === baseUpper || cur.abbreviation === quoteUpper))
     const [rates, setRates] = useState<CurrencyCompare[]>([])
-    const [favorites, setFavorites] = useState<Favorite[]>([])
+    const favorites = useSubscribeFavorites()
 
     useEffect(()=>{
         const getRates = async() => {
@@ -44,28 +44,6 @@ export default function Compare(){
         getRates()
     }, [baseUpper, quoteUpper, filteredCurrencies])
 
-    useEffect(()=>{
-            fetchFavorites(setFavorites)
-    
-            const supabase = createClient()
-            const favChannel = supabase
-                .channel("favorite-changes")
-                .on(
-                    'postgres_changes',{
-                        event: "*",
-                        schema: "public",
-                        table: "favorites"
-                    },
-                    () =>{
-                        fetchFavorites(setFavorites)
-                    }
-                )
-                .subscribe()
-    
-            return () => {supabase.removeChannel(favChannel)}
-        }, [])
-    
-    
     if(rates.length === 0){
          return(
             <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">

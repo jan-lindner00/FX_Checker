@@ -16,28 +16,29 @@ export async function fetchRates(url: string){
     return data
 }
 
-export async function fetchFavorites(setFavorites: Dispatch<SetStateAction<Favorite[]>>) {
+export async function fetchFavorites() {
     const supabase = createClient()
-    try{
-        const {data, error} = await supabase
-            .from("favorites")
-            .select()
-        if(error){
-            return setFavorites([])
-        }
-        setFavorites(data)
+    const {data, error} = await supabase
+        .from("favorites")
+        .select(`
+            base,
+            quote    
+        `)
+    if(error){
+        return null
     }
+    return data
 }
 
-export async function fetchLogEntries(setLogEntries: Dispatch<SetStateAction<LogEntry[]>>) {
+export async function fetchLogEntries() {
     const supabase = createClient()
     const {data, error} = await supabase
         .from("log_entries")
         .select()
     if(error){
-        return setLogEntries([])
+        return null
     }
-    setLogEntries(data)
+    return data
 } 
 
 export async function handleFavChange(base: string, abbreviation: string, isFavorite: boolean){

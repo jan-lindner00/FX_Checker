@@ -1,33 +1,11 @@
 "use client"
-import type { Favorite} from "@/app/types/types"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback } from "react"
 import FavoriteItem from "@/app/components/Favorites/FavoriteItem"
 import { createClient } from "@/app/lib/supabase/client"
-import { fetchFavorites } from "@/app/lib/utils"
+import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription"
 
 export default function Favorites(){
-    const supabase = createClient()
-    const [favorites, setFavorites] = useState<Favorite[]>([])       
-
-    useEffect(()=>{
-        fetchFavorites(setFavorites)
-
-        const favChannel = supabase
-            .channel("favorite-changes")
-            .on(
-                'postgres_changes',{
-                    event: "*",
-                    schema: "public",
-                    table: "favorites"
-                },
-                () =>{
-                    fetchFavorites(setFavorites)
-                }
-            )
-            .subscribe()
-
-        return () => {supabase.removeChannel(favChannel)}
-    }, [])
+    const favorites = useSubscribeFavorites()
 
     const removeFavorite = useCallback(async (base: string, quote: string)=>{
         const supabase = createClient()

@@ -32,7 +32,7 @@ function FavoriteItem({base, quote, removeFavorite}:
             }
             const dataObj = {
                 ...data[data.length-1],
-                changes: data[0]?.rate !== 0 ? ((data[data.length-1].rate - data[0].rate) / 2 * 100) : 0
+                changes: data[0]?.rate !== 0 ? ((data[data.length-1].rate - data[0].rate) / data[0]?.rate * 100) : 0
             }
             setFavData(dataObj)
         }catch(error){

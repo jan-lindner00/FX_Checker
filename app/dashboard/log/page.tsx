@@ -1,23 +1,16 @@
 "use client" 
 import Image from "next/image";
 import LogItem from "@/app/components/Log/LogItem";
-import { LogEntry } from "@/app/types/types";
-import { useCallback, useMemo, useState, useEffect } from "react";
-import { Temporal } from "@js-temporal/polyfill";
+import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
 import { createClient } from "@/app/lib/supabase/client";
-import { downloadCSV, fetchLogEntries } from "@/app/lib/utils";
+import { downloadCSV } from "@/app/lib/utils";
+import { useSubscribeLog } from "@/app/lib/hooks/useSubscription";
 
 export default function Log(){
     const supabase = createClient()
-    const [logEntries, setLogEntries] = useState<LogEntry[]>([])
+    const logEntries = useSubscribeLog()
     const [isPending, setIsPending] = useState<boolean>(false)
-
-    const sortedEntries: LogEntry[] = useMemo(()=>{
-        return [...logEntries].sort((a,b) => {return (Temporal.PlainDateTime.from(a.created_at).since(Temporal.PlainDateTime.from(b.created_at)).microseconds > 0 ? -1 : (
-            Temporal.PlainDateTime.from(b.created_at).since(Temporal.PlainDateTime.from(a.created_at)).microseconds > 0 ? 1 : 0
-        ))})
-    }, [logEntries])
 
     const deleteEntry = useCallback(async(id: string) =>{
         const {error} = await supabase
@@ -40,29 +33,9 @@ export default function Log(){
         }
     }
 
-    useEffect(()=>{
-        fetchLogEntries(setLogEntries)
-
-        const logChannel = supabase
-            .channel("log-changes")
-            .on(
-                'postgres_changes',{
-                    event: "*",
-                    schema: "public",
-                    table: "log_entries"
-                },
-                () =>{
-                    fetchLogEntries(setLogEntries)
-                }
-            )
-            .subscribe()
-
-        return () => {supabase.removeChannel(logChannel)}
-    }, [])
-
     function download(){
         setIsPending(true)
-        downloadCSV(sortedEntries)
+        downloadCSV(logEntries)
         setIsPending(false)
     }
     
@@ -110,7 +83,7 @@ export default function Log(){
                 </div>
             </div>
             <div className="grid grid-col-1 gap-3 h-max">
-                {sortedEntries.map(entry =>(
+                {logEntries.map(entry =>(
                     <LogItem key={entry.id} deleteEntry={deleteEntry} {...entry}/>
                 ))}
             </div>
