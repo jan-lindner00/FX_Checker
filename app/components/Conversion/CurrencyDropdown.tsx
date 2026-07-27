@@ -5,6 +5,7 @@ import useDebounce from "@/app/lib/hooks/useDebounce";
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
 import CurrencyItem from "@/app/components/Conversion/CurrencyItem";
 import IconSearch from "@/public/images/icon-search.svg"
+import {v4 as uuid} from "uuid"
 
 function CurrencyDropdown({startTransition, search="base", selected}:
     {startTransition: React.TransitionStartFunction, search: string, selected: string}
@@ -114,14 +115,14 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                 <span data-dropdown={search}>Popular</span>
                                 <span data-dropdown={search}>{popular.length}</span>
                             </div>
-                            {popular.map((cur, index)=>{
+                            {popular.map((currency)=>{
                                 return (
                                     <CurrencyItem 
-                                        key={index}
+                                        key={uuid()}
                                         search={search}
-                                        selected={cur.abbreviation === selectedCurrency.abbreviation}
+                                        selected={currency.abbreviation === selectedCurrency.abbreviation}
                                         startTransition={startTransition}
-                                        {...cur}
+                                        {...currency}
                                     />
                                 )
                             })}
@@ -136,14 +137,14 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                 <span data-dropdown={search}>Other currencies</span>
                                 <span data-dropdown={search}>{others.length}</span>
                             </div>
-                            {others.map((cur, index)=>{
+                            {others.map((currency)=>{
                                 return (
                                     <CurrencyItem 
-                                        key={index} 
+                                        key={uuid()} 
                                         search={search} 
-                                        selected={cur.abbreviation === selectedCurrency.abbreviation} 
+                                        selected={currency.abbreviation === selectedCurrency.abbreviation} 
                                         startTransition={startTransition}
-                                        {...cur}
+                                        {...currency}
                                     />
                                 )
                             })}

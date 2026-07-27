@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import FavoriteItem from "@/app/components/Favorites/FavoriteItem"
 import { createClient } from "@/app/lib/supabase/client"
 import { fetchFavorites } from "@/app/lib/utils"
+import {v4 as uuid} from "uuid"
 
 export default function Favorites(){
     const supabase = createClient()
@@ -62,8 +63,8 @@ export default function Favorites(){
                 <span className="text-[.75rem] tracking-[.5px] text-neutral-200">{favorites.length} {favorites.length === 1 ? "Favorite": "Favorites"}</span>
             </div>
             <div className="grid grid-col-1 gap-3 h-max">
-                {favorites.map((data, index) => (
-                    <FavoriteItem key={index} removeFavorite={removeFavorite} {...data} />
+                {favorites.map((data) => (
+                    <FavoriteItem key={uuid()} removeFavorite={removeFavorite} {...data} />
                 ))}
             </div>
         </section>
