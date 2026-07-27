@@ -149,24 +149,6 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                         step={0.01}
                                         value={baseAmount}
                                         onChange={(e) => setBaseAmount(calcSetAmount(e.target.value))}
-                                        onKeyDown={(e)=>{
-                                            if(e.key === "Backspace" || e.key === "Delete"){
-                                                setBaseAmount(prevAmount => {
-                                                    const newAmount = prevAmount.length > 1 ? prevAmount[prevAmount.length-1] === "."  ? prevAmount.slice(0, -2) :  prevAmount.slice(0, -1) : ""
-                                                    return newAmount
-                                                })
-                                            }
-                                            if(e.key === "Tab" || e.shiftKey && e.key === "Tab"){
-                                                return
-                                            }
-                                            if(e.key === "." && !(baseAmount.includes("."))){
-                                                return
-                                            }
-                                            if(["0","1","2","3","4","5","6","7","8","9"].includes(e.key)){
-                                                return
-                                            }
-                                            e.preventDefault()
-                                        }}
                                     />
                                 </div>
                             </label>
@@ -200,24 +182,6 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                         step={0.01}
                                         value={receiveAmount}
                                         onChange={(e) => setReceiveAmount(calcSetAmount(e.target.value))}
-                                        onKeyDown={(e)=>{
-                                            if(e.key === "Backspace" || e.key === "Delete"){
-                                                setReceiveAmount(prevAmount => {
-                                                    const newAmount = prevAmount.length > 1 ? prevAmount[prevAmount.length-1] === "."  ? prevAmount.slice(0, -2) :  prevAmount.slice(0, -1) : ""
-                                                    return newAmount
-                                                })
-                                            }
-                                            if(e.key === "Tab" || e.shiftKey && e.key === "Tab"){
-                                                return
-                                            }
-                                            if(e.key === "." && !(baseAmount.includes("."))){
-                                                return
-                                            }
-                                            if(["0","1","2","3","4","5","6","7","8","9"].includes(e.key)){
-                                                return
-                                            }
-                                            e.preventDefault()
-                                        }}
                                     />
                                 </div>
                             </label>
