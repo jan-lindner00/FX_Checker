@@ -73,7 +73,7 @@ Your users should be able to:
 #### What I added
 
 - Favorites and Logs are stored in a database
-- Authentification: Create an account or continue as guest
+- Authentication: Create an account or continue as guest
 - Guests can link their session to a Google account to become permanent users
 - Export log to .csv
 
@@ -101,7 +101,7 @@ Your users should be able to:
 
 ### What I learned
 
-This was the first major project with NextJS App Router that I built myself from scratch. I learned how to implement server- and client-side routing, as well as how proxy works. In addition I learned a couple new Tailwind classes and how to use Supabase with SSR. In this project I also implemented an Authentification flow, including OAuth 2.0 with Supabase. I learned how to do this properly with SSR. On top of that I leveled up my SQL skills by writing triggers and functions for my database and applying RLS to my tables (with a little bit of AI assistance).
+This was the first major project with NextJS App Router that I built myself from scratch. I learned how to implement server- and client-side routing, as well as how proxy works. In addition I learned a couple new Tailwind classes and how to use Supabase with SSR. In this project I also implemented an Authentication flow, including OAuth 2.0 with Supabase. I learned how to do this properly with SSR. On top of that I leveled up my SQL skills by writing triggers and functions for my database and applying RLS to my tables (with a little bit of AI assistance).
 
 I am especially proud of my auth/callback route. Here is a code snippet from it:
 
@@ -153,4 +153,4 @@ For this project I didn't use too many AI tools. I used it help me with writing 
 
 ## Acknowledgments
 
-This challenge was part of a hackathon hosted by Frontend Mentor. I want to thank the participants of the competition as their solutions inspired me to add Auth and a Databse to my project, as it was storing data in Local Storage in the beginning.
+This challenge was part of a hackathon hosted by Frontend Mentor. I want to thank the participants of the competition as their solutions inspired me to add Auth and a Database to my project, as it was storing data in Local Storage in the beginning.
