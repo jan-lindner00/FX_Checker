@@ -33,41 +33,41 @@ export default function History() {
       timeline: timeline,
       setTimeline: setTimeline
     })
-}, [chartData, baseUpper, quoteUpper, rateOpen, rateLatest,
-  difference, differencePercent, timeline
- ])
-  
-  async function fetchChartData(){
-    try{
-        setIsLoading(true)
-        const fetchURL = getHistoryFetchURL(timeline, baseUpper, quoteUpper)     
-        const res = await fetch(fetchURL, {cache: "force-cache"})
-        if(!res.ok){
-          throw new Error("Failed to fetch rate history: " + res.statusText)
-        }
-        const data = await res.json()
-        if(!data){
-          throw new Error("Data has unexpected output format")
-        }
-        const mappedData = data.map((data: Rate) => {
-          return ({
-            rate: data.rate,
-            time: data.date
-        })})
-        setChartData(mappedData)
-        setIsLoading(false)
-    }catch(error){
-      if(typeof error === "string"){
-          console.error("Error: ", error)
-      }else if(error instanceof Error){
-          console.error("Error: ", error.message)
-      }else{
-          console.error("An unexpected error occured during fetching history data")
-      }
-    }
-  }
+  }, [chartData, baseUpper, quoteUpper, rateOpen, rateLatest,
+    difference, differencePercent, timeline]
+  )
 
   useEffect(()=>{
+    async function fetchChartData(){
+      try{
+          setIsLoading(true)
+          const fetchURL = getHistoryFetchURL(timeline, baseUpper, quoteUpper)     
+          const res = await fetch(fetchURL, {cache: "force-cache"})
+          if(!res.ok){
+            throw new Error("Failed to fetch rate history: " + res.statusText)
+          }
+          const data = await res.json()
+          if(!data){
+            throw new Error("Data has unexpected output format")
+          }
+          const mappedData = data.map((data: Rate) => {
+            return ({
+              rate: data.rate,
+              time: data.date
+          })})
+          setChartData(mappedData)
+          setIsLoading(false)
+      }catch(error){
+        if(typeof error === "string"){
+            console.error("Error: ", error)
+        }else if(error instanceof Error){
+            console.error("Error: ", error.message)
+        }else{
+            console.error("An unexpected error occured during fetching history data")
+        }
+      }
+    }
+    
     fetchChartData()
   }, [baseUpper, quoteUpper, timeline])
 

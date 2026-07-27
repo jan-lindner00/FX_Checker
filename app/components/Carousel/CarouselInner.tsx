@@ -3,7 +3,7 @@ import {useEffect, useMemo, useRef, memo} from "react"
 import type { CarouselData } from "@/app/types/types"
 import CarouselItem from "@/app/components/Carousel/CarouselItem"
 
-function CarouselInner({ratesData}:{ratesData: Readonly<CarouselData[]>}){
+function CarouselInner({ratesData}:{ratesData: Readonly<(CarouselData | null)[]>}){
     const data = useMemo(() => ratesData, [ratesData])
     const freshLoad = useRef(true)
 
@@ -71,7 +71,9 @@ function CarouselInner({ratesData}:{ratesData: Readonly<CarouselData[]>}){
     return (
         <div className="scroller-inner w-max flex" aria-live="polite">
           {data.map((item) => {
-            return <CarouselItem key={item.base + item.quote} {...item} />
+            if(item !== null){
+                return <CarouselItem key={item.base + item.quote} {...item} />
+            }
           })}  
         </div>
     )

@@ -4,7 +4,7 @@ import CarouselInner from "@/app/components/Carousel/CarouselInner"
 import { fetchRates } from "@/app/lib/utils"
 
 export default async function Carousel(){
-    let carouselData: CarouselData[] | null = []
+    let carouselData: (CarouselData | null)[]= []
     try{
         const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
         const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
@@ -38,7 +38,7 @@ export default async function Carousel(){
                     })
                 }else{
                     return ({
-                        lbase: latestRateObj.base,
+                        base: latestRateObj.base,
                         quote: latestRateObj.quote,
                         date: latestRateObj.date,
                         rate: latestRateObj.rate,
