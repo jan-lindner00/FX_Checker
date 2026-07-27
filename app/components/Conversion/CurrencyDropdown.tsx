@@ -84,10 +84,17 @@ function CurrencyDropdown({startTransition, search="base", selected}:
             </button>
             {toggle && (
                 <div
+                tabIndex={0}
                 data-dropdown={search}
                 id={id} 
                 className={`shadow-menu absolute z-1000 w-[calc(100vw-4rem)] rounded-[.5rem] p-2 max-w-[376px] bottom-0 translate-y-[calc(100%+.25rem)] right-0 ${search === "base" ? "md:right-[-84px] lg:right-0 ": ""}
-                    bg-neutral-600 max-h-[458px] md:max-h-[466px] border border-neutral-400 overflow-scroll`}>
+                    bg-neutral-600 max-h-[458px] md:max-h-[466px] border border-neutral-400 overflow-y-scroll`}
+                onKeyDown={(e)=>{
+                    if(e.key === "Escape"){
+                        setToggle(false)
+                    }
+                }}
+                >
                     <form data-dropdown={search} className="h-12 w-full mb-[.625rem]">
                         <label data-dropdown={search} className="currency-search flex h-full border rounded-[.375rem] border-solid border-neutral-200">
                             <div data-dropdown={search} className="flex items-center px-3">
