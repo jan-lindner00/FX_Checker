@@ -9,10 +9,9 @@ export default function Loading(){
          <div className="h-dvh flex items-center justify-center text-lg text-neutral-0">
             <h1 id={id} className="sr-only">Loading...</h1>
             <Image 
-               className="w-140"
-               aria-labelledby={id} 
+               className="w-140" 
                src={SpinningCircle} 
-               alt="Spinning circle" 
+               alt="Loading animation"
             />
         </div>
    ) 
