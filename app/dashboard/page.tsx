@@ -66,12 +66,14 @@ export default function History() {
   }, [baseUpper, quoteUpper, timeline])
 
   if(isFetchError){
-    <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
-        <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Failed to fetch history data</h3>
-        <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
-            {`We couldn't load fetch history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
-        </span>
-    </div>
+    return(
+      <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
+          <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Failed to fetch history data</h3>
+          <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
+              {`We couldn't load fetch history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
+          </span>
+      </div>
+    )
   }
 
   if(isLoading || chartData.length === 0){

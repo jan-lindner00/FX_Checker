@@ -18,12 +18,10 @@ export default function ResendConfirmation(){
         const email: FormDataEntryValue | null = formData.get("email")
         
         if(typeof email !== "string"){
-            console.error("Invalid form data: ")
             return new Error("Invalid form data")
         }
 
         if(email.length > 150){
-            console.error("Invalid form data: ")
             return new Error("Invalid form data")
         }
 

@@ -16,12 +16,10 @@ export default function LoginEmail(){
         const password: FormDataEntryValue | null = formData.get("password")
         
         if(typeof email !== "string" || typeof password !== "string"){
-            console.error("Invalid form data: ")
             return new Error("Invalid form data")
         }
 
         if(email.length > 150 || password.length < 6 || password.length > 50){
-            console.error("Invalid form data: ")
             return new Error("Invalid form data")
         }
         const {success, error} = await signInWithPassword(email, password)

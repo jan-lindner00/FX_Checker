@@ -14,15 +14,12 @@ export default function ChangePassword(){
         const passwordConfirm: FormDataEntryValue | null = formData.get("password-confirm")
         
         if(typeof password !== "string" || typeof passwordConfirm !== "string"){
-            console.error("Invalid form data: Password must be of type string")
             return new Error("Invalid form data")
         }
         if(password.trim().length < 6 || password.trim().length > 50){
-            console.error("Invalid form data: Password must be between 6 and 50 characters")
             return new Error("Password must be between 6 and 50 characters")
         }
         if(password.trim() !== passwordConfirm.trim()){
-            console.error("Invalid form data: Passwords do not match")
             return new Error("Passwords do not match")
         }
 

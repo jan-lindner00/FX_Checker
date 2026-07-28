@@ -37,7 +37,7 @@ export default function SignUpSuccess(){
                     className="flex items-center gap-[.375rem] text-neutral-200 no-underline text-medium"
                     replace
                 >
-                    <Image src={IconBack} alt="Arrow left" aria-disabled={true} />
+                    <Image src={IconBack} alt="Arrow left" />
                     Back to sign in
                 </Link>
             </section>

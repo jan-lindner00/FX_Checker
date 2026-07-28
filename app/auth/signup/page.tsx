@@ -18,17 +18,14 @@ export default function SignUp(){
         const passwordConfirm: FormDataEntryValue | null = formData.get("password-confirm")
     
         if(typeof fullName !== "string" || typeof email !== "string" || typeof password !== "string" || typeof passwordConfirm !== "string"){
-            console.error("Invalid form data: ")
             return new Error("Invalid form data")
         }
 
         if(fullName.trim().length < 2 || fullName.trim().length > 150 || email.trim().length > 150 || password.trim().length < 6 || password.trim().length > 50){
-            console.error("Invalid form data: ")
             return new Error("Invalid form data")
         }
 
         if(password.trim() !== passwordConfirm.trim()){
-            console.error("Invalid form data: Passwords do not match")
             return new Error("Passwords do not match")
         }
         const {success, error} = await signUpWithPassword(email, password, fullName)
