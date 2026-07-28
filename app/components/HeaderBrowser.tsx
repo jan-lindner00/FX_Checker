@@ -21,7 +21,7 @@ export default function HeaderBrowser(){
     const freshLoad = useRef<boolean>(true)
 
     useEffect(()=>{
-        if(freshLoad.current === true){
+        if(freshLoad.current){
             freshLoad.current = false
             return
         }

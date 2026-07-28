@@ -41,7 +41,7 @@ export default function ResendConfirmation(){
     }, null)
 
     useEffect(()=>{
-        if(firstLoad.current === true){
+        if(firstLoad.current){
             firstLoad.current = false
             return
         }

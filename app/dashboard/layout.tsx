@@ -3,7 +3,7 @@ import { Suspense } from "react"
 import Header from "@/app/components/Header"
 import Logo from "@/public/images/logo.svg"
 import MainBrowser from "@/app/components/MainBrowser"
-import { LogProvider, FavoritesProvider } from "@/app/lib/hooks/useSubscription" 
+import { LogProvider, FavoritesProvider } from "@/app/context/SubscribeContext" 
 
 export default function GuestLayout({
   children,

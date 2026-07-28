@@ -1,11 +1,11 @@
 "use client"
-import {useState, useEffect, useMemo, useContext, createContext} from "react"
+import {useState, useEffect, createContext} from "react"
 import { fetchFavorites, fetchLogEntries } from "@/app/lib/utils"
 import { Favorite, LogEntry } from "@/app/types/types"
 import {v4 as uuid} from "uuid"
 import supabaseClient from "@/app/lib/supabase/client"
 
-const FavoritesContext = createContext<Favorite[]>([])
+export const FavoritesContext = createContext<Favorite[]>([])
 
 export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   const [favorites, setFavorites] = useState<Favorite[]>([])
@@ -43,11 +43,7 @@ export function FavoritesProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-export function useSubscribeFavorites() {
-  return useContext(FavoritesContext)
-}
-
-const LogContext = createContext<LogEntry[]>([])
+export const LogContext = createContext<LogEntry[]>([])
 
 export function LogProvider({ children }: { children: React.ReactNode }) {
   const [logEntries, setLogEntries] = useState<LogEntry[]>([])
@@ -83,8 +79,4 @@ export function LogProvider({ children }: { children: React.ReactNode }) {
       {children}
     </LogContext.Provider>
   )
-}
-
-export function useSubscribeLog() {
-  return useContext(LogContext)
 }

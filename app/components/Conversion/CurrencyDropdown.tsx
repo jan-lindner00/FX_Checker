@@ -27,7 +27,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
     const others = currenciesArr.filter(cur => cur.isPopular !== true)
 
     useEffect(()=>{
-        if(freshLoad.current === true){
+        if(freshLoad.current){
             return
         }
         if(toggle){
@@ -38,7 +38,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
     }, [toggle])
 
     useEffect(()=>{
-        if(freshLoad.current === true){
+        if(freshLoad.current){
             freshLoad.current = false
             return
         }

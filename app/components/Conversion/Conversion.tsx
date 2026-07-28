@@ -74,7 +74,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     }
 
      useEffect(()=>{
-        if(dontUpdateReceive.current == true){
+        if(dontUpdateReceive.current){
             dontUpdateReceive.current = false
             return
         }
@@ -83,7 +83,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     }, [quote, debouncedBaseAmount])
 
     useEffect(()=>{
-        if(freshLoad.current === true){
+        if(freshLoad.current){
             freshLoad.current = false
             return
         }

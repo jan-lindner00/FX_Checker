@@ -1,36 +1,35 @@
 "use client"
-import {useEffect, useMemo, useRef, memo} from "react"
+import {useEffect, useMemo, useRef, memo, RefObject} from "react"
 import type { CarouselData } from "@/app/types/types"
 import CarouselItem from "@/app/components/Carousel/CarouselItem"
 
-function CarouselInner({ratesData}:{ratesData: Readonly<(CarouselData | null)[]>}){
+function CarouselInner({ratesData, scroller}:
+    {ratesData: (CarouselData | null)[], scroller: RefObject<HTMLDivElement | null>}
+){
     const data = useMemo(() => ratesData, [ratesData])
     const freshLoad = useRef(true)
-    const scroller = useRef<HTMLDivElement>(null)
     const scrollerInner = useRef<HTMLDivElement>(null)
 
     useEffect(()=>{
-        const scroller = document.querySelector(".scroller")
         if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
             addAnimation()
         }
 
         function addAnimation(){
-            if(!scroller){
+            if(!scroller.current){
                 return
             }
             
-            scroller.setAttribute("data-animated", "true")
-            const scrollerInner = scroller.querySelector(".scroller-inner")
-            if(!scrollerInner){
+            scroller.current.setAttribute("data-animated", "true")
+            if(!scrollerInner.current){
                 return
             }
-            const scrollerContent = Array.from(scrollerInner.children) as HTMLElement[]
+            const scrollerContent = Array.from(scrollerInner.current.children) as HTMLElement[]
 
             scrollerContent.forEach(item => {
                 const duplicatedItem= item.cloneNode(true) as HTMLElement
                 duplicatedItem.setAttribute("aria-hidden", "true")
-                scrollerInner.appendChild(duplicatedItem)
+                scrollerInner.current?.appendChild(duplicatedItem)
             })
         }
     }, [])
@@ -41,37 +40,35 @@ function CarouselInner({ratesData}:{ratesData: Readonly<(CarouselData | null)[]>
             return
         }
 
-        const scroller = document.querySelector(".scroller")
         if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
             refreshAnimation()
         }
 
         function refreshAnimation(){
-            if(!scroller){
+            if(!scroller.current){
                 return
             }
-            
-            const scrollerInner = scroller.querySelector(".scroller-inner")
-            if(!scrollerInner){
+            if(!scrollerInner.current){
                 return
             }
-            const duplicates = scrollerInner.querySelectorAll("[aria-hidden=true]")
+            const duplicates = scrollerInner.current.querySelectorAll("[aria-hidden=true]")
             duplicates.forEach(item => {
-                scrollerInner.removeChild(item)
+                scrollerInner.current?.removeChild(item)
             })
 
-            const scrollerContent = Array.from(scrollerInner.children) as HTMLElement[]
+            const scrollerContent = Array.from(scrollerInner.current.children) as HTMLElement[]
 
             scrollerContent.forEach(item => {
                 const duplicatedItem = item.cloneNode(true) as HTMLElement
                 duplicatedItem.setAttribute("aria-hidden", "true")
-                scrollerInner.appendChild(duplicatedItem)
+                scrollerInner.current?.appendChild(duplicatedItem)
             })
         }
     }, [data])
 
     return (
         <div 
+            ref={scrollerInner}
             className="scroller-inner w-max flex" 
             aria-live="polite"
         >
