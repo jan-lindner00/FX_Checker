@@ -7,7 +7,7 @@ import Logo from "@/public/images/logo.svg"
 import IconUser from "@/public/images/icon-user.svg"
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
 import { UserData } from "@/types/types"
-import { getInitials } from "@/lib/utils"
+import { getInitials, trySupabase } from "@/lib/utils"
 import SignOutModal from "@/components/SignOutModal"
 
 export default function HeaderBrowser(){
@@ -39,17 +39,18 @@ export default function HeaderBrowser(){
                 return
             }
 
-            const {error, data: profileData} = await supabaseClient
-            .from("user_profiles")
-            .select()
-            .eq("id", data.user?.id)
-            if(error){
-                console.error(error.message)
+            const {success, error, data: profileData} = await trySupabase(() => ( 
+                supabaseClient
+                    .from("user_profiles")
+                    .select()
+                    .eq("id", data.user?.id)
+                    .single()
+                )
+            )
+            if(!success || error || !profileData){
+                return setUserData(null)
             }
-
-            if(!error && profileData){
-                setUserData(profileData[0])
-            }
+            setUserData(profileData)
         }
         fetchUserData()
     }, [])

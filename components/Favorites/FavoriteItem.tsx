@@ -1,12 +1,13 @@
 import Image from "next/image";
 import StarFilledLime from "@/public/images/icon-star-filled-lime.svg"
 import ArrowRight from "@/public/images/icon-arrow-right.svg"
-import { CarouselData, Favorite } from "@/types/types"
+import { CarouselData, Favorite, Rate } from "@/types/types"
 import clsx from "clsx";
 import { useEffect, useState, memo, useTransition } from "react";
 import { Temporal } from "@js-temporal/polyfill";
 import { fetchRates } from "@/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
+import { captureException } from "@sentry/nextjs";
 
 function FavoriteItem({base, quote, removeFavorite}:
     {base: Favorite["base"], quote: Favorite["quote"], removeFavorite: (base: string, quote: string) => void }
@@ -30,15 +31,18 @@ function FavoriteItem({base, quote, removeFavorite}:
     useEffect(()=>{
         async function fetchFavData(){
             const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-            const data = await fetchRates({base: base, quotes: quote, from: dateStart}) 
-            if(!data){
-                return
+            try {
+                const data = await fetchRates({base: base, quotes: quote, from: dateStart}) as Rate[]
+                if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
+
+                const dataObj = {
+                    ...data[data.length-1],
+                    changes: data[0]?.rate !== 0 ? ((data[data.length-1].rate - data[0].rate) / data[0]?.rate * 100) : 0
+                }
+                setFavData(dataObj)
+            }catch(error){
+                captureException(error)
             }
-            const dataObj = {
-                ...data[data.length-1],
-                changes: data[0]?.rate !== 0 ? ((data[data.length-1].rate - data[0].rate) / data[0]?.rate * 100) : 0
-            }
-            setFavData(dataObj)
         }
 
         fetchFavData()
@@ -59,6 +63,7 @@ function FavoriteItem({base, quote, removeFavorite}:
             tabIndex={0}
             onKeyDown={(e)=>{
                 if(e.key === "Enter" || e.key == " " || e.key === "Spacebar"){
+                    e.preventDefault()
                     compareFavorites()
                 }
             }}

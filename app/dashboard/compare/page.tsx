@@ -5,6 +5,7 @@ import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/lib/util
 import CompareItem from "@/components/Compare/CompareItem";
 import { useSearchParams } from "next/navigation";
 import { useSubscribeFavorites } from "@/lib/hooks/useSubscription";
+import { captureException } from "@sentry/nextjs";
 
 export default function Compare(){
     const params =  useSearchParams()
@@ -14,33 +15,49 @@ export default function Compare(){
     const quoteUpper = quote && currencyAbbreviations.includes(quote.toUpperCase()) ? quote.toUpperCase() : "USD"
     const filteredCurrencies = compareCurrencies.filter(cur=> !(cur.abbreviation === baseUpper || cur.abbreviation === quoteUpper))
     const [rates, setRates] = useState<CurrencyCompare[]>([])
+    const [isFetchError, setIsFetchError] = useState<boolean>(false)
     const favorites = useSubscribeFavorites()
 
     useEffect(()=>{
         const getRates = async() => {
-            const data = await fetchRates({base: baseUpper, quotes: filteredCurrencies.map(cur => cur.abbreviation).join(",")})
-            if(!data){
-                return
+            setIsFetchError(false)
+            try{
+                const data = await fetchRates({base: baseUpper, quotes: filteredCurrencies.map(cur => cur.abbreviation).join(",")}) as Rate[]
+                if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
+                const compareData = filteredCurrencies.map(currency => {
+                    const rate = data.find((data: Rate) => data.quote === currency.abbreviation)?.rate || 0
+                    return {
+                        ...currency,
+                        rate: rate
+                    }
+                })
+                setRates(compareData)
+            }catch(error){
+                captureException(error)
+                setIsFetchError(true)
             }
-            const compareData = filteredCurrencies.map(currency => {
-                const rate = data.find((data: Rate) => data.quote === currency.abbreviation)?.rate || 0
-                return {
-                    ...currency,
-                    rate: rate
-                }
-            })
-            setRates(compareData)
         }
 
         getRates()
     }, [baseUpper, quoteUpper, filteredCurrencies])
+
+    if(isFetchError){
+        return (
+            <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
+                <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Failed to fetch history data</h3>
+                <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
+                    {`We couldn't load comparison data for ${baseUpper} from Frankfurter API. Please try again.`}
+                </span>
+            </div>
+        )
+    }
 
     if(rates.length === 0){
          return(
             <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
                 <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">No comparison available</h3>
                 <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
-                    {"Enter an amount in SEND above to see what your money is worth in other currencies."}
+                    {"Please wait while the comparison data is loading."}
                 </span>
             </div>
         )

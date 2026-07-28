@@ -2,20 +2,21 @@
 import { useCallback } from "react"
 import FavoriteItem from "@/components/Favorites/FavoriteItem"
 import supabaseClient from "@/lib/supabase/client"
+import { trySupabase } from "@/lib/utils"
 import { useSubscribeFavorites } from "@/lib/hooks/useSubscription"
 
 export default function Favorites(){
     const favorites = useSubscribeFavorites()
 
     const removeFavorite = useCallback(async (base: string, quote: string)=>{
-        const {error} = await supabaseClient
-            .from("favorites")
-            .delete()
-            .eq("base", base)
-            .eq("quote", quote)
-        if(error){
-            console.error("Error deleting item from favorites: ", error.message)
-        }
+        await trySupabase(() => (
+            supabaseClient
+                .from("favorites")
+                .delete()
+                .eq("base", base)
+                .eq("quote", quote)
+            )
+        )
     },[])
 
     if(favorites.length === 0){

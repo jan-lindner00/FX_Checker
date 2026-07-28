@@ -1,54 +1,168 @@
 import { Temporal } from "@js-temporal/polyfill";
-import type { LogEntry, Rate, FetchRatesParams } from "@/types/types";
+import type { LogEntry, FetchRatesParams } from "@/types/types";
 import supabaseClient from "@/lib/supabase/client"; 
+import { addBreadcrumb, withScope, captureException } from "@sentry/nextjs";
+import {  PostgrestError } from "@supabase/supabase-js";
 
-export async function fetchRates({base, quotes, from, group}: FetchRatesParams, cache=false): Promise<Rate[] | undefined>{
-    try{
+export class ApiError extends Error {
+    constructor(
+        public status: number,
+        public statusText: string,
+        public body?: unknown
+    ){
+        super(`API Error ${status}: ${statusText}`)
+        this.name = "ApiError"
+    }
+} 
+
+export class NetworkError extends Error {
+    constructor(message: string, public cause?: unknown){
+        super(message)
+        this.name = "NetworkError"
+    }
+} 
+
+export async function fetchRates<T>({base, quotes, from, group}: FetchRatesParams, cache=false): Promise<T>{
+    let lastError: unknown
+    const retries = 2
+    const timeOutMs = 20000
+    const retryDelayMs = 500
+
+    for(let attempt = 0; attempt <= retries; attempt++ ){
+        const controller = new AbortController()
+        const timeout = setTimeout(()=> {controller.abort()
+            console.log("aborted")
+        }, timeOutMs)
         const url = `https://api.frankfurter.dev/v2/rates?${base ? `base=${base}`: ""}${quotes ? `&quotes=${quotes}`: ""}${from ? `&from=${from}` : ""}${group ? `&group=${group}`: ""}`
-        let res
-        if(cache){
-            res = await fetch(url, {cache: "force-cache"})
-        }else{
-            res = await fetch(url, {next: {revalidate: 1800}})
-        } 
-        if(!res.ok){
-            throw new Error("Error: Failed to fetch data from Frankfurter API")
+        
+        addBreadcrumb({
+            category: "http",
+            message: `Fetching ${url} (attempt: ${attempt + 1})`,
+            level: "info"
+        })
+
+        try{
+            let res
+            if(cache){
+                res = await fetch(url, {signal: controller.signal, cache: "force-cache"})
+            }else{
+                res = await fetch(url, {signal: controller.signal, next: {revalidate: 1800}})
+            } 
+            clearTimeout(timeout)
+            if(!res.ok){
+                let body: unknown
+                 try{
+                    body = await res.json()
+                }catch(error){
+                    body = await res.text().catch(() => undefined)
+                }
+                throw new ApiError(res.status, res.statusText, body)
+            }
+           
+            const contentLength = res.headers.get("content-length")
+            if(res.status === 204 || contentLength === "0"){
+                return undefined as T
+            }
+            return await res.json()
+        }catch(error){
+           clearTimeout(timeout)
+           lastError = error
+
+           const isClientError = error instanceof ApiError && error.status < 500
+           const isAbort = error instanceof DOMException && error.name === "AbortError"
+           const isFinalAttempt = isClientError || attempt === retries
+
+           if(isFinalAttempt){
+                const finalError = isAbort
+                    ? new NetworkError(`Request timed out after ${timeOutMs}ms`, error)
+                    : error instanceof ApiError
+                    ? error
+                    : new NetworkError(`Network request failed`, error)
+                withScope((scope)=> {
+                    scope.setTag("url", url)
+                    scope.setLevel(error instanceof ApiError && isClientError ? "warning" : "error")
+
+                    if(error instanceof ApiError){
+                        scope.setContext("response", {
+                            status: error.status,
+                            statusText: error.statusText,
+                            body: error.body
+                        })
+                    }
+                    scope.setContext("request", {
+                        method: "GET",
+                        attempt: attempt + 1,
+                    })
+
+                    captureException(finalError)
+                })
+                throw finalError
+           }
+           await new Promise(resolve => {
+            setTimeout(resolve, retryDelayMs)
+           })
         }
-        const data: Rate[] = await res.json()
-        if(!data){
-            throw new Error("Error: Frankfurter API returned no data")
+    }
+    throw lastError
+}
+
+export async function trySupabase<T>(operation: () => PromiseLike<{data: T | null, error: PostgrestError | null}>): Promise<{success: boolean, data?: T | undefined, error?: string | undefined  }>
+{
+    try{
+        const {data, error} = await operation()
+        if(error){
+            const expectedCodes = ["PGRST116"]
+            const isExpected = expectedCodes.includes(error.code)
+
+            if(!isExpected){
+                withScope(scope => {
+                    scope.setTag("supabase.code", error.code)
+                    scope.setContext("supabase_error", {...error})
+                    scope.setLevel("error")
+                    captureException(new Error(error.message))
+                })
+
+                return {success: false, error: error.message}
+            }
         }
-        return data
+        if(data === null){
+            return { success: false, error: "No data returned"}
+        }
+        return {success: true, data}
     }catch(error){
-        if(typeof error === "string"){
-            console.error("Error: ", error)
-        }else if(error instanceof Error){
-            console.error("Error: ", error.message)
-        }else{
-            console.error("An unexpected error occured during fetching rates from Frankfurter API")
+        captureException(error)
+        return {
+            success: false,
+            error: error instanceof Error ? error.message : "Unknown error"
         }
     }
 }
 
 export async function fetchFavorites() {
-    const {data, error} = await supabaseClient
-        .from("favorites")
-        .select(`
+    const {success, data, error} = await trySupabase(() => (
+        supabaseClient
+            .from("favorites")
+            .select(`
             base,
             quote    
-        `)
-    if(error){
+            `)
+        )
+    ) 
+    if(!success || error){
         return null
     }
     return data
 }
 
 export async function fetchLogEntries() {
-    const {data, error} = await supabaseClient
+    const {success, data, error} = await trySupabase(()=>(
+        supabaseClient
         .from("log_entries")
         .select()
         .order("created_at", {ascending: false})
-    if(error){
+    ))
+     
+    if(!success || error){
         return null
     }
     return data

@@ -4,6 +4,7 @@ import LogItem from "@/components/Log/LogItem";
 import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
 import supabaseClient from "@/lib/supabase/client";
+import { trySupabase } from "@/lib/utils";
 import { downloadCSV } from "@/lib/utils";
 import { useSubscribeLog } from "@/lib/hooks/useSubscription";
 
@@ -12,24 +13,26 @@ export default function Log(){
     const [isPending, setIsPending] = useState<boolean>(false)
 
     const deleteEntry = useCallback(async(id: string) =>{
-        const {error} = await supabaseClient
-            .from("log_entries")
-            .delete()
-            .eq("id", id)
-        if(error){
-            console.error("Error deleting log entry: ", error.message)
-        }
+        await trySupabase(() => (
+            supabaseClient
+                .from("log_entries")
+                .delete()
+                .eq("id", id)
+            )
+        )
     }, [])
 
     async function deleteAllLogEntries(){
         const {data} = await supabaseClient.auth.getUser()
-        const {error} = await supabaseClient
-            .from("log_entries")
-            .delete()
-            .eq("user_id", data?.user?.id)
-        if(error){
-            console.error("Error deleting all log entries: ", error.message)
+        if(!data?.user?.id){
+            return
         }
+        await trySupabase(() => (
+            supabaseClient
+                .from("log_entries")
+                .delete()
+                .eq("user_id", data.user.id)
+        ))
     }
 
     function download(){

@@ -3,15 +3,15 @@ import { useState, useEffect, useRef, useTransition, memo} from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates } from "@/lib/utils";
+import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates, trySupabase } from "@/lib/utils";
 import CurrencyDropdown from "@/components/Conversion/CurrencyDropdown";
 import useDebounce from "@/lib/hooks/useDebounce";
-import { Rate } from "@/types/types";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilled from "@/public/images/icon-star-filled.svg"
-import type { Favorite } from "@/types/types";
+import type { Favorite, Rate } from "@/types/types";
 import supabaseClient from "@/lib/supabase/client";
 import { Temporal } from "@js-temporal/polyfill";
+import { captureException } from "@sentry/nextjs";
 
 function Conversion({favorites}: {favorites: Favorite[]}){
     const params = useSearchParams()
@@ -36,30 +36,34 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     const debouncedReceiveAmount = useDebounce(receiveAmount, 400)
 
     async function handleAmountChange(recieving=true){
-        const data = await fetchRates({base: base, quotes: quote})
-        if(!data){
+        try{
+            const data = await fetchRates({base: base, quotes: quote}) as Rate[]
+            if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
+    
+            setRate(data[0].rate)
+            if(recieving){
+                if(isNaN(parseFloat(debouncedBaseAmount))){
+                    return setReceiveAmount("")
+                }
+                const amount = (parseFloat(debouncedBaseAmount) * data[0].rate).toFixed(2)
+                dontUpdateSend.current = true
+                return setReceiveAmount(amount)
+            }
+            if(isNaN(parseFloat(debouncedReceiveAmount))){
+                return setBaseAmount("")
+            }
+            const amount = rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
+            dontUpdateReceive.current = true
+            setBaseAmount(amount)
+        }catch(error){
+            captureException(error)
             if(recieving){
                 setReceiveAmount("")
             }else{
                 setBaseAmount("")
             }
-            return setRate(0)
+            setRate(0)
         }
-        setRate(data[0].rate)
-        if(recieving){
-            if(isNaN(parseFloat(debouncedBaseAmount))){
-                return setReceiveAmount("")
-            }
-            const amount = (parseFloat(debouncedBaseAmount) * data[0].rate).toFixed(2)
-            dontUpdateSend.current = true
-            return setReceiveAmount(amount)
-        }
-        if(isNaN(parseFloat(debouncedReceiveAmount))){
-            return setBaseAmount("")
-        }
-        const amount = rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
-        dontUpdateReceive.current = true
-        setBaseAmount(amount)
     }
 
      useEffect(()=>{
@@ -105,12 +109,11 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             base_amount: debouncedBaseAmount,
             receive_amount: debouncedReceiveAmount
         }
-        const {error} = await supabaseClient
-            .from("log_entries")
-            .insert(newLogEntry)
-        if(error){
-            console.error("Error inserting new log entry: ", error.message)
-        }
+        await trySupabase(() => (
+            supabaseClient
+                .from("log_entries")
+                .insert(newLogEntry)
+        ))
     }
 
     return(
@@ -126,7 +129,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                             text-neutral-100 flex flex-col justify-between uppercase">
                                 Send
                                 <div className="amount-container relative overflow-hidden mb-[.25rem] cursor-text">
-                                    <p className="inline-block text-bold tracking-[-.5px] text-[2rem] text-neutral-0 rounded-[.5rem]
+                                    <p aria-live="polite" className="inline-block text-bold tracking-[-.5px] text-[2rem] text-neutral-0 rounded-[.5rem]
                                     2xl:text-[2.5rem]">
                                         {formatCurrency(baseAmount)}
                                     </p>
@@ -153,12 +156,12 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                     <div className="relative bg-neutral-600 p-4 md:p-5 rounded-[1rem]
                     border border-solid border-neutral-500 flex justify-between items-end md:grow w-full">
                         <form 
-                            aria-label={`Enter the amount you want to receive in ${base}`}>
+                            aria-label={`Enter the amount you want to receive in ${quote}`}>
                             <label className="flex flex-col gap-5 text-[.875rem] leading-[1] tracking-[1px] 
                             text-neutral-100 flex flex-col gap-5 uppercase">
                                 Receive
                                 <div className="amount-container relative overflow-hidden mb-[.25rem] cursor-text">
-                                    <p className="inline-block text-bold tracking-[-.5px]
+                                    <p aria-live="polite" className="inline-block text-bold tracking-[-.5px]
                                     text-[2rem] text-lime-500 rounded-[.5rem] 2xl:text-[2.5rem]"
                                     >
                                         {isPending ? ". . ." : formatCurrency(receiveAmount)}
@@ -180,7 +183,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                 </div>
                 <div className="bg-neutral-700 
                  rounded-b-[1.25rem] p-4 flex flex-col md:flex-row items-center justify-center md:justify-between gap-4">
-                    <span className="text-neutral-0 text-[.625rem] md:text-[.75rem] md:leading-[1.2] md:tracking-[.5px]">1 {base} = {rate} {quote}</span>
+                    <span aria-live="polite" className="text-neutral-0 text-[.625rem] md:text-[.75rem] md:leading-[1.2] md:tracking-[.5px]">1 {base} = {rate} {quote}</span>
                     <div className="text-[.75rem] leading-[1.3] text-medium tracking-[.5px] flex gap-3">
                         <button className={clsx(`flex items-center gap-[.625rem] px-3 py-2 rounded-[.5rem] uppercase`, 
                             isFavorite && `text-neutral-900 bg-lime-500`,
@@ -192,9 +195,12 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                             {isFavorite ? "Favorited" : "Favorite"}
                         </button>
                         <button className="flex items-center gap-[.625rem] px-3 py-2 rounded-[.5rem] text-neutral-200 bg-neutral-700
-                         border border-neutral-300 hover:border-lime-500 hover:bg-lime-800 hover:text-neutral-0 uppercase"
+                         border border-neutral-300 hover:border-lime-500 hover:bg-lime-800 hover:text-neutral-0 uppercase disabled:cursor-not-allowed"
                             aria-label="Log this conversion"
                             onClick={handleLogEntry}
+                            disabled={parseFloat(debouncedBaseAmount) <= 0 || isNaN(parseFloat(debouncedBaseAmount))
+                                || parseFloat(debouncedReceiveAmount) <= 0 || isNaN(parseFloat(debouncedReceiveAmount))
+                            }
                         >
                             Log Conversion
                         </button>

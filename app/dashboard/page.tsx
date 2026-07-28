@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { currencyAbbreviations, fetchRates, getFromParamFetch, getGroupParamFetch } from "@/lib/utils";
 import HistoryBrowserComponent from "@/components/History/HistoryBrowserComponent";
 import type { ChartData, Rate } from "@/types/types";
+import { captureException } from "@sentry/nextjs";
 
 export default function History() {
   const params = useSearchParams()
@@ -14,6 +15,7 @@ export default function History() {
   const [timeline, setTimeline] = useState<"week" | "month" | "3months" | "6months" | "year" | "5years">("week")
   const [chartData, setChartData] = useState<ChartData[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isFetchError, setIsFetchError] = useState<boolean>(false)
   const rateOpen = chartData[0]?.rate || 0 
   const rateLatest = chartData[chartData.length-1]?.rate || 0
   const difference = rateLatest - rateOpen
@@ -39,22 +41,38 @@ export default function History() {
 
   useEffect(()=>{
     async function fetchChartData(){
+        setIsFetchError(false)
         setIsLoading(true)
-        const data = await fetchRates({base: baseUpper, quotes: quoteUpper, from: getFromParamFetch(timeline), group: getGroupParamFetch(timeline) }, true)
-        if(!data){
-          return setIsLoading(false)
+        try{
+          const data = await fetchRates({base: baseUpper, quotes: quoteUpper, from: getFromParamFetch(timeline), group: getGroupParamFetch(timeline) }, true) as Rate[]
+          if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
+
+          const mappedData = data.map((data: Rate) => {
+            return ({
+              rate: data.rate,
+              time: data.date
+          })})
+          setChartData(mappedData)
+          
+        }catch(error){
+          captureException(error)
+          setIsFetchError(true)
+        }finally{
+          setIsLoading(false)
         }
-        const mappedData = data.map((data: Rate) => {
-          return ({
-            rate: data.rate,
-            time: data.date
-        })})
-        setChartData(mappedData)
-        setIsLoading(false)
     }
     
     fetchChartData()
   }, [baseUpper, quoteUpper, timeline])
+
+  if(isFetchError){
+    <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
+        <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Failed to fetch history data</h3>
+        <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
+            {`We couldn't load fetch history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
+        </span>
+    </div>
+  }
 
   if(isLoading || chartData.length === 0){
     return (
@@ -63,7 +81,7 @@ export default function History() {
         <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
             {`We couldn't load rate history for ${baseUpper}/${quoteUpper} right now. This usually clears up in a minute.`}
         </span>
-    </div>
+      </div>
     )
   }
 
