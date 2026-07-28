@@ -76,7 +76,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             freshLoad.current = false
             return
         }
-        if(dontUpdateSend.current == true){
+        if(dontUpdateSend.current){
             dontUpdateSend.current = false
             return
         }
