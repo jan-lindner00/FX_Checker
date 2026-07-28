@@ -65,6 +65,7 @@ export default function History() {
         }else{
             console.error("An unexpected error occured during fetching history data")
         }
+        setIsLoading(false)
       }
     }
     
