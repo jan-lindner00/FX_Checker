@@ -79,10 +79,10 @@ Your users should be able to:
 
 ### Screenshot
 
-![](./screenshot-fx-checker.png)
-![](./screenshot-compare.png)
-![](./screenshot-favorites.png)
-![](./screenshot-log.png)
+![](./public/screenshot-fx-checker.png)
+![](./public/screenshot-compare.png)
+![](./public/screenshot-favorites.png)
+![](./public/screenshot-log.png)
 
 ### Links
 
