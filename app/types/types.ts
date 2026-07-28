@@ -7,6 +7,13 @@ export type Rate = {
     rate: number
 }
 
+export type FetchRatesParams = {
+    base?: string,
+    quotes?: string,
+    from?: string,
+    group?: string | null
+}
+
 export type CarouselData =  Rate  & {
     changes: number
 }

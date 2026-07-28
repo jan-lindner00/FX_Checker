@@ -18,7 +18,7 @@ export default function Compare(){
 
     useEffect(()=>{
         const getRates = async() => {
-            const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`)
+            const data = await fetchRates({base: baseUpper, quotes: filteredCurrencies.map(cur => cur.abbreviation).join(",")})
             if(!data){
                 return
             }

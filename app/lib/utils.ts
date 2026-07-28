@@ -1,11 +1,16 @@
 import { Temporal } from "@js-temporal/polyfill";
-import type { LogEntry } from "@/app/types/types";
-import type { Rate } from "@/app/types/types";
-import supabaseClient from "@/app/lib/supabase/client";
+import type { LogEntry, Rate, FetchRatesParams } from "@/app/types/types";
+import supabaseClient from "@/app/lib/supabase/client"; 
 
-export async function fetchRates(url: string): Promise<Rate[] | null>{
+export async function fetchRates({base, quotes, from, group}: FetchRatesParams, cache=false): Promise<Rate[] | undefined>{
     try{
-        const res = await fetch(url, {next: {revalidate: 1800}})
+        const url = `https://api.frankfurter.dev/v2/rates?${base ? `base=${base}`: ""}${quotes ? `&quotes=${quotes}`: ""}${from ? `&from=${from}` : ""}${group ? `&group=${group}`: ""}`
+        let res
+        if(cache){
+            res = await fetch(url, {cache: "force-cache"})
+        }else{
+            res = await fetch(url, {next: {revalidate: 1800}})
+        } 
         if(!res.ok){
             throw new Error("Error: Failed to fetch data from Frankfurter API")
         }
@@ -22,7 +27,6 @@ export async function fetchRates(url: string): Promise<Rate[] | null>{
         }else{
             console.error("An unexpected error occured during fetching rates from Frankfurter API")
         }
-        return null
     }
 }
 
@@ -170,31 +174,34 @@ export function calcSetAmount(amount: string):string{
     return amount   
 }
 
-export function getHistoryFetchURL(timeline: string, base: string, quote: string){
+export function getFromParamFetch(timeline: string){
     if(timeline === "month"){
-    const dateFrom = Temporal.Now.plainDateISO().subtract({months: 1}).toString()
-    return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}`
+        return Temporal.Now.plainDateISO().subtract({months: 1}).toString()
     }
     else if(timeline === "3months"){
-        const dateFrom = Temporal.Now.plainDateISO().subtract({months: 3}).toString()
-        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}&group=week`
+        return Temporal.Now.plainDateISO().subtract({months: 3}).toString()
     }
     else if(timeline === "6months"){
-        const dateFrom = Temporal.Now.plainDateISO().subtract({months: 6}).toString()
-        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}&group=week`
+        return Temporal.Now.plainDateISO().subtract({months: 6}).toString()
     }
     else if(timeline === "year"){
-        const dateFrom = Temporal.Now.plainDateISO().subtract({years: 1}).toString()
-        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}&group=week`
+        return Temporal.Now.plainDateISO().subtract({years: 1}).toString()
     }
     else if(timeline === "5years"){
-        const dateFrom = Temporal.Now.plainDateISO().subtract({years: 5}).toString()
-        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}&group=month`
+        return Temporal.Now.plainDateISO().subtract({years: 5}).toString()
     }
     else{
-        const dateFrom = Temporal.Now.plainDateISO().subtract({days: 6}).toString()
-        return `https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateFrom}`
+        return Temporal.Now.plainDateISO().subtract({days: 6}).toString()
     } 
+}
+
+export function getGroupParamFetch(timeline: string){
+    if(timeline === "3months" || timeline === "6months" || timeline === "year"){
+        return "week"
+    }else if(timeline === "5years"){
+        return "month"
+    }
+    return null
 }
 
 export function isSafeNext(next: string | null): string {

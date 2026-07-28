@@ -36,7 +36,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     const debouncedReceiveAmount = useDebounce(receiveAmount, 400)
 
     async function handleAmountChange(recieving=true){
-        const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`)
+        const data = await fetchRates({base: base, quotes: quote})
         if(!data){
             if(recieving){
                 setReceiveAmount("")

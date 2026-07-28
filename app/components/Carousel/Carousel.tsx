@@ -8,7 +8,7 @@ export default async function Carousel(){
     let carouselData: (CarouselData | null)[]= []
 
     const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-    const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
+    const data = await fetchRates({base: "EUR", from: dateStart})
     
     if(!data){
         return (

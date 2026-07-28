@@ -30,7 +30,7 @@ function FavoriteItem({base, quote, removeFavorite}:
     useEffect(()=>{
         async function fetchFavData(){
             const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-            const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateStart}`) 
+            const data = await fetchRates({base: base, quotes: quote, from: dateStart}) 
             if(!data){
                 return
             }
