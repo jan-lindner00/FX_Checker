@@ -3,16 +3,27 @@ import type { LogEntry } from "@/app/types/types";
 import type { Rate } from "@/app/types/types";
 import supabaseClient from "@/app/lib/supabase/client";
 
-export async function fetchRates(url: string): Promise<{data?: Rate[], error?: string}>{
-    const res = await fetch(url, {next: {revalidate: 1800}})
-    if(!res.ok){
-        return {error: "Error: Failed to fetch data from Frankfurter API"} 
+export async function fetchRates(url: string): Promise<Rate[] | null>{
+    try{
+        const res = await fetch(url, {next: {revalidate: 1800}})
+        if(!res.ok){
+            throw new Error("Error: Failed to fetch data from Frankfurter API")
+        }
+        const data: Rate[] = await res.json()
+        if(!data){
+            throw new Error("Error: Frankfurter API returned no data")
+        }
+        return data
+    }catch(error){
+        if(typeof error === "string"){
+            console.error("Error: ", error)
+        }else if(error instanceof Error){
+            console.error("Error: ", error.message)
+        }else{
+            console.error("An unexpected error occured during fetching rates from Frankfurter API")
+        }
+        return null
     }
-    const data: Rate[] = await res.json()
-    if(!data){
-        return {error: "Error: Frankfurter API returned no data"}
-    }
-    return {data: data}
 }
 
 export async function fetchFavorites() {

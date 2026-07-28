@@ -6,59 +6,11 @@ import CarouselBrowser from "./CarouselBrowser"
 export default async function Carousel(){
     
     let carouselData: (CarouselData | null)[]= []
-    try{
-        const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-        const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
-        
-        if(error || !data){
-            throw new Error(error)
-        }
 
-        const mappedRates = new Map<string, Rate[]>()
-        data.forEach(rateObj => {
-            if(!mappedRates.has(rateObj.quote)){
-                mappedRates.set(rateObj.quote, [rateObj])
-            }
-            const newEntry = mappedRates.get(rateObj.quote) || []
-            newEntry?.push(rateObj)
-            mappedRates.set(rateObj.quote, newEntry)
-        })
-
-        carouselData = [...mappedRates.keys()].map((key: string) => {
-            const ratesArray = mappedRates.get(key)
-            if(ratesArray && ratesArray.length > 0){
-                const latestRateObj = ratesArray[ratesArray.length-1]
-                const startRateObj = ratesArray[0]
-                if(startRateObj.rate > 0){
-                    return ({
-                        base: latestRateObj.base,
-                        quote: latestRateObj.quote,
-                        date: latestRateObj.date,
-                        rate: latestRateObj.rate,
-                        changes: (latestRateObj.rate - startRateObj.rate)/startRateObj.rate * 100
-                    })
-                }else{
-                    return ({
-                        base: latestRateObj.base,
-                        quote: latestRateObj.quote,
-                        date: latestRateObj.date,
-                        rate: latestRateObj.rate,
-                        changes: 0
-                    })
-                }
-            }
-            return null
-        })
-
-    }catch(error){
-        if(typeof error === "string"){
-            console.error("Error: ", error)
-        }else if(error instanceof Error){
-            console.error("Error: ", error.message)
-        }else{
-            console.error("An unexpected error occured during fetching rates")
-        }
-        
+    const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
+    const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?from=${dateStart}`)
+    
+    if(!data){
         return (
             <section className="flex">
                 <div className="bg-red-500 text-neutral-900 w-auto py-3 px-2 md:px-4 font-medium text-[.625rem] md:text-[.75rem] leading-[1.2] tracking-[.5px] flex justify-center items-center">
@@ -70,6 +22,42 @@ export default async function Carousel(){
             </section>
         )
     }
+
+    const mappedRates = new Map<string, Rate[]>()
+    data.forEach(rateObj => {
+        if(!mappedRates.has(rateObj.quote)){
+            mappedRates.set(rateObj.quote, [rateObj])
+        }
+        const newEntry = mappedRates.get(rateObj.quote) || []
+        newEntry?.push(rateObj)
+        mappedRates.set(rateObj.quote, newEntry)
+    })
+
+    carouselData = [...mappedRates.keys()].map((key: string) => {
+        const ratesArray = mappedRates.get(key)
+        if(ratesArray && ratesArray.length > 0){
+            const latestRateObj = ratesArray[ratesArray.length-1]
+            const startRateObj = ratesArray[0]
+            if(startRateObj.rate > 0){
+                return ({
+                    base: latestRateObj.base,
+                    quote: latestRateObj.quote,
+                    date: latestRateObj.date,
+                    rate: latestRateObj.rate,
+                    changes: (latestRateObj.rate - startRateObj.rate)/startRateObj.rate * 100
+                })
+            }else{
+                return ({
+                    base: latestRateObj.base,
+                    quote: latestRateObj.quote,
+                    date: latestRateObj.date,
+                    rate: latestRateObj.rate,
+                    changes: 0
+                })
+            }
+        }
+        return null
+    })
 
     return(
         <CarouselBrowser data={carouselData} />

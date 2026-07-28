@@ -36,41 +36,30 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     const debouncedReceiveAmount = useDebounce(receiveAmount, 400)
 
     async function handleAmountChange(recieving=true){
-        try{
-            const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`)
-            if(error || !data){
-                throw new Error(error)
-            }
-            setRate(data[0].rate)
-            if(recieving){
-                if(isNaN(parseFloat(debouncedBaseAmount))){
-                    return setReceiveAmount("")
-                }
-                const amount = (parseFloat(debouncedBaseAmount) * data[0].rate).toFixed(2)
-                dontUpdateSend.current = true
-                return setReceiveAmount(amount)
-            }
-            if(isNaN(parseFloat(debouncedReceiveAmount))){
-                return setBaseAmount("")
-            }
-            const amount = rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
-            dontUpdateReceive.current = true
-            setBaseAmount(amount)
-        }catch(error){
-            if(typeof error === "string"){
-                console.error("Error: ", error)
-            }else if(error instanceof Error){
-                console.error("Error: ", error.message)
-            }else{
-                console.error("An unexpected error occured during fetching rates from API")
-            }
+        const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}`)
+        if(!data){
             if(recieving){
                 setReceiveAmount("")
             }else{
                 setBaseAmount("")
             }
-            setRate(0)
+            return setRate(0)
         }
+        setRate(data[0].rate)
+        if(recieving){
+            if(isNaN(parseFloat(debouncedBaseAmount))){
+                return setReceiveAmount("")
+            }
+            const amount = (parseFloat(debouncedBaseAmount) * data[0].rate).toFixed(2)
+            dontUpdateSend.current = true
+            return setReceiveAmount(amount)
+        }
+        if(isNaN(parseFloat(debouncedReceiveAmount))){
+            return setBaseAmount("")
+        }
+        const amount = rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
+        dontUpdateReceive.current = true
+        setBaseAmount(amount)
     }
 
      useEffect(()=>{

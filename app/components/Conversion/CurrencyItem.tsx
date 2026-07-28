@@ -35,7 +35,10 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                 <input
                     data-dropdown={search}
                     className="sr-only"
-                    type="radio" name="currency" aria-labelledby={id} onChange={setSearchParams}
+                    type="radio" 
+                    name={`currency-${search}`} 
+                    aria-labelledby={id} 
+                    onChange={setSearchParams}
                  />
                 <div  data-dropdown={search} className="flex items-center gap-3">
                     <Image 

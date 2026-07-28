@@ -29,28 +29,16 @@ function FavoriteItem({base, quote, removeFavorite}:
 
     useEffect(()=>{
         async function fetchFavData(){
-            try{
-                const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
-                const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateStart}`)
-                
-                if(error || !data){
-                    throw new Error(error)
-                }
-                
-                const dataObj = {
-                    ...data[data.length-1],
-                    changes: data[0]?.rate !== 0 ? ((data[data.length-1].rate - data[0].rate) / data[0]?.rate * 100) : 0
-                }
-                setFavData(dataObj)
-            }catch(error){
-                if(typeof error === "string"){
-                    console.error("Error: ", error)
-                }else if(error instanceof Error){
-                    console.error("Error: ", error.message)
-                }else{
-                    console.error("An unexpected error occured during fetching rates")
-                }
+            const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
+            const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${base}&quotes=${quote}&from=${dateStart}`) 
+            if(!data){
+                return
             }
+            const dataObj = {
+                ...data[data.length-1],
+                changes: data[0]?.rate !== 0 ? ((data[data.length-1].rate - data[0].rate) / data[0]?.rate * 100) : 0
+            }
+            setFavData(dataObj)
         }
 
         fetchFavData()

@@ -18,29 +18,20 @@ export default function Compare(){
 
     useEffect(()=>{
         const getRates = async() => {
-            try{
-                const {data, error} = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`)
-                if(error || !data){
-                    throw new Error(error)
-                }
-                const compareData = filteredCurrencies.map(currency => {
-                    const rate = data.find((data: Rate) => data.quote === currency.abbreviation)?.rate || 0
-                    return {
-                        ...currency,
-                        rate: rate
-                    }
-                })
-                setRates(compareData)
-            }catch(error){
-                if(typeof error === "string"){
-                    console.error("Error: ", error)
-                }else if(error instanceof Error){
-                    console.error("Error: ", error.message)
-                }else{
-                    console.error("An unexpected error occured during fetching compare rates")
-                }
+            const data = await fetchRates(`https://api.frankfurter.dev/v2/rates?base=${baseUpper}&quotes=${filteredCurrencies.map(cur => cur.abbreviation).join(",")}`)
+            if(!data){
+                return
             }
+            const compareData = filteredCurrencies.map(currency => {
+                const rate = data.find((data: Rate) => data.quote === currency.abbreviation)?.rate || 0
+                return {
+                    ...currency,
+                    rate: rate
+                }
+            })
+            setRates(compareData)
         }
+
         getRates()
     }, [baseUpper, quoteUpper, filteredCurrencies])
 
