@@ -1,8 +1,8 @@
 "use client"
 import { useCallback } from "react"
-import FavoriteItem from "@/app/components/Favorites/FavoriteItem"
-import supabaseClient from "@/app/lib/supabase/client"
-import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription"
+import FavoriteItem from "@/components/Favorites/FavoriteItem"
+import supabaseClient from "@/lib/supabase/client"
+import { useSubscribeFavorites } from "@/lib/hooks/useSubscription"
 
 export default function Favorites(){
     const favorites = useSubscribeFavorites()

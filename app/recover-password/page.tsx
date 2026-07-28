@@ -2,9 +2,9 @@
 import clsx from "clsx"
 import { useActionState } from "react"
 import IconError from "@/public/images/icon-error.svg"
-import AuthWrapper from "@/app/components/AuthWrapper"
+import AuthWrapper from "@/components/AuthWrapper"
 import { useRouter } from "next/navigation"
-import { updatePasswordRecovery } from "@/app/lib/auth"
+import { updatePasswordRecovery } from "@/lib/auth"
 import Image from "next/image"
 
 export default function ChangePassword(){ 

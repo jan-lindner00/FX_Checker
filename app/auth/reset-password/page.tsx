@@ -3,9 +3,9 @@ import {useActionState} from "react"
 import Link from "next/link"
 import Image from "next/image"
 import {useRouter} from "next/navigation"
-import AuthWrapper from "@/app/components/AuthWrapper"
+import AuthWrapper from "@/components/AuthWrapper"
 import IconError from "@/public/images/icon-error.svg"
-import { resetPassword } from "@/app/lib/auth"
+import { resetPassword } from "@/lib/auth"
 import clsx from "clsx"
 
 export default function ResetPassword(){ 

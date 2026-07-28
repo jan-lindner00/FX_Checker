@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
-import type { LogEntry, Rate, FetchRatesParams } from "@/app/types/types";
-import supabaseClient from "@/app/lib/supabase/client"; 
+import type { LogEntry, Rate, FetchRatesParams } from "@/types/types";
+import supabaseClient from "@/lib/supabase/client"; 
 
 export async function fetchRates({base, quotes, from, group}: FetchRatesParams, cache=false): Promise<Rate[] | undefined>{
     try{
@@ -47,6 +47,7 @@ export async function fetchLogEntries() {
     const {data, error} = await supabaseClient
         .from("log_entries")
         .select()
+        .order("created_at", {ascending: false})
     if(error){
         return null
     }

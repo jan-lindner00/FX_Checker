@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import type { CarouselData } from "@/app/types/types";
+import type { CarouselData } from "@/types/types";
 import {memo} from "react"
 
 function CarouselItem({changes, quote, base, rate}: 

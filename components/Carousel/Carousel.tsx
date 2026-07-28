@@ -1,6 +1,6 @@
-import type { Rate, CarouselData } from "@/app/types/types"
+import type { Rate, CarouselData } from "@/types/types"
 import { Temporal } from "@js-temporal/polyfill"
-import { fetchRates } from "@/app/lib/utils"
+import { fetchRates } from "@/lib/utils"
 import CarouselBrowser from "./CarouselBrowser"
 
 export default async function Carousel(){

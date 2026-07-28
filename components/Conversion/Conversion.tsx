@@ -3,14 +3,14 @@ import { useState, useEffect, useRef, useTransition, memo} from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates } from "@/app/lib/utils";
-import CurrencyDropdown from "@/app/components/Conversion/CurrencyDropdown";
-import useDebounce from "@/app/lib/hooks/useDebounce";
-import { Rate } from "@/app/types/types";
+import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates } from "@/lib/utils";
+import CurrencyDropdown from "@/components/Conversion/CurrencyDropdown";
+import useDebounce from "@/lib/hooks/useDebounce";
+import { Rate } from "@/types/types";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilled from "@/public/images/icon-star-filled.svg"
-import type { Favorite } from "@/app/types/types";
-import supabaseClient from "@/app/lib/supabase/client";
+import type { Favorite } from "@/types/types";
+import supabaseClient from "@/lib/supabase/client";
 import { Temporal } from "@js-temporal/polyfill";
 
 function Conversion({favorites}: {favorites: Favorite[]}){

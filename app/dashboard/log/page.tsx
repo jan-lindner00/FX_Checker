@@ -1,11 +1,11 @@
 "use client" 
 import Image from "next/image";
-import LogItem from "@/app/components/Log/LogItem";
+import LogItem from "@/components/Log/LogItem";
 import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
-import supabaseClient from "@/app/lib/supabase/client";
-import { downloadCSV } from "@/app/lib/utils";
-import { useSubscribeLog } from "@/app/lib/hooks/useSubscription";
+import supabaseClient from "@/lib/supabase/client";
+import { downloadCSV } from "@/lib/utils";
+import { useSubscribeLog } from "@/lib/hooks/useSubscription";
 
 export default function Log(){
     const logEntries = useSubscribeLog()

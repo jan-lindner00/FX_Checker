@@ -1,6 +1,6 @@
 "use server"
 import {redirect, RedirectType} from "next/navigation"
-import { createClient } from "@/app/lib/supabase/server"
+import { createClient } from "@/lib/supabase/server"
 
 export async function signInWithOAuth(){
     const supabase = await createClient()

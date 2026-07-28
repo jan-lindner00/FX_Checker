@@ -1,9 +1,9 @@
 import Image from "next/image"
 import { Suspense } from "react"
-import Header from "@/app/components/Header"
+import Header from "@/components/Header"
 import Logo from "@/public/images/logo.svg"
-import MainBrowser from "@/app/components/MainBrowser"
-import { LogProvider, FavoritesProvider } from "@/app/context/SubscribeContext" 
+import MainBrowser from "@/components/MainBrowser"
+import { LogProvider, FavoritesProvider } from "@/context/SubscribeContext" 
 
 export default function GuestLayout({
   children,

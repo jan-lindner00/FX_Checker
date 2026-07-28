@@ -1,7 +1,7 @@
 "use client"
-import Conversion from "@/app/components/Conversion/Conversion"
-import Menu from "@/app/components/Menu"
-import { useSubscribeFavorites, useSubscribeLog } from "@/app/lib/hooks/useSubscription"
+import Conversion from "@/components/Conversion/Conversion"
+import Menu from "@/components/Menu"
+import { useSubscribeFavorites, useSubscribeLog } from "@/lib/hooks/useSubscription"
 
 
 export default function MainBrowser(){

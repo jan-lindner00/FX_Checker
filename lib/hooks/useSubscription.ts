@@ -1,6 +1,6 @@
 "use client"
 import { useContext } from "react"
-import { FavoritesContext, LogContext } from "@/app/context/SubscribeContext"
+import { FavoritesContext, LogContext } from "@/context/SubscribeContext"
 
 export function useSubscribeFavorites() {
   return useContext(FavoritesContext)

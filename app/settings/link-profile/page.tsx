@@ -1,8 +1,8 @@
 import Link from "next/link"
 import Image from "next/image"
 import IconGoogle from "@/public/images/icon-google.svg"
-import { linkIdentity } from "@/app/lib/auth"
-import AuthWrapper from "@/app/components/AuthWrapper"
+import { linkIdentity } from "@/lib/auth"
+import AuthWrapper from "@/components/AuthWrapper"
 
 export default function Login(){
     

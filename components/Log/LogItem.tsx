@@ -1,8 +1,8 @@
-import { LogEntry} from "@/app/types/types";
+import { LogEntry} from "@/types/types";
 import Image from "next/image";
 import DeleteIcon from "@/public/images/icon-delete.svg"
 import ArrowRight from "@/public/images/icon-arrow-right.svg"
-import { formatCurrency } from "@/app/lib/utils";
+import { formatCurrency } from "@/lib/utils";
 import { Temporal } from "@js-temporal/polyfill";
 import { memo } from "react";
 

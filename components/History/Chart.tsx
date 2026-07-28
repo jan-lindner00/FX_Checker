@@ -1,8 +1,8 @@
-import type { ChartData, CustomTickProps } from "@/app/types/types";
+import type { ChartData, CustomTickProps } from "@/types/types";
 import { Tooltip, XAxis, YAxis, ReferenceLine, AreaChart, Area} from "recharts";
 import { Temporal } from "@js-temporal/polyfill";
 import {useMemo, memo} from "react"
-import useWindowSize from "@/app/lib/hooks/useWindowSize";
+import useWindowSize from "@/lib/hooks/useWindowSize";
 
 const CustomXTick = ({ x, y, payload, data }: CustomTickProps) => {
   if(x === undefined || y === undefined || !payload || data.length < 2){

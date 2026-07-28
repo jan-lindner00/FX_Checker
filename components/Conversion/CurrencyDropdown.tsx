@@ -1,9 +1,9 @@
 import Image from "next/image";
 import {useState, useEffect, useRef, useId, memo, KeyboardEvent} from "react"
-import { currencies } from "@/app/lib/utils";
-import useDebounce from "@/app/lib/hooks/useDebounce";
+import { currencies } from "@/lib/utils";
+import useDebounce from "@/lib/hooks/useDebounce";
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
-import CurrencyItem from "@/app/components/Conversion/CurrencyItem";
+import CurrencyItem from "@/components/Conversion/CurrencyItem";
 import IconSearch from "@/public/images/icon-search.svg"
 
 function CurrencyDropdown({startTransition, search="base", selected}:
