@@ -28,12 +28,19 @@ export async function fetchRates<T>({base, quotes, from, group}: FetchRatesParam
     const timeOutMs = 20000
     const retryDelayMs = 500
 
+    const searchParams = new URLSearchParams()
+    if(base) searchParams.set("base", base)
+    if(quotes) searchParams.set("quotes", quotes)
+    if(from) searchParams.set("from", from)
+    if(group) searchParams.set("group", group)
+        
+    const url = `https://api.frankfurter.dev/v2/rates?${searchParams.toString()}`
+
     for(let attempt = 0; attempt <= retries; attempt++ ){
         const controller = new AbortController()
         const timeout = setTimeout(()=> {controller.abort()
             console.log("aborted")
         }, timeOutMs)
-        const url = `https://api.frankfurter.dev/v2/rates?${base ? `base=${base}`: ""}${quotes ? `&quotes=${quotes}`: ""}${from ? `&from=${from}` : ""}${group ? `&group=${group}`: ""}`
         
         addBreadcrumb({
             category: "http",
