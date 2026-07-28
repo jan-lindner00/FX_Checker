@@ -36,7 +36,7 @@ export default function Login(){
                     <div className="flex items-center relative py-10 text-medium 
                     text-neutral-200 text-[1.25rem] leading-[1.2] tracking-[-.5px]">
                         <hr aria-hidden="true" className="grow border-b border-neutral-600" />
-                        <span aria-label="or" className="absolute top-[50%] left-[50%] -translate-1/2 bg-inherit">OR</span>
+                        <span className="absolute top-[50%] left-[50%] -translate-1/2 bg-inherit">OR</span>
                     </div>
                     <form className="text-medium" action={signInAnonymously}>
                         <button 

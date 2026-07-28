@@ -147,7 +147,9 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                         </form>
                         <CurrencyDropdown startTransition={startTransition} search={"base"} selected={base} />
                     </div>
-                    <button className="h-[3rem] max-w-[3rem] w-full self-center bg-neutral-600 bg-[url('@/public/images/icon-exchange-vertical.svg')] 
+                    <button 
+                    aria-label="Switch currencies"
+                    className="h-[3rem] max-w-[3rem] w-full self-center bg-neutral-600 bg-[url('@/public/images/icon-exchange-vertical.svg')] 
                     md:bg-[url('@/public/images/icon-exchange.svg')] bg-no-repeat bg-center
                     border-solid border border-neutral-500 rounded-[.5rem]"
                     onClick={switchCurrencies}

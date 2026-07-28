@@ -5,7 +5,7 @@ import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
 import supabaseClient from "@/lib/supabase/client";
 import { trySupabase } from "@/lib/utils";
-import { downloadCSV } from "@/lib/utils";
+import { downloadCSV } from "@/lib/clientUtils";
 import { useSubscribeLog } from "@/lib/hooks/useSubscription";
 
 export default function Log(){

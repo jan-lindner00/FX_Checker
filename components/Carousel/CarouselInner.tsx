@@ -9,6 +9,7 @@ function CarouselInner({ratesData, scroller}:
     const data = useMemo(() => ratesData, [ratesData])
     const freshLoad = useRef(true)
     const scrollerInner = useRef<HTMLDivElement>(null)
+    const scrollerInnerCurrent = scrollerInner.current
 
     useEffect(()=>{
         if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches){
@@ -30,6 +31,13 @@ function CarouselInner({ratesData, scroller}:
                 const duplicatedItem= item.cloneNode(true) as HTMLElement
                 duplicatedItem.setAttribute("aria-hidden", "true")
                 scrollerInner.current?.appendChild(duplicatedItem)
+            })
+        }
+
+        return () => {
+            const duplicates = scrollerInnerCurrent?.querySelectorAll("[aria-hidden=true]")
+            duplicates?.forEach(item => {
+                scrollerInnerCurrent?.removeChild(item)
             })
         }
     }, [])
@@ -62,6 +70,13 @@ function CarouselInner({ratesData, scroller}:
                 const duplicatedItem = item.cloneNode(true) as HTMLElement
                 duplicatedItem.setAttribute("aria-hidden", "true")
                 scrollerInner.current?.appendChild(duplicatedItem)
+            })
+        }
+
+        return () => {
+            const duplicates = scrollerInnerCurrent?.querySelectorAll("[aria-hidden=true]")
+            duplicates?.forEach(item => {
+                scrollerInnerCurrent?.removeChild(item)
             })
         }
     }, [data])
