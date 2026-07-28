@@ -45,7 +45,7 @@ export default function ChangePassword(){
 
     return(  
         <AuthWrapper
-            heading="Revover password" 
+            heading="Recover password" 
             description="Enter your new password below."
         >
             <form 

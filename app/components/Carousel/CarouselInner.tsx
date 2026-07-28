@@ -6,6 +6,8 @@ import CarouselItem from "@/app/components/Carousel/CarouselItem"
 function CarouselInner({ratesData}:{ratesData: Readonly<(CarouselData | null)[]>}){
     const data = useMemo(() => ratesData, [ratesData])
     const freshLoad = useRef(true)
+    const scroller = useRef<HTMLDivElement>(null)
+    const scrollerInner = useRef<HTMLDivElement>(null)
 
     useEffect(()=>{
         const scroller = document.querySelector(".scroller")
@@ -69,7 +71,10 @@ function CarouselInner({ratesData}:{ratesData: Readonly<(CarouselData | null)[]>
     }, [data])
 
     return (
-        <div className="scroller-inner w-max flex" aria-live="polite">
+        <div 
+            className="scroller-inner w-max flex" 
+            aria-live="polite"
+        >
           {data.map((item) => {
             if(item !== null){
                 return <CarouselItem key={item.base + item.quote} {...item} />

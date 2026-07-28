@@ -12,8 +12,7 @@ function CurrencyDropdown({startTransition, search="base", selected}:
     const [currenciesArr, setCurrenciesArr] = useState(currencies)
     const [toggle, setToggle] = useState<boolean>(false)
     const [searchBarVal, setSearchBarVal] = useState("")
-    const freshLoad = useRef(true)
-    const dontUpdate = useRef<boolean>(false) 
+    const freshLoad = useRef(true) 
     const dropdown = useRef<HTMLDivElement>(null)
     const button = useRef<HTMLButtonElement>(null)
     const id = useId()
@@ -29,10 +28,6 @@ function CurrencyDropdown({startTransition, search="base", selected}:
 
     useEffect(()=>{
         if(freshLoad.current === true){
-            return
-        }
-        if(dontUpdate.current === true){
-            dontUpdate.current = false
             return
         }
         if(toggle){
@@ -74,12 +69,6 @@ function CurrencyDropdown({startTransition, search="base", selected}:
         return () => { document.body.removeEventListener("click", closeDropdown)}
     }, 
     [])
-
-    function currencyItemOnKeyDown(e: KeyboardEvent){
-        if(e.key === "Tab"){
-            return setToggle(false)
-        }
-    }
  
     return (
         <section className="md:relative">
@@ -116,9 +105,9 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                 id={id} 
                 className={`shadow-menu absolute z-1000 w-[calc(100vw-4rem)] rounded-[.5rem] p-2 max-w-[376px] bottom-0 translate-y-[calc(100%+.25rem)] right-0 ${search === "base" ? "md:right-[-84px] lg:right-0 ": ""}
                     bg-neutral-600 max-h-[458px] md:max-h-[466px] border border-neutral-400 overflow-y-scroll`}
-                onKeyDown={(e)=>{
-                    if(e.key === "Escape"){
-                        return setToggle(false)
+                onBlur={(e)=>{
+                    if(!dropdown.current?.contains(e.relatedTarget)){
+                        setToggle(false)
                     }
                 }}
                 >
@@ -136,12 +125,6 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                 value={searchBarVal}
                                 onInput={(e) => setSearchBarVal(e.currentTarget.value)}
                                 placeholder="Search currencies..."
-                                onKeyDown={(e)=>{
-                                    if(e.shiftKey && e.key === "Tab"){
-                                        dontUpdate.current = true
-                                        return setToggle(false)
-                                    }
-                                }}
                             />
                         </label>
                     </form>
@@ -162,7 +145,6 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                         search={search}
                                         selected={currency.abbreviation === selectedCurrency.abbreviation}
                                         startTransition={startTransition}
-                                        onKeyDown={currencyItemOnKeyDown}
                                         {...currency}
                                     />
                                 )
@@ -185,7 +167,6 @@ function CurrencyDropdown({startTransition, search="base", selected}:
                                         search={search} 
                                         selected={currency.abbreviation === selectedCurrency.abbreviation} 
                                         startTransition={startTransition}
-                                        onKeyDown={currencyItemOnKeyDown}
                                         {...currency}
                                     />
                                 )

@@ -19,16 +19,11 @@ export default function HeaderBrowser(){
     const menuRef = useRef<HTMLDivElement>(null)
     const buttonRef = useRef<HTMLButtonElement>(null)
     const freshLoad = useRef<boolean>(true)
-    const dontUpdate = useRef<boolean>(false)
 
     useEffect(()=>{
         if(freshLoad.current === true){
             freshLoad.current = false
             return
-        }
-        if(dontUpdate.current === true){
-            dontUpdate.current = false
-            return 
         }
         if(toggle){
             menuRef.current?.focus()
@@ -88,6 +83,11 @@ export default function HeaderBrowser(){
                         setToggle(false)
                     }
                 }}
+                onBlur={(e)=>{
+                    if(!menuRef.current?.contains(e.relatedTarget)){
+                        setToggle(false)
+                    }
+                }}
             >
                 <div className="flex items-center gap-2 pb-3 border-b border-neutral-500">
                     {userData?.avatar_url ? (
@@ -119,12 +119,6 @@ export default function HeaderBrowser(){
                     <Link
                     className="px-2 text-neutral-0 no-underline"
                     href="/settings/password"
-                    onKeyDown={(e)=>{
-                        if(e.key === "Escape" || (e.shiftKey && e.key === "Tab")){
-                            dontUpdate.current = true
-                            return setToggle(false)
-                        }
-                    }}
                     >
                         Change password
                     </Link>
@@ -133,12 +127,6 @@ export default function HeaderBrowser(){
                     <Link
                     className="px-2 text-neutral-0 no-underline"
                     href="/settings/link-profile"
-                    onKeyDown={(e)=>{
-                        if(e.key === "Escape" || (e.shiftKey && e.key === "Tab")){
-                            dontUpdate.current = true
-                            return setToggle(false)
-                        }
-                    }}
                     >
                         Link profile
                     </Link>
@@ -149,11 +137,6 @@ export default function HeaderBrowser(){
                     <button 
                         type="submit"
                         className="w-full p-2 mt-3 text-red-500 border-none flex justify-start"
-                        onKeyDown={(e)=>{
-                            if(e.key === "Tab"){
-                                return setToggle(false)
-                            }
-                        }}
                     >
                         Log out
                     </button>
@@ -161,11 +144,6 @@ export default function HeaderBrowser(){
                 <button 
                     className="w-full p-2 mt-3 text-red-500 border-none flex justify-start"
                     onClick={()=>setModalOpen(true)}
-                    onKeyDown={(e)=>{
-                        if(e.key === "Tab"){
-                            return setToggle(false)
-                        }
-                    }}
                 >
                     Log out
                 </button>

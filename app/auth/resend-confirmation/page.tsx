@@ -82,7 +82,7 @@ export default function ResendConfirmation(){
                 action={submitAction}
              >
                 <label className={labelStyles}>
-                    Email adress
+                    Email address
                     <input 
                         className={stylesInputs}
                         type="email"

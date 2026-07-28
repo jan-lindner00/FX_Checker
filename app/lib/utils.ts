@@ -1,6 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
 import type { LogEntry } from "@/app/types/types";
-import supabasClient from "@/app/lib/supabase/client";
 import type { Rate } from "@/app/types/types";
 import supabaseClient from "@/app/lib/supabase/client";
 
