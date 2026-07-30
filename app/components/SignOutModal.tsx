@@ -31,7 +31,7 @@ export default function SignOutModal({setModalOpen, modalRef}:
                     className="absolute top-7 right-7 bg-none border-none rounded-full"
                     onClick={() => setModalOpen(false)}
                 >
-                    <Image src={IconClose} alt="X" />
+                    <Image src={IconClose} alt="Close" />
                 </button>
                 <div>
                     <h2 className="text-[1.5rem] leading-[1.2] font-semibold tracking-[-.5px] pb-5">Sign out?</h2>
