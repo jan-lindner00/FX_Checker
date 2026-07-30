@@ -125,8 +125,8 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                     <div className="relative bg-neutral-600 p-4 md:p-5 rounded-[1rem] 
                     border border-solid border-neutral-500 flex justify-between items-end md:grow w-full">
                         <form aria-label={`Enter the amount you want to send in ${base}`}>
-                            <label className="flex flex-col gap-5 text-[.875rem] leading-[1] tracking-[1px] 
-                            text-neutral-100 flex flex-col justify-between uppercase">
+                            <label className="text-[.875rem] leading-[1] tracking-[1px] 
+                            text-neutral-100 flex flex-col justify-between gap-5 uppercase">
                                 Send
                                 <div className="amount-container relative overflow-hidden mb-[.25rem] cursor-text">
                                     <p aria-live="polite" className="inline-block text-bold tracking-[-.5px] text-[2rem] text-neutral-0 rounded-[.5rem]
