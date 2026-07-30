@@ -35,7 +35,8 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                 <input
                     data-dropdown={search}
                     className="sr-only"
-                    type="radio" 
+                    type="radio"
+                    checked={selected}
                     name={`currency-${search}`} 
                     aria-labelledby={id} 
                     onChange={setSearchParams}
@@ -56,7 +57,7 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                     data-dropdown={search}
                     className="text-neutral-200 text-[.75rem] leading-[1.2] tracking-[.5px]">{name}</span>
                 </div>
-                {selected && <Image data-dropdown={search} src={Checkmark} alt="Option is selected" />}
+                {selected && <Image data-dropdown={search} src={Checkmark} alt="Selected" />}
             </div>
         </label>
     )
