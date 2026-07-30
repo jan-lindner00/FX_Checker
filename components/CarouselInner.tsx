@@ -1,7 +1,7 @@
 "use client"
 import {useEffect, useMemo, useRef, memo, RefObject} from "react"
 import type { CarouselData } from "@/types/types"
-import CarouselItem from "@/components/Carousel/CarouselItem"
+import CarouselItem from "@/components/CarouselItem"
 
 function CarouselInner({ratesData, scroller}:
     {ratesData: (CarouselData | null)[], scroller: RefObject<HTMLDivElement | null>}

@@ -1,6 +1,6 @@
 "use client" 
 import Image from "next/image";
-import LogItem from "@/components/Log/LogItem";
+import LogItem from "@/components/LogItem";
 import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
 import supabaseClient from "@/lib/supabase/client";

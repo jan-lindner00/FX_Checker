@@ -2,7 +2,7 @@
 import {useState, useEffect, useMemo} from "react"
 import { useSearchParams } from "next/navigation";
 import { currencyAbbreviations, fetchRates, getFromParamFetch, getGroupParamFetch } from "@/lib/utils";
-import HistoryBrowserComponent from "@/components/History/HistoryBrowserComponent";
+import HistoryBrowserComponent from "@/components/HistoryBrowserComponent";
 import type { ChartData, Rate } from "@/types/types";
 import { captureException } from "@sentry/nextjs";
 

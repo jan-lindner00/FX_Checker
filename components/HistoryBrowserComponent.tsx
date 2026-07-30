@@ -1,8 +1,8 @@
 "use client"
 import { HistoryProps } from "@/types/types"
-import HistoryInfoCard from "@/components/History/HistoryInfoCard"
-import HistoryTimeButton from "@/components/History/HistoryTimeButton"
-import Chart from "@/components/History/Chart"
+import HistoryInfoCard from "@/components/HistoryInfoCard"
+import HistoryTimeButton from "@/components/HistoryTimeButton"
+import Chart from "@/components/Chart"
 import {useTransition, memo} from "react"
 
 function HistoryBrowserComponent({historyProps}: {historyProps: HistoryProps}){

@@ -1,5 +1,5 @@
 "use client"
-import Conversion from "@/components/Conversion/Conversion"
+import Conversion from "@/components/Conversion"
 import Menu from "@/components/Menu"
 import { useSubscribeFavorites, useSubscribeLog } from "@/lib/hooks/useSubscription"
 

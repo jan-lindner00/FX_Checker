@@ -1,6 +1,6 @@
 "use client"
 import { useCallback } from "react"
-import FavoriteItem from "@/components/Favorites/FavoriteItem"
+import FavoriteItem from "@/components/FavoriteItem"
 import supabaseClient from "@/lib/supabase/client"
 import { trySupabase } from "@/lib/utils"
 import { useSubscribeFavorites } from "@/lib/hooks/useSubscription"

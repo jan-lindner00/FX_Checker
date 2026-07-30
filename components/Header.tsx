@@ -1,4 +1,4 @@
-import Carousel from "@/components/Carousel/Carousel"
+import Carousel from "@/components/Carousel"
 import HeaderBrowser from "./HeaderBrowser"
 import { Suspense } from "react"
 
