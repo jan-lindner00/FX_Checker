@@ -1,9 +1,9 @@
 "use client"
 import {useState, useEffect, createContext} from "react"
-import { fetchFavorites, fetchLogEntries } from "@/lib/utils"
-import { Favorite, LogEntry } from "@/types/types"
+import { fetchFavorites, fetchLogEntries } from "@/app/lib/utils"
+import { Favorite, LogEntry } from "@/app/lib/types"
 import {v4 as uuid} from "uuid"
-import supabaseClient from "@/lib/supabase/client"
+import supabaseClient from "@/app/lib/supabase/client"
 
 export const FavoritesContext = createContext<Favorite[]>([])
 

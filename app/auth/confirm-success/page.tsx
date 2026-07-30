@@ -1,4 +1,4 @@
-import AuthWrapper from "@/components/AuthWrapper"
+import AuthWrapper from "@/app/components/AuthWrapper"
 import Link from "next/link"
 
 export default function ConfirmationSuccess(){

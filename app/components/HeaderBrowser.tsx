@@ -2,13 +2,13 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState, useEffect, useId, useRef } from "react"
-import supabaseClient from "@/lib/supabase/client"
+import supabaseClient from "@/app/lib/supabase/client"
 import Logo from "@/public/images/logo.svg"
 import IconUser from "@/public/images/icon-user.svg"
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
-import { UserData } from "@/types/types"
-import { getInitials, trySupabase } from "@/lib/utils"
-import SignOutModal from "@/components/SignOutModal"
+import { UserData } from "@/app/lib/types"
+import { getInitials, trySupabase } from "@/app/lib/utils"
+import SignOutModal from "@/app/components/SignOutModal"
 
 export default function HeaderBrowser(){
     const id = useId()

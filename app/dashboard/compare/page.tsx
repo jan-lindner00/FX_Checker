@@ -1,10 +1,10 @@
 "use client"
-import type { CurrencyCompare, Rate } from "@/types/types";
+import type { CurrencyCompare, Rate } from "@/app/lib/types";
 import {useState, useEffect } from "react"
-import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/lib/utils";
-import CompareItem from "@/components/CompareItem";
+import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/app/lib/utils";
+import CompareItem from "@/app/components/CompareItem";
 import { useSearchParams } from "next/navigation";
-import { useSubscribeFavorites } from "@/lib/hooks/useSubscription";
+import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription";
 import { captureException } from "@sentry/nextjs";
 
 export default function Compare(){

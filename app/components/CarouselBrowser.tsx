@@ -1,7 +1,7 @@
 "use client"
-import { CarouselData } from "@/types/types";
+import { CarouselData } from "@/app/lib/types";
 import {useRef} from "react"
-import CarouselInner from "@/components/CarouselInner";
+import CarouselInner from "@/app/components/CarouselInner";
 
 export default function CarouselBrowser({data}: {data: (CarouselData | null)[]}){
     const scroller = useRef<HTMLDivElement>(null)

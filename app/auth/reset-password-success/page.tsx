@@ -1,4 +1,4 @@
-import AuthWrapper from "@/components/AuthWrapper";
+import AuthWrapper from "@/app/components/AuthWrapper";
 import Image from "next/image";
 import Link from "next/link";
 import IconBack from "@/public/images/icon-chevron-left.svg"

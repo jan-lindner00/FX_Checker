@@ -1,4 +1,4 @@
-import type { LogEntry } from "@/types/types";
+import type { LogEntry } from "@/app/lib/types";
 import { Temporal } from "@js-temporal/polyfill";
 
 export function convertToCSV(data: LogEntry[]) {

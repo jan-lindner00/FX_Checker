@@ -1,5 +1,5 @@
-import { isSafeNext } from '@/lib/utils'
-import { createClient } from '@/lib/supabase/server'
+import { isSafeNext } from '@/app/lib/utils'
+import { createClient } from '@/app/lib/supabase/server'
 import { NextResponse } from 'next/server' 
 
 export async function GET(request: Request) {

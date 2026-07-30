@@ -1,9 +1,9 @@
 "use client"
-import NavLink from "@/components/NavLink";
+import NavLink from "@/app/components/NavLink";
 import { usePathname, useSearchParams } from "next/navigation";
-import NavMobile from "@/components/NavMobile";
+import NavMobile from "@/app/components/NavMobile";
 import { memo } from "react";
-import type { Favorite, LogEntry } from "@/types/types";
+import type { Favorite, LogEntry } from "@/app/lib/types";
 
 function Menu({favorites, logEntries}: 
     {favorites: Favorite[], logEntries: LogEntry[]}

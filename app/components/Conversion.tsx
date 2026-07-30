@@ -3,13 +3,13 @@ import { useState, useEffect, useRef, useTransition, memo} from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates, trySupabase } from "@/lib/utils";
-import CurrencyDropdown from "@/components/CurrencyDropdown";
-import useDebounce from "@/lib/hooks/useDebounce";
+import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates, trySupabase } from "@/app/lib/utils";
+import CurrencyDropdown from "@/app/components/CurrencyDropdown";
+import useDebounce from "@/app/lib/hooks/useDebounce";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilled from "@/public/images/icon-star-filled.svg"
-import type { Favorite, Rate } from "@/types/types";
-import supabaseClient from "@/lib/supabase/client";
+import type { Favorite, Rate } from "@/app/lib/types";
+import supabaseClient from "@/app/lib/supabase/client";
 import { Temporal } from "@js-temporal/polyfill";
 import { captureException } from "@sentry/nextjs";
 

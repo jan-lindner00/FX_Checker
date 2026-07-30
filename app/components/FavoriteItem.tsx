@@ -1,11 +1,11 @@
 import Image from "next/image";
 import StarFilledLime from "@/public/images/icon-star-filled-lime.svg"
 import ArrowRight from "@/public/images/icon-arrow-right.svg"
-import { CarouselData, Favorite, Rate } from "@/types/types"
+import { CarouselData, Favorite, Rate } from "@/app/lib/types"
 import clsx from "clsx";
 import { useEffect, useState, memo, useTransition } from "react";
 import { Temporal } from "@js-temporal/polyfill";
-import { fetchRates } from "@/lib/utils";
+import { fetchRates } from "@/app/lib/utils";
 import { usePathname, useRouter } from "next/navigation";
 import { captureException } from "@sentry/nextjs";
 

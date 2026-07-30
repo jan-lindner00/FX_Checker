@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
-import type { LogEntry, FetchRatesParams } from "@/types/types";
-import supabaseClient from "@/lib/supabase/client"; 
+import type { LogEntry, FetchRatesParams } from "@/app/lib/types";
+import supabaseClient from "@/app/lib/supabase/client"; 
 import { addBreadcrumb, withScope, captureException } from "@sentry/nextjs";
 import {  PostgrestError } from "@supabase/supabase-js";
 

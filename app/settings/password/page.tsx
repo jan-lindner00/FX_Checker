@@ -2,9 +2,9 @@
 import clsx from "clsx"
 import { useActionState } from "react"
 import IconError from "@/public/images/icon-error.svg"
-import AuthWrapper from "@/components/AuthWrapper"
+import AuthWrapper from "@/app/components/AuthWrapper"
 import { useRouter } from "next/navigation"
-import { updatePassword } from "@/lib/auth"
+import { updatePassword } from "@/app/lib/auth"
 import Image from "next/image"
 import Link from "next/link"
 

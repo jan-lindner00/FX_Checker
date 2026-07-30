@@ -1,11 +1,11 @@
 "use client"
-import { CurrencyCompare, Favorite } from "@/types/types";
+import { CurrencyCompare, Favorite } from "@/app/lib/types";
 import Image from "next/image";
 import { useMemo, memo } from "react";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilledLime from "@/public/images/icon-star-filled-lime.svg"
 import clsx from "clsx";
-import { formatCurrency, handleFavChange } from "@/lib/utils";
+import { formatCurrency, handleFavChange } from "@/app/lib/utils";
 
 function CompareItem({base, countryCode, abbreviation, rate, name, favorites}:
     {base: string, countryCode: CurrencyCompare["countryCode"], abbreviation: CurrencyCompare["abbreviation"],
