@@ -19,7 +19,7 @@ function NavLink({isActive, href, number= -1,children, isMobile=false}:
         (number >= 0) && "pr-8")
 
     return (
-        <Link href={href} className={stylesLink}>
+        <Link href={href} className={stylesLink} aria-current="page">
             <span className={stylesSpan} data-number={number}>
                 {children}
             </span>
