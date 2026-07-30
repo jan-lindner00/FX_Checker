@@ -15,36 +15,36 @@ function Menu({favorites, logEntries}:
     return(
         <section className="w-full h-full mt-[2.5rem] md:mt-[calc(2.66rem)] text-neutral-0 text-[1rem] leading-[1.2] tracking-[1px]">
             <div className="border-b border-neutral-600 h-8 w-full hidden md:block">
-                <NavLink href={`/dashboard/${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`} isActive={pathname === "/dashboard"}>
+                <NavLink href={`/dashboard/?${search.toString()}`} isActive={pathname === "/dashboard"}>
                     history
                 </NavLink>
-                <NavLink href={`/dashboard/compare${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`} isActive={pathname === "/dashboard/compare"}>
+                <NavLink href={`/dashboard/compare?${search.toString()}`} isActive={pathname === "/dashboard/compare"}>
                     compare
                 </NavLink>
-                <NavLink href={`/dashboard/favorites${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
+                <NavLink href={`/dashboard/favorites?${search.toString()}`}
                  isActive={pathname === "/dashboard/favorites"} number={favorites.length}>
                     Favorites
                 </NavLink>
-                <NavLink href={`/dashboard/log${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
+                <NavLink href={`/dashboard/log?${search.toString()}`}
                  isActive={pathname === "/dashboard/log"} number={logEntries.length}>
                     Log
                 </NavLink>
             </div>
             <div className="md:hidden relative">
                 <NavMobile pathname={pathname} favLength={favorites.length} logLength={logEntries.length}>
-                    <NavLink href={`/dashboard/${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
+                    <NavLink href={`/dashboard/?${search.toString()}`}
                         isActive={pathname === "/"} isMobile={true}>
                         history
                     </NavLink>
-                    <NavLink href={`/dashboard/compare${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
+                    <NavLink href={`/dashboard/compare?${search.toString()}`}
                      isActive={pathname === "/compare"} isMobile={true}>
                         compare
                     </NavLink>
-                    <NavLink href={`/dashboard/favorites${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
+                    <NavLink href={`/dashboard/favorites?${search.toString()}`}
                     isActive={pathname === "/favorites"} number={favorites.length} isMobile={true}>
                         Favorites
                     </NavLink>
-                    <NavLink href={`/dashboard/log${search?.toString() ? "?" : "" }${search ? search.toString(): ""}`}
+                    <NavLink href={`/dashboard/log?${search.toString()}`}
                     isActive={pathname === "/log"} number={logEntries.length} isMobile={true}>
                         Log
                     </NavLink>
