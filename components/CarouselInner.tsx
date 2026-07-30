@@ -88,9 +88,7 @@ function CarouselInner({ratesData, scroller}:
             aria-live="polite"
         >
           {data.map((item) => {
-            if(item !== null){
-                return <CarouselItem key={item.base + item.quote} {...item} />
-            }
+            return item ? <CarouselItem key={item.base + item.quote} {...item} /> : null
           })}  
         </div>
     )
