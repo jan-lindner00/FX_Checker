@@ -41,6 +41,8 @@
   }
   :focus{
     outline: none;
+  }
+  :focus-visible{
     box-shadow: 0 0 0 2px #202022, 0 0 0 4px #cef739;
   }
   ::backdrop{
@@ -50,15 +52,15 @@
 }
 
 @layer components{
-  .amount-container:has(input:focus) input[type="number"],
-  .currency-search input,
-  .currency-select input{
+  .amount-container:has(input:focus-visible) input[type="number"],
+  .currency-search input:focus-visible,
+  .currency-select input:focus-visible{
     box-shadow: none;
   }
-  .amount-container:has(input:focus) p,
-  .currency-search:has(input:focus),
-  .currency-select:has(input:focus){
-    border: 2px solid #cef739;
+  .amount-container:has(input:focus-visible) p,
+  .currency-search:has(input:focus-visible),
+  .currency-select:has(input:focus-visible){
+    box-shadow: 0 0 0 2px #202022, 0 0 0 4px #cef739;
   }
   div.scroller[data-animated="true"]{
     overflow: hidden;
