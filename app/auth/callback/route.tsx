@@ -1,6 +1,7 @@
 import { isSafeNext } from '@/app/lib/utils'
 import { createClient } from '@/app/lib/supabase/server'
-import { NextResponse } from 'next/server' 
+import { NextResponse } from 'next/server'
+import { captureException } from '@sentry/nextjs' 
 
 export async function GET(request: Request) {
   const url = new URL(request.url)
@@ -14,7 +15,9 @@ export async function GET(request: Request) {
   if (code) {
     const supabase = await createClient()
     const { error } = await supabase.auth.exchangeCodeForSession(code)
- 
+    if (error) {
+      captureException(error, { extra: { code, next } })
+    }
     if(safeNext === "/auth/link-account-success"){
       await supabase.auth.signOut({scope: "global"})
     }
