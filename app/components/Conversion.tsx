@@ -145,7 +145,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                 </div>
                             </label>
                         </form>
-                        <CurrencyDropdown startTransition={startTransition} search={"base"} selected={base} />
+                        <CurrencyDropdown startTransition={startTransition} search={"base"} selected={base} base={base} quote={quote} />
                     </div>
                     <button 
                     aria-label="Switch currencies"
@@ -180,7 +180,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                                 </div>
                             </label>
                         </form>
-                        <CurrencyDropdown startTransition={startTransition} search={"quote"} selected={quote} />
+                        <CurrencyDropdown startTransition={startTransition} search={"quote"} selected={quote} base={base} quote={quote} />
                     </div>
                 </div>
                 <div className="bg-neutral-700 

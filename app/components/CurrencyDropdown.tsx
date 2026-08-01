@@ -6,8 +6,8 @@ import ArrowDown from "@/public/images/icon-chevron-down.svg"
 import CurrencyItem from "@/app/components/CurrencyItem";
 import IconSearch from "@/public/images/icon-search.svg"
 
-function CurrencyDropdown({startTransition, search="base", selected}:
-    {startTransition: React.TransitionStartFunction, search: string, selected: string}
+function CurrencyDropdown({startTransition, search="base", selected, base, quote}:
+    {startTransition: React.TransitionStartFunction, search: string, selected: string, base: string, quote: string}
 ){
     const [currenciesArr, setCurrenciesArr] = useState(currencies)
     const [toggle, setToggle] = useState<boolean>(false)
@@ -23,8 +23,10 @@ function CurrencyDropdown({startTransition, search="base", selected}:
         ))
     const debouncedSearch = useDebounce(searchBarVal, 400)
 
-    const popular = currenciesArr.filter(cur => cur.isPopular === true)
-    const others = currenciesArr.filter(cur => cur.isPopular !== true)
+    const filteredCurrencies = search === "base" ? currenciesArr.filter(cur => cur.abbreviation !== base) :
+        currenciesArr.filter(cur => cur.abbreviation !== quote)
+    const popular = filteredCurrencies.filter(cur => cur.isPopular === true)
+    const others = filteredCurrencies.filter(cur => cur.isPopular !== true)
 
     useEffect(()=>{
         if(freshLoad.current){
