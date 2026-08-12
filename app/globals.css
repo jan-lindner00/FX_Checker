@@ -57,10 +57,12 @@
   .currency-select input:focus-visible{
     box-shadow: none;
   }
-  .amount-container:has(input:focus-visible) p,
+  .amount-container:has(input:focus-visible) p{
+    border: 2px solid #cef739;
+  }
   .currency-search:has(input:focus-visible),
   .currency-select:has(input:focus-visible){
-    box-shadow: 0 0 0 2px #202022, 0 0 0 4px #cef739;
+    box-shadow: 0 0 0 2px #0a0a0a, 0 0 0 4px #cef739;
   }
   div.scroller[data-animated="true"]{
     overflow: hidden;
