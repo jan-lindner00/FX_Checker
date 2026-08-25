@@ -160,7 +160,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                         <form 
                             aria-label={`Enter the amount you want to receive in ${quote}`}>
                             <label className="flex flex-col gap-5 text-[.875rem] leading-[1] tracking-[1px] 
-                            text-neutral-100 flex flex-col gap-5 uppercase">
+                            text-neutral-100 uppercase">
                                 Receive
                                 <div className="amount-container relative overflow-hidden mb-[.25rem] cursor-text">
                                     <p aria-live="polite" className="inline-block text-bold tracking-[-.5px]

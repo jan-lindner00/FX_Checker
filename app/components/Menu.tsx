@@ -33,19 +33,19 @@ function Menu({favorites, logEntries}:
             <div className="md:hidden relative">
                 <NavMobile pathname={pathname} favLength={favorites.length} logLength={logEntries.length}>
                     <NavLink href={`/dashboard/?${search.toString()}`}
-                        isActive={pathname === "/"} isMobile={true}>
+                        isActive={pathname === "/dashboard/"} isMobile={true}>
                         history
                     </NavLink>
                     <NavLink href={`/dashboard/compare?${search.toString()}`}
-                     isActive={pathname === "/compare"} isMobile={true}>
+                     isActive={pathname === "/dashboard/compare"} isMobile={true}>
                         compare
                     </NavLink>
                     <NavLink href={`/dashboard/favorites?${search.toString()}`}
-                    isActive={pathname === "/favorites"} number={favorites.length} isMobile={true}>
+                    isActive={pathname === "/dashboard/favorites"} number={favorites.length} isMobile={true}>
                         Favorites
                     </NavLink>
                     <NavLink href={`/dashboard/log?${search.toString()}`}
-                    isActive={pathname === "/log"} number={logEntries.length} isMobile={true}>
+                    isActive={pathname === "/dashboard/log"} number={logEntries.length} isMobile={true}>
                         Log
                     </NavLink>
                 </NavMobile>
