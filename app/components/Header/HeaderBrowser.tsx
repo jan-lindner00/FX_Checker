@@ -69,8 +69,8 @@ export default function HeaderBrowser(){
                     className="flex items-center gap-2 py-1 px-2 rounded-[.5rem] bg-neutral-400 border border-neutral-200"
                     onClick={()=> setToggle(prev => !prev)}
                 >
-                    <Image className="w-5 block" src={IconUser} alt="User icon"/>
-                    <Image className={`w-3 md:w-4 block ${toggle ? "rotate-180" : ""}`} src={ArrowDown} alt={toggle ? "Arrow up": "Arrow down"}/>
+                    <Image className="w-5 block" src={IconUser} alt=""/>
+                    <Image className={`w-3 md:w-4 block ${toggle ? "rotate-180" : ""}`} src={ArrowDown} alt=""/>
                 </button>
             </div>
             {toggle && (

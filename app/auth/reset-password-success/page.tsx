@@ -37,7 +37,7 @@ export default function ResetSuccess(){
                     className="flex items-center gap-[.375rem] text-neutral-200 no-underline text-medium"
                     replace
                 >
-                    <Image src={IconBack} alt="Arrow left" />
+                    <Image src={IconBack} alt="" />
                     Back to sign in
                 </Link>
             </section>

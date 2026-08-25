@@ -32,35 +32,39 @@ function LogItem({id, created_at, base, quote, base_amount, receive_amount, dele
     }
 
     return (
-        <div className="flex justify-between gap-3 md:gap-4 p-3 md:px-4 md:py-5
+        <section className="flex justify-between gap-3 md:gap-4 p-3 md:px-4 md:py-5
          bg-neutral-600 border border-neutral-500 rounded-[.625rem]">
             <div className="flex flex-col md:grid md:grid-cols-[4rem_1fr] items-start md:items-center gap-1 md:gap-4">
-                <p className="text-[.875rem] tracking-[1px] leading-[1.2] text-neutral-200">
+                <p className="text-[.875rem] tracking-[1px] leading-[1.2] text-neutral-200"
+                    aria-label={`Created ${calcTimeSince() === "Now" ? "" : `${calcTimeSince()} ago`}`}
+                >
                     {calcTimeSince()}
                 </p>
-                <div className="leading-[1.2] w-fit flex items-center gap-2 text-[.875rem] text-neutral-0 tracking-[1px] uppercase">
+                <div className="leading-[1.2] w-fit flex items-center gap-2 text-[.875rem] text-neutral-0 tracking-[1px] uppercase"
+                    aria-label={`Conversion of ${base} to ${quote}`}
+                >
                     <p>{base}</p>
                     <Image 
                         className="block" 
-                        src={ArrowRight} alt={"converted to"}
+                        src={ArrowRight} alt=""
                      />
                     <p>{quote}</p>
                 </div>
             </div>
              <div className="flex items-center gap-[.625rem] md:gap-4">
                 <div className="w-fit text-right flex flex-col gap-[calc(2rem/16)] md:flex-row gap-x-5 tracking-[1px] text-[1rem] leading-[1.2]">
-                    <p className="text-neutral-0">{formatCurrency(base_amount)}</p>
-                    <p className="text-lime-500">{formatCurrency(receive_amount)}</p>
+                    <p className="text-neutral-0" aria-label="send amount: ">{formatCurrency(base_amount)}</p>
+                    <p className="text-lime-500" aria-label="receive amount: ">{formatCurrency(receive_amount)}</p>
                 </div>
                 <button 
                     className="h-8 w-8 flex items-center justify-center rounded-[.5rem] hover:bg-neutral-500 border bg-neutral-600 border-neutral-500"
                     onClick={() => deleteEntry(id)}
-                    aria-label="Delete this log entry"
+                    aria-label="Delete log entry"
                 >
-                        <Image src={DeleteIcon} alt="Bin"/>
+                        <Image src={DeleteIcon} alt=""/>
                 </button>
             </div>
-        </div>
+        </section>
     )
 }
 

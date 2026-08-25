@@ -22,10 +22,10 @@ function CompareItem({base, countryCode, abbreviation, rate, name, favorites}:
     )
 
     return (
-        <div className="flex justify-between gap-3 p-3 md:px-4 bg-neutral-600 border border-neutral-500 rounded-[.625rem]">
+        <section className="flex justify-between gap-3 p-3 md:px-4 bg-neutral-600 border border-neutral-500 rounded-[.625rem]">
             <div className="flex items-center gap-[.625rem] md:gap-5">
                 <Image className="block w-5 rounded-full" 
-                src={`/images/flags/${countryCode.toLowerCase()}.webp`} alt={`Flag of ${countryCode}`} width={200} height={200} />
+                src={`/images/flags/${countryCode.toLowerCase()}.webp`} alt="" width={200} height={200} />
                 <div className="leading-[1.2] w-fit flex flex-col gap-[.375rem]">
                     <p className="text-[.875rem] text-neutral-0 tracking-[1px]">{abbreviation}</p>
                     <p className="text-[.75rem] text-neutral-200 tracking-[.5px]">{name}</p>
@@ -41,10 +41,10 @@ function CompareItem({base, countryCode, abbreviation, rate, name, favorites}:
                     onClick={() => handleFavChange(base, abbreviation, isFavorite)}
                     aria-label={isFavorite ? `Remove exchange rate of ${base} to ${abbreviation} from favorites` 
                     : `Add exchange rate of ${base} to ${abbreviation} to favorites`}>
-                        <Image src={isFavorite ? StarFilledLime : StarEmpty} alt={isFavorite ? "Star filled": "Star empty"}/>
+                        <Image src={isFavorite ? StarFilledLime : StarEmpty} alt="" />
                 </button>
             </div>
-        </div>
+        </section>
     )
 }
 

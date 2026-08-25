@@ -8,7 +8,7 @@ export default function Loading(){
             <Image 
                className="w-140" 
                src={SpinningCircle} 
-               alt="Loading animation"
+               alt=""
             />
         </div>
    ) 

@@ -1,6 +1,6 @@
 "use client"
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useId, memo } from "react";
+import { memo } from "react";
 import Image from "next/image";
 import Checkmark from "@/public/images/icon-check.svg"
 
@@ -11,7 +11,6 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
     const searchParams = useSearchParams()
     const router = useRouter()
     const pathname = usePathname()
-    const id = useId()
 
     function setSearchParams(){
         const params = new URLSearchParams(searchParams)
@@ -30,7 +29,6 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
             <div 
                 data-dropdown={search}
                 className="currency-select relative flex items-center justify-between py-2 md:py-3 px-2 hover:border hover:border-neutral-200"
-                id={id}
             >
                 <input
                     data-dropdown={search}
@@ -38,7 +36,7 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                     type="radio"
                     checked={selected}
                     name={`currency-${search}`} 
-                    aria-labelledby={id} 
+                    aria-label={`Select currency ${abbreviation} from country ${abbreviation}`}
                     onChange={setSearchParams}
                  />
                 <div  data-dropdown={search} className="flex items-center gap-3">
@@ -46,7 +44,7 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                         data-dropdown={search}
                         className="w-5 rounded-full pointer-events-none"
                         src={`/images/flags/${countryCode.toLowerCase()}.webp`}
-                        alt={`Flag of ${countryCode}`}
+                        alt=""
                         width={200}
                         height={200}
                     />
@@ -57,7 +55,7 @@ function CurrencyItem({selected, search, abbreviation, countryCode, name, startT
                     data-dropdown={search}
                     className="text-neutral-200 text-[.75rem] leading-[1.2] tracking-[.5px]">{name}</span>
                 </div>
-                {selected && <Image data-dropdown={search} src={Checkmark} alt="Selected" />}
+                {selected && <Image data-dropdown={search} src={Checkmark} alt="" />}
             </div>
         </label>
     )

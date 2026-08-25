@@ -87,7 +87,7 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
                 <Image 
                     className="w-[1.25rem] rounded-full"
                     src={`/images/flags/${selectedCurrency.countryCode.toLowerCase()}.webp`}
-                    alt={`Flag of ${selectedCurrency.countryCode}`}
+                    alt=""
                     width={200}
                     height={200}
                 />
@@ -95,7 +95,7 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
                 <Image
                     className={toggle ? "rotate-180" : ""}
                     src={ArrowDown}
-                    alt={toggle ? "Arrow up" : "Arrow down"}
+                    alt=""
                 />
             </button>
             {toggle && (
@@ -112,10 +112,14 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
                     }
                 }}
                 >
-                    <form data-dropdown={search} className="h-12 w-full mb-[.625rem]">
+                    <form 
+                        data-dropdown={search} 
+                        className="h-12 w-full mb-[.625rem]"
+                        aria-label="This form is for searching for a specific currency that you want to compare"
+                    >
                         <label data-dropdown={search} className="currency-search flex h-full border rounded-[.375rem] border-solid border-neutral-200">
                             <div data-dropdown={search} className="flex items-center px-3">
-                                <Image data-dropdown={search} src={IconSearch} alt="Search Goggles" />
+                                <Image data-dropdown={search} src={IconSearch} alt="" />
                             </div>
                             <input
                                 data-dropdown={search} 
@@ -124,56 +128,62 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
                                     placeholder:tracking-[.5px]"
                                 type="text"
                                 value={searchBarVal}
+                                aria-label="Search currencies..."
                                 onInput={(e) => setSearchBarVal(e.currentTarget.value)}
                                 placeholder="Search currencies..."
                             />
                         </label>
                     </form>
-                    <form>
-                    {popular.length > 0 && (
-                        <>
-                            <div
-                            data-dropdown={search} 
-                            className="flex justify-between p-2 text-neutral-200 text-[.75rem] 
-                            leading-[1.2] tracking-[.5px] border-b border-solid border-neutral-500 uppercase">
-                                <span data-dropdown={search}>Popular</span>
-                                <span data-dropdown={search}>{popular.length}</span>
-                            </div>
-                            {popular.map((currency)=>{
-                                return (
-                                    <CurrencyItem 
-                                        key={currency.abbreviation}
-                                        search={search}
-                                        selected={currency.abbreviation === selectedCurrency.abbreviation}
-                                        startTransition={startTransition}
-                                        {...currency}
-                                    />
-                                )
-                            })}
-                        </>
-                    )}
-                    {others.length > 0 && (
-                        <>
-                            <div 
-                            data-dropdown={search}
-                            className="mt-1 flex justify-between p-2 text-neutral-200 text-[.75rem] 
-                            leading-[1.2] tracking-[.5px] border-b border-solid border-neutral-500 uppercase">
-                                <span data-dropdown={search}>Other currencies</span>
-                                <span data-dropdown={search}>{others.length}</span>
-                            </div>
-                            {others.map((currency)=>{
-                                return (
-                                    <CurrencyItem 
-                                        key={currency.abbreviation} 
-                                        search={search} 
-                                        selected={currency.abbreviation === selectedCurrency.abbreviation} 
-                                        startTransition={startTransition}
-                                        {...currency}
-                                    />
-                                )
-                            })}
-                        </>
-                    )}
+                    <form
+                        aria-label="This form is for selecting the currency you want to compare"
+                        aria-live="polite"
+                    >
+                        {popular.length > 0 && (
+                            <>
+                                <div
+                                    data-dropdown={search} 
+                                    className="flex justify-between p-2 text-neutral-200 text-[.75rem] 
+                                    leading-[1.2] tracking-[.5px] border-b border-solid border-neutral-500 uppercase"
+                                >
+                                    <span data-dropdown={search}>Popular</span>
+                                    <span data-dropdown={search}>{popular.length}</span>
+                                </div>
+                                {popular.map((currency)=>{
+                                    return (
+                                        <CurrencyItem 
+                                            key={currency.abbreviation}
+                                            search={search}
+                                            selected={currency.abbreviation === selectedCurrency.abbreviation}
+                                            startTransition={startTransition}
+                                            {...currency}
+                                        />
+                                    )
+                                })}
+                            </>
+                        )}
+                        {others.length > 0 && (
+                            <>
+                                <div 
+                                    data-dropdown={search}
+                                    className="mt-1 flex justify-between p-2 text-neutral-200 text-[.75rem] 
+                                    leading-[1.2] tracking-[.5px] border-b border-solid border-neutral-500 uppercase"
+                                >
+                                    <span data-dropdown={search}>Other currencies</span>
+                                    <span data-dropdown={search}>{others.length}</span>
+                                </div>
+                                {others.map((currency)=>{
+                                    return (
+                                        <CurrencyItem 
+                                            key={currency.abbreviation} 
+                                            search={search} 
+                                            selected={currency.abbreviation === selectedCurrency.abbreviation} 
+                                            startTransition={startTransition}
+                                            {...currency}
+                                        />
+                                    )
+                                })}
+                            </>
+                        )}
                     </form>
                 </div>
             )}

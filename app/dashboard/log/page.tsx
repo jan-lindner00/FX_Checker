@@ -71,7 +71,7 @@ export default function Log(){
                         aria-disabled={isPending}
                         aria-label="Export log to .csv"
                         >
-                            <Image src={IconDownload} alt="Download" className="w-5" />
+                            <Image src={IconDownload} alt="" className="w-5" />
                         </button>
                         <button className="px-3 py-2 text-[.75rem] 
                         tracking-[.5px] text-neutral-200 bg-neutral-600 hover:bg-neutral-700 border border-neutral-400 rounded-[.5rem]"

@@ -70,14 +70,14 @@ function FavoriteItem({base, quote, removeFavorite}:
                     compareFavorites()
                 }
             }}
-            aria-label={`Compare ${base} and ${quote}`}
+            aria-label={`Exchange rate from ${base} to ${quote}`}
             className="flex justify-between gap-3 p-3 md:px-4 bg-neutral-600 border border-neutral-500 rounded-[.625rem]">
             <div className="flex items-center gap-[.625rem] md:gap-5">
                 <div className="leading-[1.2] w-fit flex items-center gap-2 text-[.875rem] text-neutral-0 tracking-[1px] uppercase">
                     <p>{base}</p>
                     <Image 
                         className="block" 
-                        src={ArrowRight} alt={"converted to"}
+                        src={ArrowRight} alt=""
                      />
                     <p>{quote}</p>
                 </div>
@@ -97,7 +97,7 @@ function FavoriteItem({base, quote, removeFavorite}:
                         removeFavorite(base, quote)
                     }}
                     aria-label={`Remove conversion of ${base} to ${quote} from favorites`}>
-                        <Image src={StarFilledLime} alt="Star filled"/>
+                        <Image src={StarFilledLime} alt=""/>
                 </button>
             </div>
         </div>

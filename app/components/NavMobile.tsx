@@ -47,12 +47,13 @@ function NavMobile({children, pathname, favLength, logLength}:
             uppercase rounded-[.5rem] px-3 w-full border border-neutral-400"
             aria-expanded={toggle}
             aria-controls={id}
+            aria-label="Open menu"
             onClick={() => setToggle(prev => !prev)}
             >
                 <span className={stylesSpan} data-fav={favLength} data-log={logLength}>
                     {getActiveText()}
                 </span>
-                <Image className={clsx(toggle && "rotate-180", "w-4")} src={ArrowDown} alt={toggle ? "Arrow up" : "Arrow down"}/>
+                <Image className={clsx(toggle && "rotate-180", "w-4")} src={ArrowDown} alt="" />
             </button>
             {toggle && (
                 <nav data-menu id={id} className="shadow-menu p-2 rounded-[.75rem] absolute

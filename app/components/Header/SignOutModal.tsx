@@ -30,8 +30,9 @@ export default function SignOutModal({setModalOpen, modalRef}:
                 <button 
                     className="absolute top-7 right-7 bg-none border-none rounded-full"
                     onClick={() => setModalOpen(false)}
+                    aria-label="Close modal"
                 >
-                    <Image src={IconClose} alt="Close" />
+                    <Image src={IconClose} alt="" />
                 </button>
                 <div>
                     <h2 className="text-[1.5rem] leading-[1.2] font-semibold tracking-[-.5px] pb-5">Sign out?</h2>

@@ -110,7 +110,7 @@ export default function SignUp(){
                 </label>
                 {error && (
                     <p className="flex items-center gap-3 text-red-500" role="alert">
-                        <Image className="w-4" src={IconError} alt="Error"/>
+                        <Image className="w-4" src={IconError} alt=""/>
                         {error.message}
                     </p>
                 )}

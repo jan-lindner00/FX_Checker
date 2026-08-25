@@ -21,7 +21,7 @@ export default function Login(){
                             className="w-full flex items-center justify-center gap-4
                             bg-neutral-700 border border-neutral-500 rounded-[.5rem] p-4 mb-8"
                             >
-                                <Image  className="w-8" src={IconGoogle} alt="Google logo" />
+                                <Image  className="w-8" src={IconGoogle} alt="" />
                                 Continue with Google
                         </button>
                     </form>
@@ -29,7 +29,7 @@ export default function Login(){
                         <Link href="/login/email" className="w-full flex items-center justify-center gap-4
                             bg-neutral-700 border border-neutral-500 rounded-[.5rem] p-4 visited:text-neutral-0
                             no-underline visited:no-underline">
-                            <Image className="w-8" src={IconEmail} alt="Email icon" />
+                            <Image className="w-8" src={IconEmail} alt="" />
                             Continue with Email
                         </Link>
                     </div>

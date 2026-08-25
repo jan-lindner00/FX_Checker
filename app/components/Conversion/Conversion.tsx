@@ -205,7 +205,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                             aria-label="Add this pair to favorites"
                             onClick={() => handleFavChange(base, quote, isFavorite)}
                         >
-                            <Image src={isFavorite ? StarFilled : StarEmpty} alt={isFavorite ? "Star filled" : "Star empty"} />
+                            <Image src={isFavorite ? StarFilled : StarEmpty} alt="" />
                             {isFavorite ? "Favorited" : "Favorite"}
                         </button>
                         <button className="flex items-center gap-[.625rem] px-3 py-2 rounded-[.5rem] text-neutral-200 bg-neutral-700

@@ -20,7 +20,7 @@ export default function Login(){
                             className="w-full flex items-center justify-center gap-4
                             bg-neutral-700 border border-neutral-500 rounded-[.5rem] p-4"
                             >
-                                <Image  className="w-8" src={IconGoogle} alt="Google logo" />
+                                <Image  className="w-8" src={IconGoogle} alt="" />
                                 Link to Google
                         </button>
                     </form>
