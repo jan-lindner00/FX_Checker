@@ -51,7 +51,7 @@ export default function Compare(){
 
     if(isFetchError){
         return (
-            <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
+            <div role="status" className="py-[2.5rem] text-center flex flex-col items-center gap-4">
                 <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Failed to fetch history data</h3>
                 <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
                     {`We couldn't load comparison data for ${baseUpper} from Frankfurter API. Please try again.`}
@@ -62,7 +62,7 @@ export default function Compare(){
 
     if(rates.length === 0){
          return(
-            <div className="py-[2.5rem] text-center flex flex-col items-center gap-4">
+            <div role="status" className="py-[2.5rem] text-center flex flex-col items-center gap-4">
                 <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">No comparison available</h3>
                 <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
                     {"Please wait while the comparison data is loading."}

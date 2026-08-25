@@ -6,7 +6,7 @@ export default function Loading(){
          <div className="h-dvh flex items-center justify-center text-lg text-neutral-0">
             <h1 className="sr-only">Loading...</h1>
             <Image 
-               className="w-140" 
+               className="w-40" 
                src={SpinningCircle} 
                alt=""
             />

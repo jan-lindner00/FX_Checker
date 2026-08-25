@@ -59,7 +59,7 @@ function FavoriteItem({base, quote, removeFavorite}:
     (favData.changes < 0.005 && favData.changes > - 0.005) && "text-neutral-0")
 
     return (
-        <div
+        <section
             role="button"
             onClick={compareFavorites}
             aria-pressed={isPending}
@@ -100,7 +100,7 @@ function FavoriteItem({base, quote, removeFavorite}:
                         <Image src={StarFilledLime} alt=""/>
                 </button>
             </div>
-        </div>
+        </section>
     )
 }
 
