@@ -55,10 +55,10 @@ function NavMobile({children, pathname, favLength, logLength}:
                 <Image className={clsx(toggle && "rotate-180", "w-4")} src={ArrowDown} alt={toggle ? "Arrow up" : "Arrow down"}/>
             </button>
             {toggle && (
-                <div data-menu id={id} className="shadow-menu p-2 rounded-[.75rem] absolute
+                <nav data-menu id={id} className="shadow-menu p-2 rounded-[.75rem] absolute
                 bg-neutral-600 bottom-[0px] left-0 w-full flex flex-col translate-y-[calc(100%+0.5rem)]">
                     {children}
-                </div>
+                </nav>
             )}
         </>
     )

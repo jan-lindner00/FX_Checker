@@ -14,7 +14,7 @@ function Menu({favorites, logEntries}:
 
     return(
         <section className="w-full h-full mt-[2.5rem] md:mt-[calc(2.66rem)] text-neutral-0 text-[1rem] leading-[1.2] tracking-[1px]">
-            <div className="border-b border-neutral-600 h-8 w-full hidden md:block">
+            <nav className="border-b border-neutral-600 h-8 w-full hidden md:block">
                 <NavLink href={`/dashboard/?${search.toString()}`} isActive={pathname === "/dashboard"}>
                     history
                 </NavLink>
@@ -29,7 +29,7 @@ function Menu({favorites, logEntries}:
                  isActive={pathname === "/dashboard/log"} number={logEntries.length}>
                     Log
                 </NavLink>
-            </div>
+            </nav>
             <div className="md:hidden relative">
                 <NavMobile pathname={pathname} favLength={favorites.length} logLength={logEntries.length}>
                     <NavLink href={`/dashboard/?${search.toString()}`}
