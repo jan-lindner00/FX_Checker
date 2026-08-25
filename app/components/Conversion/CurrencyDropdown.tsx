@@ -116,6 +116,7 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
                         data-dropdown={search} 
                         className="h-12 w-full mb-[.625rem]"
                         aria-label="This form is for searching for a specific currency that you want to compare"
+                        onSubmit={(e)=>{e.preventDefault()}}
                     >
                         <label data-dropdown={search} className="currency-search flex h-full border rounded-[.375rem] border-solid border-neutral-200">
                             <div data-dropdown={search} className="flex items-center px-3">
@@ -137,6 +138,7 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
                     <form
                         aria-label="This form is for selecting the currency you want to compare"
                         aria-live="polite"
+                        onSubmit={(e)=>{e.preventDefault()}}
                     >
                         {popular.length > 0 && (
                             <>
