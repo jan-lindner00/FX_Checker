@@ -2,7 +2,7 @@
 import {useActionState, useState, useEffect, useRef} from "react"
 import Link from "next/link"
 import Image from "next/image"
-import AuthWrapper from "@/app/components/AuthWrapper"
+import AuthWrapper from "@/app/components/Authentication/AuthWrapper"
 import IconError from "@/public/images/icon-error.svg"
 import { resendConfirmationEmail} from "@/app/lib/auth"
 import clsx from "clsx"

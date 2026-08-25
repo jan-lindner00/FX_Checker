@@ -3,7 +3,7 @@ import Image from "next/image"
 import IconGoogle from "@/public/images/icon-google.svg"
 import IconEmail from "@/public/images/icon-email.svg"
 import { signInAnonymously, signInWithOAuth } from "@/app/lib/auth"
-import AuthWrapper from "@/app/components/AuthWrapper"
+import AuthWrapper from "@/app/components/Authentication/AuthWrapper"
 
 export default function Login(){
     

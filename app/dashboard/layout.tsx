@@ -1,6 +1,6 @@
 import Image from "next/image"
 import { Suspense } from "react"
-import Header from "@/app/components/Header"
+import Header from "@/app/components/Header/Header"
 import Logo from "@/public/images/logo.svg"
 import MainBrowser from "@/app/components/MainBrowser"
 import { LogProvider, FavoritesProvider } from "@/app/context/SubscribeContext" 

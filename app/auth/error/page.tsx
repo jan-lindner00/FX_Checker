@@ -1,4 +1,4 @@
-import AuthWrapper from "@/app/components/AuthWrapper";
+import AuthWrapper from "@/app/components/Authentication/AuthWrapper";
 import Link from "next/link";
 
 export default async function AuthError(){
