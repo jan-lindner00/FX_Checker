@@ -1,6 +1,6 @@
 "use client"
 import type { CurrencyCompare, Rate } from "@/app/lib/types";
-import {useState, useEffect } from "react"
+import {useState, useEffect, useMemo } from "react"
 import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/app/lib/utils";
 import CompareItem from "@/app/components/Compare/CompareItem";
 import { useSearchParams } from "next/navigation";
@@ -13,7 +13,9 @@ export default function Compare(){
     const quote = params.get("quote")
     const baseUpper = base && currencyAbbreviations.includes(base.toUpperCase()) ? base.toUpperCase() : "EUR"
     const quoteUpper = quote && currencyAbbreviations.includes(quote.toUpperCase()) ? quote.toUpperCase() : "USD"
-    const filteredCurrencies = compareCurrencies.filter(cur=> !(cur.abbreviation === baseUpper || cur.abbreviation === quoteUpper))
+    const filteredCurrencies = useMemo(()=>{
+        return compareCurrencies.filter(cur=> !(cur.abbreviation === baseUpper || cur.abbreviation === quoteUpper))
+    }, [baseUpper, quoteUpper])
     const [rates, setRates] = useState<CurrencyCompare[]>([])
     const [isFetchError, setIsFetchError] = useState<boolean>(false)
     const favorites = useSubscribeFavorites()
