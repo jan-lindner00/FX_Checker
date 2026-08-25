@@ -101,6 +101,8 @@ Your users should be able to:
 - [Next.js](https://nextjs.org/) - React framework
 - [Tailwind CSS](https://tailwindcss.com/) - For styles
 - [Supabase](https://supabase.com/) - For backend
+- [Frankfurter API](https://frankfurter.dev/) - Exchange rates API
+- [Recharts](https://recharts.github.io/) - Charting libary
 
 ### What I learned
 
