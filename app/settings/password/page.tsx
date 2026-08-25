@@ -112,10 +112,9 @@ export default function ChangePassword(){
                 <p className="text-neutral-200 flex items-center flex-wrap gap-2 self-center">
                     {"Don't want to change?"} 
                     <Link
-                        className="text-neutral-0 visited:text-neutral-0 underline
-                        underline-offset-4"
+                        className={`text-neutral-0 visited:text-neutral-0 underline
+                        underline-offset-4 ${isPending ? "link-disabled" : ""}`}
                         href="/dashboard"
-                        style={isPending ? {pointerEvents: "none"} : undefined}
                         replace
                     >
                         Back to dashboard

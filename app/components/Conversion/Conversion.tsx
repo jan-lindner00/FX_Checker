@@ -4,7 +4,7 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates, trySupabase } from "@/app/lib/utils";
-import CurrencyDropdown from "@/app/components/CurrencyDropdown";
+import CurrencyDropdown from "@/app/components/Conversion/CurrencyDropdown";
 import useDebounce from "@/app/lib/hooks/useDebounce";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilled from "@/public/images/icon-star-filled.svg"

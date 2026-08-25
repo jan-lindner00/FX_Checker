@@ -107,5 +107,9 @@
   }
 }
 
-
+@layer utilities{
+  .link-disabled{
+    pointer-events: none;
+  }
+}
 

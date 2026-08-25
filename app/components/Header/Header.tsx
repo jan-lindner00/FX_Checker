@@ -1,5 +1,5 @@
 import Carousel from "@/app/components/Carousel/Carousel"
-import HeaderBrowser from "../HeaderBrowser"
+import HeaderBrowser from "./HeaderBrowser"
 import { Suspense } from "react"
 
 export default function Header(){

@@ -1,7 +1,7 @@
 import type { Rate, CarouselData } from "@/app/lib/types"
 import { Temporal } from "@js-temporal/polyfill"
 import { fetchRates } from "@/app/lib/utils"
-import CarouselBrowser from "@/app/components/CarouselBrowser"
+import CarouselBrowser from "@/app/components/Carousel/CarouselBrowser"
 import { captureException } from "@sentry/nextjs";
 
 export default async function Carousel(){

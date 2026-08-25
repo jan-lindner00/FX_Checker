@@ -2,7 +2,7 @@
 import type { CurrencyCompare, Rate } from "@/app/lib/types";
 import {useState, useEffect } from "react"
 import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/app/lib/utils";
-import CompareItem from "@/app/components/CompareItem";
+import CompareItem from "@/app/components/Compare/CompareItem";
 import { useSearchParams } from "next/navigation";
 import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription";
 import { captureException } from "@sentry/nextjs";

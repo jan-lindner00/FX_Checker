@@ -3,7 +3,7 @@ import {useState, useEffect, useRef, useId, memo} from "react"
 import { currencies } from "@/app/lib/utils";
 import useDebounce from "@/app/lib/hooks/useDebounce";
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
-import CurrencyItem from "@/app/components/CurrencyItem";
+import CurrencyItem from "@/app/components/Conversion/CurrencyItem";
 import IconSearch from "@/public/images/icon-search.svg"
 
 function CurrencyDropdown({startTransition, search="base", selected, base, quote}:

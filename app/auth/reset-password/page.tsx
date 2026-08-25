@@ -78,10 +78,9 @@ export default function ResetPassword(){
                     {isPending ? "Sending reset link..." : "Send reset link"}
                 </button>
                 <Link
-                    className="text-neutral-0 visited:text-neutral-0 underline
-                    underline-offset-4 self-center"
+                    className={`text-neutral-0 visited:text-neutral-0 underline
+                    underline-offset-4 self-center ${isPending ? "link-disabled" : ""}`}
                     href="/login"
-                    style={isPending ? {pointerEvents: "none"} : undefined}
                     replace
                 >
                     Back to sign in

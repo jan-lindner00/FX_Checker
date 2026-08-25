@@ -76,9 +76,8 @@ export default function LoginEmail(){
                     />
                 </label>
                 <Link 
-                    className="text-neutral-100 visited-text-neutral-100 no-underline self-end" 
+                    className={`text-neutral-100 visited-text-neutral-100 no-underline self-end ${isPending ? "link-disabled" : ""}`}
                     href="/auth/reset-password" 
-                    style={isPending ? {pointerEvents: "none"} : undefined}
                     replace
                 >
                     Forgot password?
@@ -101,10 +100,9 @@ export default function LoginEmail(){
                 <p className="text-neutral-200 flex items-center flex-wrap gap-2 self-center">
                     {"Can't sign in?"} 
                     <Link
-                        className="text-neutral-0 visited:text-neutral-0 underline
-                        underline-offset-4"
+                        className={`text-neutral-0 visited:text-neutral-0 underline
+                        underline-offset-4 ${isPending ? "link-disabled" : ""}`}
                         href="/login"
-                        style={isPending ? {pointerEvents: "none"} : undefined}
                         replace
                     >
                         Use another method

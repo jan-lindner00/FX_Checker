@@ -126,10 +126,9 @@ export default function SignUp(){
                 <p className="text-neutral-200 flex items-center flex-wrap gap-2 self-center">
                     Already have an account? 
                     <Link
-                        className="text-neutral-0 visited:text-neutral-0 underline
-                        underline-offset-4"
+                        className={`text-neutral-0 visited:text-neutral-0 underline
+                        underline-offset-4 ${isPending ? "link-disabled" : ""}`}
                         href="/login"
-                        style={isPending ? {pointerEvents: "none"} : undefined}
                         replace
                     >
                         Sign in
