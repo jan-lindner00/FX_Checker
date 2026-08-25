@@ -52,7 +52,7 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             if(isNaN(parseFloat(debouncedReceiveAmount))){
                 return setBaseAmount("")
             }
-            const amount = rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
+            const amount = data[0].rate > 0 ? (parseFloat(debouncedReceiveAmount) / data[0].rate).toFixed(2) : ""
             dontUpdateReceive.current = true
             setBaseAmount(amount)
         }catch(error){
