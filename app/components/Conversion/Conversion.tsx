@@ -3,7 +3,9 @@ import { useState, useEffect, useRef, useTransition, memo} from "react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import clsx from "clsx";
-import { formatCurrency, calcSetAmount, currencyAbbreviations, handleFavChange, fetchRates, trySupabase } from "@/app/lib/utils";
+import { formatCurrency, calcSetAmount, currencyAbbreviations } from "@/app/lib/currencies";
+import { handleFavChange, trySupabase } from "@/app/lib/queries";
+import { fetchRates } from "@/app/lib/rates";
 import CurrencyDropdown from "@/app/components/Conversion/CurrencyDropdown";
 import useDebounce from "@/app/lib/hooks/useDebounce";
 import StarEmpty from "@/public/images/icon-star.svg"

@@ -2,7 +2,7 @@ import { LogEntry} from "@/app/lib/types";
 import Image from "next/image";
 import DeleteIcon from "@/public/images/icon-delete.svg"
 import ArrowRight from "@/public/images/icon-arrow-right.svg"
-import { formatCurrency } from "@/app/lib/utils";
+import { formatCurrency } from "@/app/lib/currencies";
 import { Temporal } from "@js-temporal/polyfill";
 import { memo } from "react";
 

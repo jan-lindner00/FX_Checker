@@ -5,7 +5,7 @@ import { CarouselData, Favorite, Rate } from "@/app/lib/types"
 import clsx from "clsx";
 import { useEffect, useState, memo, useTransition } from "react";
 import { Temporal } from "@js-temporal/polyfill";
-import { fetchRates } from "@/app/lib/utils";
+import { fetchRates } from "@/app/lib/rates";
 import { usePathname, useRouter } from "next/navigation";
 import { captureException } from "@sentry/nextjs";
 
@@ -25,8 +25,6 @@ function FavoriteItem({base, quote, removeFavorite}:
             replace(`${pathname}?${searchParams.toString()}`)
         })
     }
-
-    
 
     useEffect(()=>{
         const controller = new AbortController()

@@ -2,7 +2,7 @@
 import { useCallback } from "react"
 import FavoriteItem from "@/app/components/Favorites/FavoriteItem"
 import supabaseClient from "@/app/lib/supabase/client"
-import { trySupabase } from "@/app/lib/utils"
+import { trySupabase } from "@/app/lib/queries"
 import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription"
 
 export default function Favorites(){

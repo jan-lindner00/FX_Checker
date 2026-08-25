@@ -1,6 +1,6 @@
 import Image from "next/image";
 import {useState, useEffect, useRef, useId, memo} from "react"
-import { currencies } from "@/app/lib/utils";
+import { currencies } from "@/app/lib/currencies";
 import useDebounce from "@/app/lib/hooks/useDebounce";
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
 import CurrencyItem from "@/app/components/Conversion/CurrencyItem";

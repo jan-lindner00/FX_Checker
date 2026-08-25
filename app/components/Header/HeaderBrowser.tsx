@@ -7,7 +7,8 @@ import Logo from "@/public/images/logo.svg"
 import IconUser from "@/public/images/icon-user.svg"
 import ArrowDown from "@/public/images/icon-chevron-down.svg"
 import { UserData } from "@/app/lib/types"
-import { getInitials, trySupabase } from "@/app/lib/utils"
+import { getInitials} from "@/app/lib/utils"
+import { trySupabase } from "@/app/lib/queries"
 import SignOutModal from "@/app/components/Header/SignOutModal"
 
 export default function HeaderBrowser(){

@@ -46,21 +46,18 @@ function HistoryBrowserComponent({historyProps}: {historyProps: HistoryProps}){
                         <HistoryTimeButton 
                             timeline={historyProps.timeline} 
                             btnTime="week"
-                            startTransition={startTransition}
                             setTimeline={historyProps.setTimeline}
                         >
                                 1W
                         </HistoryTimeButton>
-                        <HistoryTimeButton 
-                            startTransition={startTransition} 
+                        <HistoryTimeButton  
                             timeline={historyProps.timeline} 
                             btnTime="month"
                             setTimeline={historyProps.setTimeline}    
                         >
                             1M
                         </HistoryTimeButton>
-                        <HistoryTimeButton 
-                            startTransition={startTransition} 
+                        <HistoryTimeButton  
                             timeline={historyProps.timeline} 
                             btnTime="3months"
                             setTimeline={historyProps.setTimeline}
@@ -68,7 +65,6 @@ function HistoryBrowserComponent({historyProps}: {historyProps: HistoryProps}){
                             3M
                         </HistoryTimeButton>
                         <HistoryTimeButton 
-                            startTransition={startTransition} 
                             timeline={historyProps.timeline} 
                             btnTime="6months"
                             setTimeline={historyProps.setTimeline}
@@ -76,7 +72,6 @@ function HistoryBrowserComponent({historyProps}: {historyProps: HistoryProps}){
                             6M
                         </HistoryTimeButton>
                         <HistoryTimeButton 
-                            startTransition={startTransition} 
                             timeline={historyProps.timeline} 
                             btnTime="year"
                             setTimeline={historyProps.setTimeline}    
@@ -84,7 +79,6 @@ function HistoryBrowserComponent({historyProps}: {historyProps: HistoryProps}){
                             1Y
                         </HistoryTimeButton>
                         <HistoryTimeButton 
-                            startTransition={startTransition} 
                             timeline={historyProps.timeline} 
                             btnTime="5years"
                             setTimeline={historyProps.setTimeline}

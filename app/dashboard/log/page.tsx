@@ -4,7 +4,7 @@ import LogItem from "@/app/components/Log/LogItem";
 import { useCallback, useState } from "react";
 import IconDownload from "@/public/images/icon-download.svg"
 import supabaseClient from "@/app/lib/supabase/client";
-import { trySupabase } from "@/app/lib/utils";
+import { trySupabase } from "@/app/lib/queries";
 import { downloadCSV } from "@/app/lib/clientUtils";
 import { useSubscribeLog } from "@/app/lib/hooks/useSubscription";
 

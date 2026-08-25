@@ -1,7 +1,8 @@
 "use client"
 import type { CurrencyCompare, Rate } from "@/app/lib/types";
 import {useState, useEffect, useMemo } from "react"
-import { compareCurrencies, currencyAbbreviations, fetchRates } from "@/app/lib/utils";
+import { compareCurrencies, currencyAbbreviations} from "@/app/lib/currencies";
+import { fetchRates } from "@/app/lib/rates";
 import CompareItem from "@/app/components/Compare/CompareItem";
 import { useSearchParams } from "next/navigation";
 import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription";
@@ -42,7 +43,7 @@ export default function Compare(){
         }
 
         getRates()
-        
+
         return () => {
             controller.abort()
         }

@@ -5,7 +5,8 @@ import { useMemo, memo } from "react";
 import StarEmpty from "@/public/images/icon-star.svg"
 import StarFilledLime from "@/public/images/icon-star-filled-lime.svg"
 import clsx from "clsx";
-import { formatCurrency, handleFavChange } from "@/app/lib/utils";
+import { formatCurrency } from "@/app/lib/currencies";
+import { handleFavChange } from "@/app/lib/queries";
 
 function CompareItem({base, countryCode, abbreviation, rate, name, favorites}:
     {base: string, countryCode: CurrencyCompare["countryCode"], abbreviation: CurrencyCompare["abbreviation"],

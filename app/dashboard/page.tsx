@@ -1,7 +1,8 @@
 "use client"
 import {useState, useEffect, useMemo} from "react"
 import { useSearchParams } from "next/navigation";
-import { currencyAbbreviations, fetchRates, getFromParamFetch, getGroupParamFetch } from "@/app/lib/utils";
+import { fetchRates, getFromParamFetch, getGroupParamFetch } from "@/app/lib/rates";
+import { currencyAbbreviations } from "@/app/lib/currencies";
 import HistoryBrowserComponent from "@/app/components/History/HistoryBrowserComponent";
 import type { ChartData, Rate } from "@/app/lib/types";
 import { captureException } from "@sentry/nextjs";

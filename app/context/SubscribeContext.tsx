@@ -1,6 +1,6 @@
 "use client"
 import {useState, useEffect, createContext} from "react"
-import { fetchFavorites, fetchLogEntries } from "@/app/lib/utils"
+import { fetchFavorites, fetchLogEntries } from "@/app/lib/queries"
 import { Favorite, LogEntry } from "@/app/lib/types"
 import {v4 as uuid} from "uuid"
 import supabaseClient from "@/app/lib/supabase/client"
