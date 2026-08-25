@@ -56,7 +56,6 @@ export default function LoginEmail(){
                         name="email" 
                         maxLength={150}
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="email"
                         required
                         />
@@ -70,7 +69,6 @@ export default function LoginEmail(){
                         minLength={6} 
                         maxLength={50} 
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="current-password"
                         required 
                     />

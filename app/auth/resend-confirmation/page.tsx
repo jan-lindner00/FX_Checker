@@ -87,7 +87,6 @@ export default function ResendConfirmation(){
                         name="email" 
                         maxLength={150}
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="email"
                         required
                     />

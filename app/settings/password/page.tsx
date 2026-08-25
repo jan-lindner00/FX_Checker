@@ -61,7 +61,6 @@ export default function ChangePassword(){
                         minLength={6}
                         maxLength={50}
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="current-password"
                         required
                     />
@@ -75,7 +74,6 @@ export default function ChangePassword(){
                         minLength={6}
                         maxLength={50}
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="new-password"
                         required
                     />
@@ -89,7 +87,6 @@ export default function ChangePassword(){
                         minLength={6}
                         maxLength={50}
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="new-password"
                         required
                     />

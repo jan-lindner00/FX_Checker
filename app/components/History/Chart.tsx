@@ -101,7 +101,12 @@ function Chart({chartData, base, quote, timeline}:
           </div>
           <div className="h-[18.625rem]">
             <AreaChart
-              aria-label={`Chart that displays the development of ${base} to ${quote} exchange rate over the last ${timeline}`}
+              aria-description={`Chart that displays the development of ${base} to ${quote} exchange rate over the last ${timeline}. 
+              The chart starts on ${chartDataFormatted[0].time} and the starting value is ${chartDataFormatted[0].rate}.
+              Todays rate is ${chartDataFormatted[chartDataFormatted.length-1].rate}. 
+              The maximum is ${getMedianRate().max} on ${chartDataFormatted.find(data => data.rate === getMedianRate().max)?.time || "unknown"}, 
+              while the minimum value is ${getMedianRate().min} on ${chartDataFormatted.find(data => data.rate === getMedianRate().min)?.time || "unknown"}.
+              The average rate is ${getMedianRate().mid}`}
               style={{width: "100%", height: "18.625rem", background: "#171719"}}
               responsive
               data={chartDataFormatted}

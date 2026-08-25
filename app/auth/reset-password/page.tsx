@@ -57,7 +57,6 @@ export default function ResetPassword(){
                         name="email" 
                         maxLength={150}
                         aria-required="true"
-                        aria-invalid={error !== null}
                         autoComplete="email"
                         required
                     />
