@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 import { useSubscribeFavorites } from "@/app/lib/hooks/useSubscription";
 import { captureException } from "@sentry/nextjs";
 import NoDataAvailable from "@/app/components/NoDataAvailable";
+import { AbortError } from "@/app/lib/rates";
 
 export default function Compare(){
     const params =  useSearchParams()
@@ -40,9 +41,11 @@ export default function Compare(){
                 })
                 setRates(compareData)
             }catch(error){
+                if (error instanceof AbortError && error.name === "AbortError") return
                 captureException(error)
                 setIsFetchError(true)
             }finally{
+                if (controller.signal.aborted) return
                 setIsLoading(false)
             }
         }

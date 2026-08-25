@@ -20,6 +20,13 @@ export class NetworkError extends Error {
     }
 } 
 
+export class AbortError extends Error {
+    constructor(message: string, public cause?: unknown){
+        super(message)
+        this.name = "AbortError"
+    }
+} 
+
 export async function fetchRates<T>({base, quotes, from, group, controller}: FetchRatesParams, cache=false): Promise<T>{
     let lastError: unknown
     const retries = 2
@@ -76,7 +83,7 @@ export async function fetchRates<T>({base, quotes, from, group, controller}: Fet
 
            if(isFinalAttempt){
                 const finalError = isAbort
-                    ? new NetworkError(`Request timed out after ${timeOutMs}ms`, error)
+                    ? new AbortError(`Request timed out after ${timeOutMs}ms`, error)
                     : error instanceof ApiError
                     ? error
                     : new NetworkError(`Network request failed`, error)

@@ -37,8 +37,8 @@ function HistoryBrowserComponent({historyProps}: {historyProps: HistoryProps}){
                         />
                         <HistoryInfoCard 
                             heading="% change"
-                            value={historyProps.differncePercent}
-                            changed={historyProps.differncePercent}
+                            value={historyProps.differencePercent}
+                            changed={historyProps.differencePercent}
                             percent={true}
                         />
                     </div>

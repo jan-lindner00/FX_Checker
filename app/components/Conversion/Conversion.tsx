@@ -216,8 +216,8 @@ function Conversion({favorites}: {favorites: Favorite[]}){
                          border border-neutral-300 hover:border-lime-500 hover:bg-lime-800 hover:text-neutral-0 uppercase disabled:cursor-not-allowed"
                             aria-label="Log this conversion"
                             onClick={handleLogEntry}
-                            disabled={parseFloat(debouncedBaseAmount) <= 0 || isNaN(parseFloat(debouncedBaseAmount))
-                                || parseFloat(debouncedReceiveAmount) <= 0 || isNaN(parseFloat(debouncedReceiveAmount))
+                            disabled={parseFloat(baseAmount) <= 0 || isNaN(parseFloat(baseAmount))
+                                || parseFloat(receiveAmount) <= 0 || isNaN(parseFloat(receiveAmount))
                             }
                         >
                             Log Conversion

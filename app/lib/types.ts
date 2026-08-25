@@ -44,7 +44,7 @@ export type HistoryProps = {
     rateOpen: number,
     rateLatest: number,
     difference: number,
-    differncePercent: number,
+    differencePercent: number,
     chartData: ChartData[],
     timeline: string
     setTimeline: React.Dispatch<SetStateAction<"month" | "week" | "3months" | "6months" | "year" | "5years">>

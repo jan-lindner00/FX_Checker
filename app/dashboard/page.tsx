@@ -7,6 +7,7 @@ import HistoryBrowserComponent from "@/app/components/History/HistoryBrowserComp
 import type { ChartData, Rate } from "@/app/lib/types";
 import { captureException } from "@sentry/nextjs";
 import NoDataAvailable from "../components/NoDataAvailable";
+import { AbortError } from "@/app/lib/rates";
 
 export default function History() {
   const params = useSearchParams()
@@ -16,7 +17,7 @@ export default function History() {
   const quoteUpper = quote && currencyAbbreviations.includes(quote.toUpperCase()) ? quote.toUpperCase() : "USD"
   const [timeline, setTimeline] = useState<"week" | "month" | "3months" | "6months" | "year" | "5years">("week")
   const [chartData, setChartData] = useState<ChartData[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(true)
   const [isFetchError, setIsFetchError] = useState<boolean>(false)
   const rateOpen = chartData[0]?.rate || 0 
   const rateLatest = chartData[chartData.length-1]?.rate || 0
@@ -32,7 +33,7 @@ export default function History() {
       rateOpen: rateOpen,
       rateLatest: rateLatest,
       difference: difference,
-      differncePercent: differencePercent,
+      differencePercent: differencePercent,
       chartData: chartData,
       timeline: timeline,
       setTimeline: setTimeline
@@ -58,9 +59,11 @@ export default function History() {
           setChartData(mappedData)
           
         }catch(error){
+          if (error instanceof AbortError && error.name === "AbortError") return
           captureException(error)
           setIsFetchError(true)
         }finally{
+          if (controller.signal.aborted) return
           setIsLoading(false)
         }
     }
@@ -84,7 +87,7 @@ export default function History() {
     return(
       <NoDataAvailable 
           heading="Failed to fetch history data"
-          text={`We couldn't load fetch history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
+          text={`We couldn't load rate history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
         />
     )
   }
