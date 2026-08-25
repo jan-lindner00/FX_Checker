@@ -47,7 +47,7 @@ function NavMobile({children, pathname, favLength, logLength}:
             uppercase rounded-[.5rem] px-3 w-full border border-neutral-400"
             aria-expanded={toggle}
             aria-controls={id}
-            aria-label="Open menu"
+            aria-label={toggle ? "Close navigation toggle" : "Open navigation menu"}
             onClick={() => setToggle(prev => !prev)}
             >
                 <span className={stylesSpan} data-fav={favLength} data-log={logLength}>
