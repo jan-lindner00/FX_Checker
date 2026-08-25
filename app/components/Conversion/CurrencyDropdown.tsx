@@ -40,20 +40,19 @@ function CurrencyDropdown({startTransition, search="base", selected, base, quote
     }, [toggle])
 
     useEffect(()=>{
-        if(freshLoad.current){
-            freshLoad.current = false
-            return
-        }
-        setCurrenciesArr(() => {
-            if(debouncedSearch === ""){
-                return currencies
-            }
-            const newCurArr = currencies.filter((cur)=>{
-                return cur.abbreviation.toLowerCase().includes(debouncedSearch.toLowerCase()) || cur.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+        function filterCurrencyArray(debouncedSearch: string){
+            setCurrenciesArr(() => {
+                if(debouncedSearch === ""){
+                    return currencies
+                }
+                const newCurArr = currencies.filter((cur)=>{
+                    return cur.abbreviation.toLowerCase().includes(debouncedSearch.toLowerCase()) || cur.name.toLowerCase().includes(debouncedSearch.toLowerCase())
+                })
+                return newCurArr
             })
-            return newCurArr
-        })
-
+        }
+        
+        filterCurrencyArray(debouncedSearch)
     }, [debouncedSearch])
     
     useEffect(()=>{
