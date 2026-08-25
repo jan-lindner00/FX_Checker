@@ -29,10 +29,11 @@ function FavoriteItem({base, quote, removeFavorite}:
     
 
     useEffect(()=>{
+        const controller = new AbortController()
         async function fetchFavData(){
             const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
             try {
-                const data = await fetchRates({base: base, quotes: quote, from: dateStart}) as Rate[]
+                const data = await fetchRates({base: base, quotes: quote, from: dateStart, controller}) as Rate[]
                 if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
 
                 const dataObj = {
@@ -46,6 +47,10 @@ function FavoriteItem({base, quote, removeFavorite}:
         }
 
         fetchFavData()
+
+        return () => {
+            controller.abort()
+        }
     }, [])
 
     if(!favData){

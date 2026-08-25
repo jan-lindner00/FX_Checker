@@ -40,11 +40,12 @@ export default function History() {
   )
 
   useEffect(()=>{
+    const controller = new AbortController()
     async function fetchChartData(){
         setIsFetchError(false)
         setIsLoading(true)
         try{
-          const data = await fetchRates({base: baseUpper, quotes: quoteUpper, from: getFromParamFetch(timeline), group: getGroupParamFetch(timeline) }, true) as Rate[]
+          const data = await fetchRates({base: baseUpper, quotes: quoteUpper, from: getFromParamFetch(timeline), group: getGroupParamFetch(timeline), controller}, true) as Rate[]
           if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
 
           const mappedData = data.map((data: Rate) => {
@@ -61,8 +62,11 @@ export default function History() {
           setIsLoading(false)
         }
     }
-    
     fetchChartData()
+
+    return () => {
+      controller.abort()
+    }
   }, [baseUpper, quoteUpper, timeline])
 
   if(isFetchError){

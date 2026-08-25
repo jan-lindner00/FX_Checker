@@ -1,5 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
-import type { LogEntry, FetchRatesParams } from "@/app/lib/types";
+import type { FetchRatesParams } from "@/app/lib/types";
 import supabaseClient from "@/app/lib/supabase/client"; 
 import { addBreadcrumb, withScope, captureException } from "@sentry/nextjs";
 import {  PostgrestError } from "@supabase/supabase-js";
@@ -22,7 +22,7 @@ export class NetworkError extends Error {
     }
 } 
 
-export async function fetchRates<T>({base, quotes, from, group}: FetchRatesParams, cache=false): Promise<T>{
+export async function fetchRates<T>({base, quotes, from, group, controller}: FetchRatesParams, cache=false): Promise<T>{
     let lastError: unknown
     const retries = 2
     const timeOutMs = 20000
@@ -37,7 +37,6 @@ export async function fetchRates<T>({base, quotes, from, group}: FetchRatesParam
     const url = `https://api.frankfurter.dev/v2/rates?${searchParams.toString()}`
 
     for(let attempt = 0; attempt <= retries; attempt++ ){
-        const controller = new AbortController()
         const timeout = setTimeout(()=> controller.abort(), timeOutMs)
         
         addBreadcrumb({

@@ -21,10 +21,11 @@ export default function Compare(){
     const favorites = useSubscribeFavorites()
 
     useEffect(()=>{
+        const controller = new AbortController()
         const getRates = async() => {
             setIsFetchError(false)
             try{
-                const data = await fetchRates({base: baseUpper, quotes: filteredCurrencies.map(cur => cur.abbreviation).join(",")}) as Rate[]
+                const data = await fetchRates({base: baseUpper, quotes: filteredCurrencies.map(cur => cur.abbreviation).join(","), controller}) as Rate[]
                 if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
                 const compareData = filteredCurrencies.map(currency => {
                     const rate = data.find((data: Rate) => data.quote === currency.abbreviation)?.rate || 0
@@ -41,6 +42,10 @@ export default function Compare(){
         }
 
         getRates()
+        
+        return () => {
+            controller.abort()
+        }
     }, [baseUpper, quoteUpper, filteredCurrencies])
 
     if(isFetchError){

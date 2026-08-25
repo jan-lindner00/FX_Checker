@@ -35,9 +35,9 @@ function Conversion({favorites}: {favorites: Favorite[]}){
     const debouncedBaseAmount = useDebounce(baseAmount, 400)
     const debouncedReceiveAmount = useDebounce(receiveAmount, 400)
 
-    async function handleAmountChange(recieving=true){
+    async function handleAmountChange(controller: AbortController, recieving=true){
         try{
-            const data = await fetchRates({base: base, quotes: quote}) as Rate[]
+            const data = await fetchRates({base: base, quotes: quote, controller}) as Rate[]
             if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
     
             setRate(data[0].rate)
@@ -71,7 +71,12 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             dontUpdateReceive.current = false
             return
         }
-        handleAmountChange()
+        const controller = new AbortController()
+        handleAmountChange(controller)
+
+        return () => {
+            controller.abort()
+        }
 
     }, [quote, debouncedBaseAmount])
 
@@ -84,7 +89,12 @@ function Conversion({favorites}: {favorites: Favorite[]}){
             dontUpdateSend.current = false
             return
         }
-        handleAmountChange(false)
+        const controller = new AbortController()
+        handleAmountChange(controller, false)
+
+        return () => {
+            controller.abort()
+        }
     }, [base, debouncedReceiveAmount])
 
 

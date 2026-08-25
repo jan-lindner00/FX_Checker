@@ -11,7 +11,8 @@ export type FetchRatesParams = {
     base?: string,
     quotes?: string,
     from?: string,
-    group?: string | null
+    group?: string | null,
+    controller: AbortController
 }
 
 export type CarouselData =  Rate  & {

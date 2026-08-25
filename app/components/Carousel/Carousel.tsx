@@ -10,7 +10,8 @@ export default async function Carousel(){
 
     const dateStart = Temporal.Now.plainDateISO().subtract({days: 2}).toString()
     try{
-        const data = await fetchRates({base: "EUR", from: dateStart}) as Rate[]
+        const controller = new AbortController()
+        const data = await fetchRates({base: "EUR", from: dateStart, controller}) as Rate[]
         if(!data) throw new Error("Failed to fetch data from Frankfurter API, but response was ok")
         
         const mappedRates = new Map<string, Rate[]>()
