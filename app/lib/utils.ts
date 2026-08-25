@@ -162,9 +162,9 @@ export async function fetchFavorites() {
 export async function fetchLogEntries() {
     const {success, data, error} = await trySupabase(()=>(
         supabaseClient
-        .from("log_entries")
-        .select()
-        .order("created_at", {ascending: false})
+            .from("log_entries")
+            .select()
+            .order("created_at", {ascending: false})
     ))
      
     if(!success || error){
@@ -175,18 +175,22 @@ export async function fetchLogEntries() {
 
 export async function handleFavChange(base: string, abbreviation: string, isFavorite: boolean){
     if(!isFavorite){
-        await supabaseClient
-            .from("favorites")
-            .insert({
-                base: base,
-                quote: abbreviation
-            })
+        await trySupabase(()=>(
+            supabaseClient
+                .from("favorites")
+                .insert({
+                    base: base,
+                    quote: abbreviation
+                })
+        ))
     }else{
-        await supabaseClient
-            .from("favorites")
-            .delete()
-            .eq("base", base)
-            .eq("quote", abbreviation)
+        await trySupabase(()=>(
+            supabaseClient
+                .from("favorites")
+                .delete()
+                .eq("base", base)
+                .eq("quote", abbreviation)
+        ))
     }
 }
 
