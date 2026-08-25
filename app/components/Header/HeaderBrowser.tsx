@@ -65,7 +65,7 @@ export default function HeaderBrowser(){
                     ref={buttonRef}
                     aria-controls={id}
                     aria-expanded={toggle}
-                    aria-label="Open user settings"
+                    aria-label={ toggle ? "Close menu" : "Open menu"}
                     className="flex items-center gap-2 py-1 px-2 rounded-[.5rem] bg-neutral-400 border border-neutral-200"
                     onClick={()=> setToggle(prev => !prev)}
                 >

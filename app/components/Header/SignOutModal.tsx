@@ -65,7 +65,10 @@ export default function SignOutModal({setModalOpen, modalRef, buttonRef}:
                             className="py-2 px-3 flex justify-center items-center rounded-[.5rem]
                             bg-neutral-500 border border-neutral-400 text-neutral-0" 
                             type="button"
-                            onClick={() => setModalOpen(false)}
+                            onClick={() => {
+                                setModalOpen(false)
+                                buttonRef.current?.focus()
+                            }}
                         >
                             Cancel
                         </button>
