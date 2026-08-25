@@ -3,8 +3,12 @@ import IconClose from "@/public/images/icon-cross.svg"
 import Image from "next/image"
 import Link from "next/link"
 
-export default function SignOutModal({setModalOpen, modalRef}: 
-    {setModalOpen: Dispatch<SetStateAction<boolean>>, modalRef: RefObject<HTMLDialogElement | null>}
+export default function SignOutModal({setModalOpen, modalRef, buttonRef}: 
+    {
+        setModalOpen: Dispatch<SetStateAction<boolean>>, 
+        modalRef: RefObject<HTMLDialogElement | null>,
+        buttonRef: RefObject<HTMLButtonElement | null>
+    }
 ): JSX.Element{
     
     useEffect(()=>{
@@ -23,13 +27,17 @@ export default function SignOutModal({setModalOpen, modalRef}:
                 if(e.key === "Escape"){
                     e.preventDefault()
                     setModalOpen(false)
+                    buttonRef.current?.focus()
                 }
             }}
         >
             <div className="flex flex-col gap-6">
                 <button 
                     className="absolute top-7 right-7 bg-none border-none rounded-full"
-                    onClick={() => setModalOpen(false)}
+                    onClick={() => {
+                        setModalOpen(false)
+                        buttonRef.current?.focus()
+                    }}
                     aria-label="Close modal"
                 >
                     <Image src={IconClose} alt="" />

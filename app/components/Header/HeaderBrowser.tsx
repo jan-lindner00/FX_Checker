@@ -153,7 +153,7 @@ export default function HeaderBrowser(){
                 
             </div>
             )}
-            {(!userData && modalOpen) && <SignOutModal modalRef={modalRef} setModalOpen={setModalOpen}/>}
+            {(!userData && modalOpen) && <SignOutModal modalRef={modalRef} buttonRef={buttonRef} setModalOpen={setModalOpen}/>}
         </section>
     )
 }
