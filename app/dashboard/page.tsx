@@ -6,6 +6,7 @@ import { currencyAbbreviations } from "@/app/lib/currencies";
 import HistoryBrowserComponent from "@/app/components/History/HistoryBrowserComponent";
 import type { ChartData, Rate } from "@/app/lib/types";
 import { captureException } from "@sentry/nextjs";
+import NoDataAvailable from "../components/NoDataAvailable";
 
 export default function History() {
   const params = useSearchParams()
@@ -72,38 +73,32 @@ export default function History() {
 
   if(isLoading){
      return(
-      <div role="status" className="py-[2.5rem] text-center flex flex-col items-center gap-4">
-          <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Loading...</h3>
-          <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
-              {`We are loading the chart data. This could take up to a minute.`}
-          </span>
-      </div>
+        <NoDataAvailable 
+          heading="Loading..."
+          text="We are loading the chart data. This could take up to a minute."
+        />
     )
   }
 
   if(isFetchError){
     return(
-      <div  role="status" className="py-[2.5rem] text-center flex flex-col items-center gap-4">
-          <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">Failed to fetch history data</h3>
-          <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
-              {`We couldn't load fetch history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
-          </span>
-      </div>
+      <NoDataAvailable 
+          heading="Failed to fetch history data"
+          text={`We couldn't load fetch history for ${baseUpper}/${quoteUpper} from Frankfurter API. Please try again.`}
+        />
     )
   }
 
   if(chartData.length === 0){
     return (
-      <div role="status" className="py-[2.5rem] text-center flex flex-col items-center gap-4">
-        <h3 className="text-neutral-100 text-[1.25rem] tracking-[-.5px] leading-[1.2] mb-4">No history data available</h3>
-        <span className="max-w-lg text-neutral-200 text-[.875rem] leading-[1.2] tracking-[1px]">
-            {`We couldn't load rate history for ${baseUpper}/${quoteUpper} right now. This usually clears up in a minute.`}
-        </span>
-      </div>
+      <NoDataAvailable 
+          heading="No history data available"
+          text={`We couldn't load rate history for ${baseUpper}/${quoteUpper} right now. This usually clears up in a minute.`}
+        />
     )
   }
 
   return (
       <HistoryBrowserComponent historyProps={historyProps} />
-  );
+  )
 }
